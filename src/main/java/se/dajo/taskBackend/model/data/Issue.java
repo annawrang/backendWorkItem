@@ -1,4 +1,4 @@
-package main.java.se.dajo.taskBackend.model.data;
+package se.dajo.taskBackend.model.data;
 
 public class Issue {
 

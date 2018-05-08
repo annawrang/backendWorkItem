@@ -1,4 +1,4 @@
-package main.java.se.dajo.taskBackend.model;
+package se.dajo.taskBackend.model;
 
 public enum Status {
     ACTIVE, INACTIVE

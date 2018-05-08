@@ -1,4 +1,4 @@
-package main.java.se.dajo.taskBackend;
+package se.dajo.taskBackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

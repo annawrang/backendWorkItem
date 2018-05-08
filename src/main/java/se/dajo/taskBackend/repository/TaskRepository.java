@@ -1,6 +1,6 @@
-package main.java.se.dajo.taskBackend.repository;
+package se.dajo.taskBackend.repository;
 
-import main.java.se.dajo.taskBackend.repository.data.TaskDTO;
+import se.dajo.taskBackend.repository.data.TaskDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

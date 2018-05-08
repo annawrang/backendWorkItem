@@ -1,7 +1,7 @@
-package main.java.se.dajo.taskBackend.resource;
+package se.dajo.taskBackend.resource;
 
-import main.java.se.dajo.taskBackend.model.data.User;
-import main.java.se.dajo.taskBackend.service.UserService;
+import se.dajo.taskBackend.model.data.User;
+import se.dajo.taskBackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

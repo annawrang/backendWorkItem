@@ -1,4 +1,4 @@
-package main.java.se.dajo.taskBackend.config;
+package se.dajo.taskBackend.config;
 
 import main.java.se.dajo.taskBackend.resource.IssueResource;
 import main.java.se.dajo.taskBackend.resource.TaskResource;

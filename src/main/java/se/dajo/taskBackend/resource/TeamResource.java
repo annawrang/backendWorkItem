@@ -1,6 +1,6 @@
-package main.java.se.dajo.taskBackend.resource;
+package se.dajo.taskBackend.resource;
 
-import main.java.se.dajo.taskBackend.model.data.Team;
+import se.dajo.taskBackend.model.data.Team;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;

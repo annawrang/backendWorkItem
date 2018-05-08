@@ -1,4 +1,4 @@
-package main.java.se.dajo.taskBackend.repository.data;
+package se.dajo.taskBackend.repository.data;
 
 import javax.persistence.*;
 

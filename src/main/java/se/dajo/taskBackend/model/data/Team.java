@@ -1,6 +1,6 @@
-package main.java.se.dajo.taskBackend.model.data;
+package se.dajo.taskBackend.model.data;
 
-import main.java.se.dajo.taskBackend.model.Status;
+import se.dajo.taskBackend.model.Status;
 
 public class Team {
 
