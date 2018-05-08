@@ -9,12 +9,11 @@ public class User {
     private Long userNumber;
     private Status status;
 
-    protected User() {}
-    public User(String firstName, String surName, Long userNumber) {
+    public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
         this.surName = surName;
         this.userNumber = userNumber;
-        this.status = Status.ACTIVE;
+        this.status = status;
     }
 
     public String getFirstName() {
@@ -35,7 +34,6 @@ public class User {
 
     // FÖRSLAG (SOM ANDERS ANVÄNDE) ISTÄLLET FÖR VANLIG SETTER
     public User setStatus(Status status) {
-        this.status = status;
-        return this;
+        return new User(this.firstName, this.surName, this.userNumber, status);
     }
 }

@@ -3,12 +3,19 @@ package se.dajo.taskBackend.resource;
 import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.dajo.taskBackend.resource.param.UserParam;
+import se.dajo.taskBackend.service.UserService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import java.util.Optional;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 @Component
 @Path("users")
@@ -17,13 +24,14 @@ import javax.ws.rs.core.UriInfo;
 public class UserResource {
 
     @Autowired
-    private se.dajo.taskBackend.service.UserService service;
+    private UserService service;
     @Context
     private UriInfo uriInfo;
 
     @POST
     public Response createUser(User user){
         user = service.saveUser(user);
+
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()
                                         .path(user.getUserNumber().toString())).build();
     }
@@ -41,9 +49,13 @@ public class UserResource {
     }
 
     @GET
-    @Path("{userNumber}")
-    public Response getUser(@PathParam("userNumber") Long userNumber){
-        return null;
+    public Response getUser(@BeanParam UserParam userParam){
+        Optional<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
+        if (user.isPresent()) {
+            return Response.ok(user.get()).build();
+        } else {
+            return Response.status(BAD_REQUEST).build();
+        }
     }
 
     @GET
@@ -51,5 +63,4 @@ public class UserResource {
                                                  @QueryParam("surName") String surName){
         return null;
     }
-
 }
