@@ -25,7 +25,6 @@ public class UserService {
         // Creates a User from the UserDTO-object
         return new User(userDTO.getFirstName(),
                 userDTO.getSurName(),
-                userDTO.getUserNumber(),
-                userDTO.getStatus());
+                userDTO.getUserNumber());
     }
 }

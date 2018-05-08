@@ -10,11 +10,11 @@ public class User {
     private Status status;
 
     protected User() {}
-    public User(String firstName, String surName, Long userNumber, Status status) {
+    public User(String firstName, String surName, Long userNumber) {
         this.firstName = firstName;
         this.surName = surName;
         this.userNumber = userNumber;
-        this.status = status;
+        this.status = Status.ACTIVE;
     }
 
     public String getFirstName() {
@@ -35,6 +35,7 @@ public class User {
 
     // FÖRSLAG (SOM ANDERS ANVÄNDE) ISTÄLLET FÖR VANLIG SETTER
     public User setStatus(Status status) {
-        return new User(this.firstName, this.surName, this.userNumber, status);
+        this.status = status;
+        return this;
     }
 }
