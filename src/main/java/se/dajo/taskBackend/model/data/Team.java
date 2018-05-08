@@ -6,7 +6,7 @@ public class Team {
 
     private String teamName;
     private Status status;
-    //HEj
+    //HEJ
 
     public Team(String teamName, Status status) {
         this.teamName = teamName;
