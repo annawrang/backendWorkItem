@@ -1,5 +1,12 @@
 package se.dajo.taskBackend.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum TaskStatus {
-    UNSTARTED, STARTED, DONE
+    @JsonProperty("unstarted")
+    UNSTARTED,
+    @JsonProperty("started")
+    STARTED,
+    @JsonProperty("done")
+    DONE
 }

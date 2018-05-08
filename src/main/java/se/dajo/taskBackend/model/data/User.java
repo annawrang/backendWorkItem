@@ -9,7 +9,6 @@ public class User {
     private Long userNumber;
     private Status status;
 
-    protected User() {}
     public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
         this.surName = surName;
