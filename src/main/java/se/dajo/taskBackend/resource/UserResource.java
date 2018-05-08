@@ -51,5 +51,4 @@ public class UserResource {
                                                  @QueryParam("surName") String surName){
         return null;
     }
-
 }
