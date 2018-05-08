@@ -10,6 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+
 @Component
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -43,7 +45,7 @@ public class UserResource {
     @GET
     @Path("{userNumber}")
     public Response getUser(@PathParam("userNumber") Long userNumber){
-        return null;
+        return Response.ok(service.getUser(userNumber)).build();
     }
 
     @GET

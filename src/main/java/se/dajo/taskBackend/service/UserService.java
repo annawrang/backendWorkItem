@@ -5,7 +5,10 @@ import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.dajo.taskBackend.service.exception.InvalidUserIdException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,6 +31,14 @@ public class UserService {
                 userDTO.getSurName(),
                 userDTO.getUserNumber(),
                 userDTO.getStatus());
+    }
+
+    public User getUser(Long id) {
+        UserDTO userDTO = userRepository.findById(id).orElseThrow(() -> new InvalidUserIdException("User not found"));
+
+        User user = new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
+
+        return user;
     }
 
     private void checker(User user) {
