@@ -1,6 +1,6 @@
 package se.dajo.taskBackend.model.data;
 
-import se.dajo.taskBackend.model.Status;
+import se.dajo.taskBackend.enums.Status;
 
 public class Team {
 

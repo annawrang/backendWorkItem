@@ -1,4 +1,4 @@
-package se.dajo.taskBackend.model.data;
+package se.dajo.taskBackend.enums;
 
 public enum TaskStatus {
     UNSTARTED, STARTED, DONE

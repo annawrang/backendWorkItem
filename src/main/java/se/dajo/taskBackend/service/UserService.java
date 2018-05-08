@@ -16,7 +16,7 @@ public class UserService {
 
         // Creates a UserDTO from the User-object
         UserDTO userDTO = new UserDTO(user.getFirstName(),
-                user.getSurname(),
+                user.getSurName(),
                 user.getUserNumber(),
                 user.getStatus());
 

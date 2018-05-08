@@ -1,6 +1,6 @@
 package se.dajo.taskBackend.repository.data;
 
-import se.dajo.taskBackend.model.Status;
+import se.dajo.taskBackend.enums.Status;
 
 import javax.persistence.*;
 

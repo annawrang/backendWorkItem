@@ -1,5 +1,7 @@
 package se.dajo.taskBackend.model.data;
 
+import se.dajo.taskBackend.enums.TaskStatus;
+
 public class Task {
 
     private Long taskNumber;
