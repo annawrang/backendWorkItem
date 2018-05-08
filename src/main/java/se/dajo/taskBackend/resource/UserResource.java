@@ -3,7 +3,11 @@ package se.dajo.taskBackend.resource;
 import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+<<<<<<< HEAD
 import se.dajo.taskBackend.resource.param.UserParam;
+=======
+import se.dajo.taskBackend.service.UserService;
+>>>>>>> master
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -20,13 +24,14 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 public class UserResource {
 
     @Autowired
-    private se.dajo.taskBackend.service.UserService service;
+    private UserService service;
     @Context
     private UriInfo uriInfo;
 
     @POST
     public Response createUser(User user){
         user = service.saveUser(user);
+
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()
                                         .path(user.getUserNumber().toString())).build();
     }
