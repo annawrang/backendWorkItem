@@ -1,5 +1,7 @@
 package se.dajo.taskBackend.repository.data;
 
+import se.dajo.taskBackend.enums.Status;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,11 +13,13 @@ public class TeamDTO {
     @GeneratedValue
     private Long id;
     private String teamName;
+    private Status status;
 
     protected TeamDTO(){}
 
-    public TeamDTO(String teamName) {
+    public TeamDTO(String teamName, Status status) {
         this.teamName = teamName;
+        this.status = status;
     }
 
     public Long getId() {
@@ -24,5 +28,13 @@ public class TeamDTO {
 
     public String getTeamName() {
         return teamName;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
