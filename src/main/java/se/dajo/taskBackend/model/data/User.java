@@ -9,9 +9,10 @@ public class User {
     private Long userNumber;
     private Status status;
 
-    public User(String firstName, String surname, Long userNumber, Status status) {
+    protected User() {}
+    public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
-        this.surName = surname;
+        this.surName = surName;
         this.userNumber = userNumber;
         this.status = status;
     }
