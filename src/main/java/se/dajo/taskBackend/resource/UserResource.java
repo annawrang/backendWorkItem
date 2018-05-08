@@ -12,6 +12,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import java.util.Optional;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 @Component
@@ -46,10 +49,13 @@ public class UserResource {
     }
 
     @GET
-    @Path("{userNumber}")
     public Response getUser(@BeanParam UserParam userParam){
-        //return Response.ok(service.getUser().build();
-        return null;
+        Optional<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
+        if (user.isPresent()) {
+            return Response.ok(user.get()).build();
+        } else {
+            return Response.status(BAD_REQUEST).build();
+        }
     }
 
     @GET
