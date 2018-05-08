@@ -6,6 +6,7 @@ import se.dajo.taskBackend.resource.TeamResource;
 import se.dajo.taskBackend.resource.UserResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
+import se.dajo.taskBackend.resource.mapper.InvalidUserNumberMapper;
 
 @Configuration
 public class JerseyConfig extends ResourceConfig{
@@ -15,5 +16,6 @@ public class JerseyConfig extends ResourceConfig{
         register(IssueResource.class);
         register(TeamResource.class);
         register(TaskResource.class);
+        register(InvalidUserNumberMapper.class);
     }
 }

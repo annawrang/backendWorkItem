@@ -3,6 +3,7 @@ package se.dajo.taskBackend.resource;
 import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.UserService;
 
 import javax.ws.rs.*;
@@ -10,6 +11,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 @Component
 @Path("users")
@@ -44,7 +47,8 @@ public class UserResource {
 
     @GET
     @Path("{userNumber}")
-    public Response getUser(@PathParam("userNumber") Long userNumber){
+    public Response getUser(@BeanParam UserParam userParam){
+        //return Response.ok(service.getUser().build();
         return null;
     }
 
@@ -53,5 +57,4 @@ public class UserResource {
                                                  @QueryParam("surName") String surName){
         return null;
     }
-
 }

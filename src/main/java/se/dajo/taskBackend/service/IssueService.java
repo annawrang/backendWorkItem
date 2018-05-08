@@ -9,4 +9,5 @@ public class IssueService {
 
     @Autowired
     private IssueRepository issueRepository;
+
 }
