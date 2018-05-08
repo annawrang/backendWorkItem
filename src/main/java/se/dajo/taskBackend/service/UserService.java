@@ -1,8 +1,8 @@
-package main.java.se.dajo.taskBackend.service;
+package se.dajo.taskBackend.service;
 
-import main.java.se.dajo.taskBackend.model.data.User;
-import main.java.se.dajo.taskBackend.repository.UserRepository;
-import main.java.se.dajo.taskBackend.repository.data.UserDTO;
+import se.dajo.taskBackend.model.data.User;
+import se.dajo.taskBackend.repository.UserRepository;
+import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

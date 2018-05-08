@@ -1,7 +1,6 @@
 package se.dajo.taskBackend.resource;
 
 import se.dajo.taskBackend.model.data.User;
-import se.dajo.taskBackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ import javax.ws.rs.core.UriInfo;
 public class UserResource {
 
     @Autowired
-    private UserService service;
+    private se.dajo.taskBackend.service.UserService service;
     @Context
     private UriInfo uriInfo;
 
