@@ -8,5 +8,7 @@ public enum TaskStatus {
     @JsonProperty("started")
     STARTED,
     @JsonProperty("done")
-    DONE
+    DONE,
+    @JsonProperty("annulled")
+    ANNULLED
 }

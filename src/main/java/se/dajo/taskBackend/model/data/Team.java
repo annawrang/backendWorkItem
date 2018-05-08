@@ -4,6 +4,8 @@ import se.dajo.taskBackend.enums.Status;
 
 public class Team {
 
+    //teams/dev/users
+
     private String teamName;
     private Status status;
 
