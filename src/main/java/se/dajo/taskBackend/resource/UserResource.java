@@ -3,11 +3,8 @@ package se.dajo.taskBackend.resource;
 import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-<<<<<<< HEAD
 import se.dajo.taskBackend.resource.param.UserParam;
-=======
 import se.dajo.taskBackend.service.UserService;
->>>>>>> master
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -51,7 +48,8 @@ public class UserResource {
     @GET
     @Path("{userNumber}")
     public Response getUser(@BeanParam UserParam userParam){
-        return Response.ok(service.getUser()).build();
+        //return Response.ok(service.getUser().build();
+        return null;
     }
 
     @GET
