@@ -28,14 +28,14 @@ public class TeamService {
     }
 
     public Team getTeam(String teamName) {
-        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamNameEquals(teamName);
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
 
     public User updateUser(String teamName, Long userNumber) {
-        UserDTO userDTO = userRepository.findById(userNumber).orElseThrow(() -> new InvalidUserIdException("User not found"));
+        UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
 
-        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamNameEquals(teamName);
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
 
         userDTO.setTeam(teamDTO);
         userRepository.save(userDTO);

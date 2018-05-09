@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TeamRepository extends CrudRepository<TeamDTO, Long> {
 
-    TeamDTO findTeamDTOByTeamNameEquals(String teamName);
+    TeamDTO findTeamDTOByTeamName(String teamName);
 
 }
