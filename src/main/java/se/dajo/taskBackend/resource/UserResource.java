@@ -13,11 +13,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
+import static java.util.Collections.singletonMap;
 
 @Component
 @Path("users")
@@ -51,20 +53,15 @@ public class UserResource {
     }
 
     @GET
-    public Response getUser(@QueryParam("firstName") @DefaultValue("0") String firstName,
-                            @QueryParam("surName") @DefaultValue("0") String surName,
-                            @QueryParam("userNumber") @DefaultValue("0") Long userNumber){
-
-
-        List<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(firstName, surName, userNumber.toString());
-
-        user.forEach(u -> System.out.println(u.getFirstName()));
-
+    public Response getUser(@BeanParam UserParam userParam){
+        List<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
         if (user.size() == 0) {
-            return Response.status(NO_CONTENT).entity("No user matching the request.").build();
+            return Response.status(NO_CONTENT).build();
         } else {
             return Response.ok(user).build();
         }
+
+
     }
 
 }
