@@ -38,8 +38,9 @@ public class UserService {
                 userDTO.getStatus());
     }
 
-    public User getUser(Long id) {
-        UserDTO userDTO = userRepository.findById(id).orElseThrow(() -> new InvalidUserIdException("User not found"));
+    public User getUser(Long userNumber) {
+
+        UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
 
         User user = new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
 

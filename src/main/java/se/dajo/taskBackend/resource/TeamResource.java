@@ -3,6 +3,7 @@ package se.dajo.taskBackend.resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.dajo.taskBackend.model.data.Team;
 import org.springframework.stereotype.Component;
+import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.service.TeamService;
 import se.dajo.taskBackend.service.UserService;
 
@@ -42,6 +43,9 @@ public class TeamResource {
     public Response addTeamUser(@PathParam("teamName") String teamName,
                                 @PathParam("userNumber") Long userNumber){
 
-        return null;
+        User user = service.updateUser(teamName, userNumber);
+
+        ///teams/{teamName}/users/{userNumber}
+        return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()).build();
     }
 }
