@@ -22,4 +22,6 @@ public interface UserRepository extends CrudRepository<UserDTO, Long>{
     List<UserDTO> findBySurNameAndUserNumber(String surName, Long userNumber);
 
     List<UserDTO> findByUserNumber(Long userNumber);
+
+    UserDTO findUserDTOByUserNumber(Long userNumber);
 }
