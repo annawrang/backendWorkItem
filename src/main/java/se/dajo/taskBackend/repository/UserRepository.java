@@ -5,22 +5,23 @@ import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<UserDTO, Long>{
 
-    Optional<User> findByFirstNameAndSurNameAndUserNumber();
+    List<User> findByFirstNameAndSurNameAndUserNumber(String firstName, String surName, Long userNumber);
 
-    Optional<User> findByFirstNameAndSurName();
+    List<User> findByFirstNameAndSurName(String firstName, String surName);
 
-    Optional<User> findByFirstNameAndUserNumber();
+    List<User> findByFirstNameAndUserNumber(String firstName, Long userNumber);
 
-    Optional<User> findByFirstName();
+    List<User> findByFirstName(String firstName);
 
-    Optional<User> findBySurName();
+    List<User> findBySurName(String surName);
 
-    Optional<User> findBySurNameAndUserNumber();
+    List<User> findBySurNameAndUserNumber(String surName, Long userNumber);
 
-    Optional<User> findByUserNumber();
+    List<User> findByUserNumber(Long userNumber);
 }

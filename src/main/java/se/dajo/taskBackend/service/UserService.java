@@ -10,6 +10,7 @@ import se.dajo.taskBackend.service.exception.InvalidUserIdException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 import se.dajo.taskBackend.service.exception.PropertyMissingException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,7 +32,8 @@ public class UserService {
         // Creates a User from the UserDTO-object
         return new User(userDTO.getFirstName(),
                 userDTO.getSurName(),
-                userDTO.getUserNumber());
+                userDTO.getUserNumber(),
+                userDTO.getStatus());
     }
 
     public User getUser(Long id) {
@@ -42,35 +44,56 @@ public class UserService {
         return user;
     }
 
-    public Optional<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
+    /*
+    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
         return checkUserParams(userParam);
+    } */
+
+    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(String firstName, String surName, String userNumber){
+
+        return checkUserParams(firstName, surName, userNumber);
     }
 
-    private Optional<User> checkUserParams(UserParam userParam) {
-        if (!userParam.getFirstName().equals("0")) {
-            if (!userParam.getSurName().equals("0")) {
-                if (!userParam.getUserNumber().equals("0")) {
-                    return userRepository.findByFirstNameAndSurNameAndUserNumber();
+    private List<User> checkUserParams(String firstName, String surName, String userNumberIn) {
+       /* Long userNumber = Long.parseLong(param.getUserNumber().toString());
+        String firstName = param.getFirstName();
+        String surName = param.getSurName(); */
+        Long userNumber = Long.parseLong(userNumberIn);
+        if (!firstName.equals("0")) {
+            if (!surName.equals("0")) {
+                if (userNumber != 0) {
+                    System.out.println("1");
+                    return userRepository.findByFirstNameAndSurNameAndUserNumber(firstName, surName, userNumber);
                 } else {
-                    return userRepository.findByFirstNameAndSurName();
+                    System.out.println("2");
+                    return userRepository.findByFirstNameAndSurName(firstName, surName);
                 }
             } else {
-                if (!userParam.getUserNumber().equals("0")) {
-                    return userRepository.findByFirstNameAndUserNumber();
-                } else
-                    return userRepository.findByFirstName();
+                if (userNumber != 0) {
+                    System.out.println("3");
+                    return userRepository.findByFirstNameAndUserNumber(firstName, userNumber);
+                } else{
+                    System.out.println("hej");
+                    List<User> userssss = userRepository.findByFirstName(firstName);
+                    userssss.forEach(user -> System.out.println(user.getFirstName()));
+                    return userRepository.findByFirstName(firstName);
+                }
             }
         }
         else {
-            if (!userParam.getSurName().equals("0")) {
-                if (!userParam.getUserNumber().equals("0")) {
-                    return userRepository.findBySurNameAndUserNumber();
-                } else
-                    return userRepository.findBySurName();
+            if (!surName.equals("0")) {
+                if (userNumber != 0) {
+                    System.out.println("4");
+                    return userRepository.findBySurNameAndUserNumber(surName, userNumber);
+                } else{
+                    System.out.println("5");
+                    return userRepository.findBySurName(surName);
+                }
             }
             else {
-                if (!userParam.getUserNumber().equals("0")) {
-                    return userRepository.findByUserNumber();
+                if (userNumber != 0) {
+                    System.out.println("6");
+                    return userRepository.findByUserNumber(userNumber);
                 }
                 else {
                     throw new PropertyMissingException("You need to provide firstName and/or surName and/or userNumber");

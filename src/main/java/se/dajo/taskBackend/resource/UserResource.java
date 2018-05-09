@@ -12,10 +12,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import java.util.List;
 import java.util.Optional;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
 @Component
 @Path("users")
@@ -49,18 +51,20 @@ public class UserResource {
     }
 
     @GET
-    public Response getUser(@BeanParam UserParam userParam){
-        Optional<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
-        if (user.isPresent()) {
-            return Response.ok(user.get()).build();
+    public Response getUser(@QueryParam("firstName") @DefaultValue("0") String firstName,
+                            @QueryParam("surName") @DefaultValue("0") String surName,
+                            @QueryParam("userNumber") @DefaultValue("0") Long userNumber){
+
+
+        List<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(firstName, surName, userNumber.toString());
+
+        user.forEach(u -> System.out.println(u.getFirstName()));
+
+        if (user.size() == 0) {
+            return Response.status(NO_CONTENT).entity("No user matching the request.").build();
         } else {
-            return Response.status(BAD_REQUEST).build();
+            return Response.ok(user).build();
         }
     }
 
-    @GET
-    public Response getUserByFirstNameAndSurName(@QueryParam("firstName") String firstName,
-                                                 @QueryParam("surName") String surName){
-        return null;
-    }
 }
