@@ -1,13 +1,18 @@
 package se.dajo.taskBackend.service;
 
+import org.glassfish.jersey.internal.guava.Lists;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.exception.InvalidUserIdException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
+import se.dajo.taskBackend.service.exception.PropertyMissingException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +22,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(User user) {
-        checker(user);
+        checkUserNumberLength(user);
         // Creates a UserDTO from the User-object
         UserDTO userDTO = new UserDTO(user.getFirstName(),
                 user.getSurName(),
@@ -41,7 +46,53 @@ public class UserService {
         return user;
     }
 
-    private void checker(User user) {
+    /*
+    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
+        return checkUserParams(userParam);
+    } */
+
+    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam){
+
+
+        return checkUserParams(userParam);
+    }
+
+    private List<User> checkUserParams(UserParam param) {
+        Long userNumber = Long.parseLong(param.getUserNumber().toString());
+        String firstName = param.getFirstName();
+        String surName = param.getSurName();
+
+        if (!firstName.equals("0")) {
+            if (!surName.equals("0")) {
+                if (userNumber != 0) {
+                    return Parser.createUserList(userRepository.findByFirstNameAndSurNameAndUserNumber(firstName, surName, userNumber));
+                } else {
+                    return Parser.createUserList(userRepository.findByFirstNameAndSurName(firstName, surName));
+                }
+            } else {
+                if (userNumber != 0) {
+                    return Parser.createUserList(userRepository.findByFirstNameAndUserNumber(firstName, userNumber));
+                } else {
+                    return Parser.createUserList(userRepository.findByFirstName(firstName));
+                }
+            }
+        } else {
+            if (!surName.equals("0")) {
+                if (userNumber != 0) {
+                    return Parser.createUserList(userRepository.findBySurNameAndUserNumber(surName, userNumber));
+                } else {
+                    return Parser.createUserList(userRepository.findBySurName(surName));
+                }
+            } else {
+                if (userNumber != 0) {
+                    return Parser.createUserList(userRepository.findByUserNumber(userNumber));
+                }
+            }
+        }
+        return Parser.createUserList(Lists.newArrayList(userRepository.findAll()));
+    }
+
+    private void checkUserNumberLength(User user) {
         if(user.getUserNumber() < 10) {
             throw new InvalidUserNumberException("User number must be no more then 10 number long");
         }

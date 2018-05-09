@@ -6,11 +6,11 @@ import javax.ws.rs.QueryParam;
 public final class UserParam {
 
     @QueryParam("firstName")
-    @DefaultValue("no firstName")
+    @DefaultValue("0")
     private String firstName;
 
     @QueryParam("surName")
-    @DefaultValue("no surName")
+    @DefaultValue("0")
     private String surName;
 
     @QueryParam("userNumber")

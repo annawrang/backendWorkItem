@@ -12,7 +12,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
+import static java.util.Collections.singletonMap;
 
 @Component
 @Path("users")
@@ -46,15 +53,15 @@ public class UserResource {
     }
 
     @GET
-    @Path("{userNumber}")
     public Response getUser(@BeanParam UserParam userParam){
-        //return Response.ok(service.getUser().build();
-        return null;
+        List<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
+        if (user.size() == 0) {
+            return Response.status(NO_CONTENT).build();
+        } else {
+            return Response.ok(user).build();
+        }
+
+
     }
 
-    @GET
-    public Response getUserByFirstNameAndSurName(@QueryParam("firstName") String firstName,
-                                                 @QueryParam("surName") String surName){
-        return null;
-    }
 }
