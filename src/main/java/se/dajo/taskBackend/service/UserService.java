@@ -7,13 +7,9 @@ import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.resource.param.UserParam;
-import se.dajo.taskBackend.service.exception.InvalidUserIdException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
-import se.dajo.taskBackend.service.exception.PropertyMissingException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -47,14 +43,7 @@ public class UserService {
         return user;
     }
 
-    /*
-    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
-        return checkUserParams(userParam);
-    } */
-
     public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam){
-
-
         return checkUserParams(userParam);
     }
 
@@ -91,11 +80,5 @@ public class UserService {
             }
         }
         return Parser.createUserList(Lists.newArrayList(userRepository.findAll()));
-    }
-
-    private void checkUserNumberLength(User user) {
-        if(user.getUserNumber().longValue() < 1000000000L) {
-            throw new InvalidUserNumberException("User number must be no more then 10 number long");
-        }
     }
 }

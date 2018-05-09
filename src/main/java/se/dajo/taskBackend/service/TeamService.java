@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
-import se.dajo.taskBackend.service.exception.InvalidUserIdException;
+import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
 @Service
 public class TeamService {
