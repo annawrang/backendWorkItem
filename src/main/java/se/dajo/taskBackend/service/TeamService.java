@@ -20,4 +20,9 @@ public class TeamService {
 
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
+
+    public Team getTeam(String teamName) {
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamNameEquals(teamName);
+        return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
+    }
 }

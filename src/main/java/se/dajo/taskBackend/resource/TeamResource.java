@@ -29,4 +29,19 @@ public class TeamResource {
 
         return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
     }
+
+    @GET
+    @Path("/{teamName}")
+    public Response displayTeam (@PathParam("teamName") String teamName){
+        Team team = service.getTeam(teamName);
+        return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
+    }
+
+    @PUT
+    @Path("/{teamName}/users/{userNumber}")
+    public Response addTeamUser(@PathParam("teamName") String teamName,
+                                @PathParam("userNumber") Long userNumber){
+
+        return null;
+    }
 }
