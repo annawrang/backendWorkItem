@@ -55,13 +55,25 @@ public class UserResource {
     @Path("{userNumber}/deactivate")
     public Response deactivateUser(@PathParam("userNumber") Long userNumber){
 
-        if(service.getUser(userNumber) == null) {
+        User user = service.getUser(userNumber);
+        if(user == null) {
             return Response.status(NOT_FOUND).build();
-        }
-            User user = service.getUser(userNumber);
-            user.setStatus(Status.INACTIVE);
-            user = service.saveUser(user);
+        }else{
+            service.deactivateUser(user);
             return Response.ok().build();
+        }
+    }
+
+    @GET
+    @Path("{userNumber}")
+    public Response getUserByUserNumber(@PathParam("userNumber") Long userNumber){
+
+        User user = service.getUser(userNumber);
+        if(user == null) {
+            return Response.status(NOT_FOUND).build();
+        }else{
+            return Response.ok(user).build();
+        }
     }
 
     @GET

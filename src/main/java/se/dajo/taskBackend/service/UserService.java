@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.service;
 
 import org.glassfish.jersey.internal.guava.Lists;
+import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.UserDTO;
@@ -33,7 +34,7 @@ public class UserService {
                 userDTO.getUserNumber(),
                 userDTO.getStatus());
     }
-
+    
     public User getUser(Long userNumber) {
 
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
@@ -80,5 +81,12 @@ public class UserService {
             }
         }
         return Parser.createUserList(Lists.newArrayList(userRepository.findAll()));
+    }
+
+    public User deactivateUser(User user){
+        UserDTO userDTO = userRepository.findUserDTOByUserNumber((user.getUserNumber()));
+        userDTO.setStatus(Status.INACTIVE);
+        userRepository.save(userDTO);
+        return user;
     }
 }

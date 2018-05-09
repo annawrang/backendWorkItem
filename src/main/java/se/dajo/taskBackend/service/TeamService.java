@@ -1,5 +1,7 @@
 package se.dajo.taskBackend.service;
 
+import org.glassfish.jersey.internal.guava.Lists;
+import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.Team;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.TeamRepository;
@@ -8,7 +10,11 @@ import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
+import se.dajo.taskBackend.repository.parsers.TeamParser;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
+
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class TeamService {
@@ -41,5 +47,17 @@ public class TeamService {
         userRepository.save(userDTO);
 
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
+    }
+
+    public List<Team> getAllTeams(){
+        List<TeamDTO> teamDTOS = Lists.newArrayList(teamRepository.findAll());
+        return TeamParser.parseTeamDTOToTeamList(teamDTOS);
+    }
+
+    public Team deactivateTeam(Team team){
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(team.getTeamName());
+        teamDTO.setStatus(Status.INACTIVE);
+        teamRepository.save(teamDTO);
+        return team;
     }
 }
