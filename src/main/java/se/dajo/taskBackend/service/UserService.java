@@ -22,7 +22,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(User user) {
-        checkUserNumberLength(user);
+        //checkUserNumberLength(user);
         // Creates a UserDTO from the User-object
         UserDTO userDTO = new UserDTO(user.getFirstName(),
                 user.getSurName(),
@@ -93,7 +93,7 @@ public class UserService {
     }
 
     private void checkUserNumberLength(User user) {
-        if(user.getUserNumber() < 10) {
+        if(user.getUserNumber().longValue() < 1000000000L) {
             throw new InvalidUserNumberException("User number must be no more then 10 number long");
         }
     }
