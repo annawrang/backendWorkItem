@@ -15,6 +15,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -32,8 +33,11 @@ public class UserResource {
     @Context
     private UriInfo uriInfo;
 
+    private static final AtomicLong ids = new AtomicLong(1000000000);
+
     @POST
     public Response createUser(User user){
+        user = user.setUserNumber(ids.incrementAndGet());
         user = service.saveUser(user);
 
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()

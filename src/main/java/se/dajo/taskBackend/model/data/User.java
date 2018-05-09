@@ -11,16 +11,13 @@ public class User {
     private Long userNumber;
     private Status status;
 
-    //private static final AtomicLong ids = new AtomicLong(1000000000);
-
     protected User(){}
 
-//    public User(String firstName, String surName, Status status) {
-//        this.firstName = firstName;
-//        this.surName = surName;
-//        this.userNumber = ids.getAndIncrement();
-//        this.status = status;
-//    }
+    public User(String firstName, String surName, Status status) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.status = status;
+    }
 
     public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
@@ -45,4 +42,23 @@ public class User {
         return status;
     }
 
+    public User setUserNumber(Long userNumber) {
+        this.userNumber = userNumber;
+        return this;
+    }
+
+    public User setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public User setSurName(String surName) {
+        this.surName = surName;
+        return this;
+    }
+
+    public User setStatus(Status status) {
+        this.status = status;
+        return this;
+    }
 }

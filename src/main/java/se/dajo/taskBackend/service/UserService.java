@@ -10,6 +10,7 @@ import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class UserService {
@@ -18,7 +19,6 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(User user) {
-        //checkUserNumberLength(user);
         // Creates a UserDTO from the User-object
         UserDTO userDTO = new UserDTO(user.getFirstName(),
                 user.getSurName(),
