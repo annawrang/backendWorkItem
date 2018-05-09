@@ -1,5 +1,6 @@
 package se.dajo.taskBackend.resource;
 
+import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,7 +54,14 @@ public class UserResource {
     @PUT
     @Path("{userNumber}/deactivate")
     public Response deactivateUser(@PathParam("userNumber") Long userNumber){
-        return null;
+
+        if(service.getUser(userNumber) == null) {
+            return Response.status(NOT_FOUND).build();
+        }
+            User user = service.getUser(userNumber);
+            user.setStatus(Status.INACTIVE);
+            user = service.saveUser(user);
+            return Response.ok().build();
     }
 
     @GET
