@@ -49,12 +49,12 @@ public class TeamService {
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
 
-    public List<Team> getAllTeams(){
+    public List<Team> getAllTeams() {
         List<TeamDTO> teamDTOS = Lists.newArrayList(teamRepository.findAll());
         return TeamParser.parseTeamDTOToTeamList(teamDTOS);
     }
 
-    public Team deactivateTeam(Team team){
+    public Team deactivateTeam(Team team) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(team.getTeamName());
         teamDTO.setStatus(Status.INACTIVE);
         teamRepository.save(teamDTO);

@@ -34,7 +34,7 @@ public class UserService {
                 userDTO.getUserNumber(),
                 userDTO.getStatus());
     }
-    
+
     public User getUser(Long userNumber) {
 
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
@@ -44,7 +44,7 @@ public class UserService {
         return user;
     }
 
-    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam){
+    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
         return checkUserParams(userParam);
     }
 
@@ -83,7 +83,7 @@ public class UserService {
         return Parser.createUserList(Lists.newArrayList(userRepository.findAll()));
     }
 
-    public User deactivateUser(User user){
+    public User deactivateUser(User user) {
         UserDTO userDTO = userRepository.findUserDTOByUserNumber((user.getUserNumber()));
         userDTO.setStatus(Status.INACTIVE);
         userRepository.save(userDTO);

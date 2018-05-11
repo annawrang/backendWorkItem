@@ -27,7 +27,7 @@ public class TeamResource {
     private UriInfo uriInfo;
 
     @POST
-    public Response createTeam(Team team){
+    public Response createTeam(Team team) {
         team = service.saveTeam(team);
 
         return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
@@ -35,13 +35,13 @@ public class TeamResource {
 
     @GET
     @Path("/{teamName}")
-    public Response displayTeam (@PathParam("teamName") String teamName){
+    public Response displayTeam(@PathParam("teamName") String teamName) {
         Team team = service.getTeam(teamName);
         return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
     }
 
     @GET
-    public Response getAllTeams(){
+    public Response getAllTeams() {
         List<Team> teams = service.getAllTeams();
         return Response.ok(teams).build();
     }
@@ -49,7 +49,7 @@ public class TeamResource {
     @PUT
     @Path("/{teamName}/users/{userNumber}")
     public Response addTeamUser(@PathParam("teamName") String teamName,
-                                @PathParam("userNumber") Long userNumber){
+                                @PathParam("userNumber") Long userNumber) {
 
         User user = service.updateUser(teamName, userNumber);
 
@@ -59,13 +59,14 @@ public class TeamResource {
 
     @PUT
     @Path("{teamName}/deactivate")
-    public Response deactivateTeam(@PathParam("teamName") String teamName){
+    public Response deactivateTeam(@PathParam("teamName") String teamName) {
         Team team = service.getTeam(teamName);
-        if(team == null){
+        if (team == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
-        }else{
+        } else {
             service.deactivateTeam(team);
             return Response.ok().build();
         }
     }
+
 }

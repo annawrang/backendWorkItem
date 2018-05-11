@@ -8,14 +8,15 @@ import java.util.List;
 
 public final class TeamParser {
 
-    public static Team parseTeamDTOToTeam(TeamDTO teamDTO){
+    public static Team parseTeamDTOToTeam(TeamDTO teamDTO) {
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
 
-    public static List<Team> parseTeamDTOToTeamList(List<TeamDTO> teamDTOS){
+    public static List<Team> parseTeamDTOToTeamList(List<TeamDTO> teamDTOS) {
         List<Team> teams = new ArrayList<>();
         teamDTOS.forEach(teamDTO -> teams.add(parseTeamDTOToTeam(teamDTO)));
         return teams;
     }
+
 }
 
