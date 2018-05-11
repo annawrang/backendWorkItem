@@ -27,7 +27,8 @@ public class TaskResource {
 
     @POST
     public Response createTask(Task task){
-        task = service.saveTask();
-        return null;
+        task = service.saveTask(task);
+        return Response.ok(task).header("Location", uriInfo.getAbsolutePathBuilder()
+                .path(task.getDescription().toString())).build();
     }
 }
