@@ -11,6 +11,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import java.util.List;
+
+import static javax.ws.rs.core.Response.*;
+import static javax.ws.rs.core.Response.Status.*;
+
 @Component
 @Path("tasks")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -30,12 +35,27 @@ public class TaskResource {
     public Response createTask(Task task){
         task = taskService.saveTask(task);
 
-        return Response.ok(task).header("Location", uriInfo.getAbsolutePathBuilder()
+        return ok(task).header("Location", uriInfo.getAbsolutePathBuilder()
                 .path(task.getTaskNumber().toString())).build();
     }
 
-    @GET
-    public Response getTaskByStatus(){
-        return null;
+    // BLIR KOMPILERINGSFEL - den här metoden måste flyttas in i @GET som ligger nedan
+//    @GET
+//    public Response getTaskByStatus(@QueryParam("id") Long id){
+//        return null;
+//    }
+
+    @PUT
+    @Path("{taskNumber}")
+    public Response updateTask(@PathParam("taskNumber")Long taskNumber, Task task){
+        Task oldTask = taskService.getTask(taskNumber);
+        return status(NO_CONTENT).build();
     }
+
+    @GET
+    public Response getAllTasks(){
+        Iterable<Task> tasks = taskService.getAllTasks();
+        return Response.ok(tasks).build();
+    }
+
 }

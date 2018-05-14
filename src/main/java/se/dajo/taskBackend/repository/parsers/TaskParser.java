@@ -16,11 +16,15 @@ public final class TaskParser {
         return new TaskDTO(task.getDescription(), task.getStatus(), task.getTaskNumber());
     }
 
-    public static List<Task> parseTaskDTOListToTaskList(List<TaskDTO> taskDTOS){
+    public static List<Task> parseTaskDTOListToTaskList(Iterable<TaskDTO> taskDTOS){
         List<Task> modelTasks = new ArrayList<>();
         taskDTOS.forEach(task -> {
             modelTasks.add(TaskParser.parseTaskDTOToTask(task));
         });
         return modelTasks;
+    }
+
+    public static TaskDTO prepareForUpdateTaskDTO(TaskDTO taskDTO, Task task){
+        return new TaskDTO(taskDTO.getId(), task.getDescription(), task.getStatus(), task.getTaskNumber());
     }
 }

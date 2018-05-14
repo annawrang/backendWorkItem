@@ -8,6 +8,7 @@ import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -32,7 +33,20 @@ public class TaskService {
         if(oldTaskDTO == null){
             throw new InvalidTaskNumberException("No user found");
         }
-        oldTaskDTO = oldTaskDTO.updateTaskDTO(task);
+        oldTaskDTO = TaskParser.prepareForUpdateTaskDTO(oldTaskDTO, task);
         taskRepository.save(oldTaskDTO);
+    }
+
+    public Task getTask(Long taskNumber) {
+        TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
+        if(taskDTO == null){
+            throw new InvalidTaskNumberException("Task not found");
+        }
+        return TaskParser.parseTaskDTOToTask(taskDTO);
+    }
+
+    public Iterable<Task> getAllTasks() {
+        Iterable<TaskDTO> taskDTOS = taskRepository.findAll();
+        return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
     }
 }
