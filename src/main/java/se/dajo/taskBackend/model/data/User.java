@@ -13,12 +13,6 @@ public class User {
 
     protected User(){}
 
-    public User(String firstName, String surName, Status status) {
-        this.firstName = firstName;
-        this.surName = surName;
-        this.status = status;
-    }
-
     public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
         this.surName = surName;
@@ -34,9 +28,7 @@ public class User {
         return surName;
     }
 
-    public Long getUserNumber() {
-        return userNumber;
-    }
+    public Long getUserNumber() { return userNumber; }
 
     public Status getStatus() {
         return status;
