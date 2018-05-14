@@ -37,35 +37,47 @@ public class UserResource {
     private static final AtomicLong ids = new AtomicLong(1000000000);
 
     @POST
-    public Response createUser(User user){
+    public Response createUser(User user) {
         user = user.setUserNumber(ids.incrementAndGet());
         user = service.saveUser(user);
 
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()
-                                        .path(user.getUserNumber().toString())).build();
+                .path(user.getUserNumber().toString())).build();
     }
 
     @PUT
     @Path("{userNumber}")
-    public Response updateUser(@PathParam("userNumber")Long userNumber, User user){
+    public Response updateUser(@PathParam("userNumber") Long userNumber, User user) {
         return null;
     }
 
     @PUT
     @Path("{userNumber}/deactivate")
-    public Response deactivateUser(@PathParam("userNumber") Long userNumber){
+    public Response deactivateUser(@PathParam("userNumber") Long userNumber) {
 
-        if(service.getUser(userNumber) == null) {
+        User user = service.getUser(userNumber);
+        if (user == null) {
             return Response.status(NOT_FOUND).build();
-        }
-            User user = service.getUser(userNumber);
-            user.setStatus(Status.INACTIVE);
-            user = service.saveUser(user);
+        } else {
+            service.deactivateUser(user);
             return Response.ok().build();
+        }
     }
 
     @GET
-    public Response getUser(@BeanParam UserParam userParam){
+    @Path("{userNumber}")
+    public Response getUserByUserNumber(@PathParam("userNumber") Long userNumber) {
+
+        User user = service.getUser(userNumber);
+        if (user == null) {
+            return Response.status(NOT_FOUND).build();
+        } else {
+            return Response.ok(user).build();
+        }
+    }
+
+    @GET
+    public Response getUser(@BeanParam UserParam userParam) {
         List<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
         if (user.size() == 0) {
             return Response.status(NO_CONTENT).build();
