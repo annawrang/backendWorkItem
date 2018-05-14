@@ -1,10 +1,12 @@
 package se.dajo.taskBackend.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<UserDTO, Long>{
@@ -24,4 +26,7 @@ public interface UserRepository extends CrudRepository<UserDTO, Long>{
     List<UserDTO> findByUserNumber(Long userNumber);
 
     UserDTO findUserDTOByUserNumber(Long userNumber);
+
+    @Query("SELECT MAX(userNumber) FROM UserDTO")
+    Optional<Long> getHighestUserNumber();
 }

@@ -18,8 +18,13 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private AtomicLong userNumbers;
 
     public User saveUser(User user) {
+
+        this.userNumbers = new AtomicLong(this.userRepository.getHighestUserNumber().orElse(1000000000L));
+        user = user.setUserNumber(userNumbers.incrementAndGet());
+
         // Creates a UserDTO from the User-object
         UserDTO userDTO = new UserDTO(user.getFirstName(),
                 user.getSurName(),
