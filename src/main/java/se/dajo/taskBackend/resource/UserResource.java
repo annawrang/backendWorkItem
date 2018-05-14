@@ -29,10 +29,14 @@ import static java.util.Collections.singletonMap;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
     @Context
     private UriInfo uriInfo;
+
+    @Autowired
+    public UserResource(UserService service){
+        this.service = service;
+    }
 
     private static final AtomicLong ids = new AtomicLong(1000000000);
 
