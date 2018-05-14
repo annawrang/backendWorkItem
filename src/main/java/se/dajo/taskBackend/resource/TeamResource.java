@@ -5,14 +5,12 @@ import se.dajo.taskBackend.model.data.Team;
 import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.service.TeamService;
-import se.dajo.taskBackend.service.UserService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -21,10 +19,14 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class TeamResource {
 
-    @Autowired
-    private TeamService service;
+    private final TeamService service;
     @Context
     private UriInfo uriInfo;
+
+    @Autowired
+    public TeamResource(TeamService service) {
+        this.service = service;
+    }
 
     @POST
     public Response createTeam(Team team) {
