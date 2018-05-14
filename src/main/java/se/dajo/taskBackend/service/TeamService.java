@@ -11,6 +11,7 @@ import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import se.dajo.taskBackend.repository.parsers.TeamParser;
+import se.dajo.taskBackend.service.exception.InvalidTeamNameException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
 import java.util.Iterator;
@@ -35,6 +36,9 @@ public class TeamService {
 
     public Team getTeam(String teamName) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
+        if(teamDTO == null){
+            throw new InvalidTeamNameException("No team found");
+        }
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
 
@@ -54,10 +58,12 @@ public class TeamService {
         return TeamParser.parseTeamDTOToTeamList(teamDTOS);
     }
 
-    public Team deactivateTeam(Team team) {
-        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(team.getTeamName());
-        teamDTO.setStatus(Status.INACTIVE);
-        teamRepository.save(teamDTO);
-        return team;
+    public void updateTeam(String teamName, Team team) {
+        TeamDTO oldTeamDTO = teamRepository.findTeamDTOByTeamName(teamName);
+        if(oldTeamDTO == null){
+            throw new InvalidTeamNameException("No team found");
+        }
+        oldTeamDTO = oldTeamDTO.updateTeamDTO(team);
+        teamRepository.save(oldTeamDTO);
     }
 }

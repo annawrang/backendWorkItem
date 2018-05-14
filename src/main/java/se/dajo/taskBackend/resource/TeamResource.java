@@ -59,16 +59,11 @@ public class TeamResource {
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()).build();
     }
 
-    @PUT
-    @Path("{teamName}/deactivate")
-    public Response deactivateTeam(@PathParam("teamName") String teamName) {
-        Team team = service.getTeam(teamName);
-        if (team == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } else {
-            service.deactivateTeam(team);
-            return Response.ok().build();
-        }
-    }
 
+    @PUT
+    @Path("/{teamName}")
+    public Response updateTeam(@PathParam("teamName")String teamName, Team team){
+        service.updateTeam(teamName, team);
+        return Response.ok().build();
+    }
 }
