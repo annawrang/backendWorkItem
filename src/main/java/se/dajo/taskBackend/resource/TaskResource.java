@@ -39,12 +39,6 @@ public class TaskResource {
                 .path(task.getTaskNumber().toString())).build();
     }
 
-    // BLIR KOMPILERINGSFEL - den här metoden måste flyttas in i @GET som ligger nedan
-//    @GET
-//    public Response getTaskByStatus(@QueryParam("id") Long id){
-//        return null;
-//    }
-
     @PUT
     @Path("{taskNumber}")
     public Response updateTask(@PathParam("taskNumber")Long taskNumber, Task task){
@@ -52,10 +46,10 @@ public class TaskResource {
         return status(NO_CONTENT).build();
     }
 
+    // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
-    public Response getAllTasks(){
-        Iterable<Task> tasks = taskService.getAllTasks();
-        return Response.ok(tasks).build();
+    public Response getTasks(){
+        return null;
     }
 
 }
