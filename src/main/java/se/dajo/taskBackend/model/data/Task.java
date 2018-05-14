@@ -22,7 +22,7 @@ public class Task {
 
     // ETT FÖRSLAG ISTÄLLET FÖR "VANLIG" SETTER (SOM ANDERS ANVÄNDE - GOOD PRACTICE ATT SKICKA
     // TILLBAKA ETT NYTT OBJEKT ISTÄLLET FÖR ATT MODIFIERA DET GAMLA)
-    public Task setTaskStatus(TaskStatus taskStatus) {
-        return new Task(this.description, taskStatus);
-    }
+//    public Task setTaskStatus(TaskStatus taskStatus) {
+//        return new Task(this.description, taskStatus);
+//    }
 }

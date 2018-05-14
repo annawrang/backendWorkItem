@@ -72,8 +72,5 @@ public class UserResource {
         } else {
             return Response.ok(user).build();
         }
-
-
     }
-
 }
