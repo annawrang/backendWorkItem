@@ -1,5 +1,6 @@
 package se.dajo.taskBackend.resource.mapper;
 
+import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
 import javax.ws.rs.core.Response;
@@ -12,7 +13,7 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 @Provider
 public final class InvalidTaskNumberMapper implements ExceptionMapper<InvalidTaskNumberException> {
     @Override
-    public Response toResponse(InvalidUserNumberException exception) {
-        return Response.status(BAD_REQUEST).entity(singletonMap("Invalid userNumber input", exception.getMessage())).build();
+    public Response toResponse(InvalidTaskNumberException exception) {
+        return Response.status(BAD_REQUEST).entity(singletonMap("Invalid taskNumber input", exception.getMessage())).build();
     }
 }

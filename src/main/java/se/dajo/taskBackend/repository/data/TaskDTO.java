@@ -13,21 +13,25 @@ public class TaskDTO {
     private Long id;
     private String description;
     private TaskStatus status;
+    private Long taskNumber;
+
 
     @ManyToOne
     private UserDTO user;
 
     protected TaskDTO(){}
 
-    public TaskDTO(String description, TaskStatus status) {
+    public TaskDTO(String description, TaskStatus status, Long taskNumber) {
         this.description = description;
         this.status = status;
+        this.taskNumber = taskNumber;
     }
 
-    public TaskDTO(Long id, String description, TaskStatus status) {
+    public TaskDTO(Long id, String description, TaskStatus status, Long taskNumber) {
         this.id = id;
         this.description = description;
         this.status = status;
+        this.taskNumber = taskNumber;
     }
 
     public Long getId() {
@@ -51,6 +55,10 @@ public class TaskDTO {
     }
 
     public TaskDTO updateUserDTO(Task task){
-        return new TaskDTO(this.id, task.getDescription(), task.getStatus());
+        return new TaskDTO(this.id, task.getDescription(), task.getStatus(), taskNumber);
+    }
+
+    public Long getTaskNumber() {
+        return taskNumber;
     }
 }

@@ -17,20 +17,21 @@ import javax.ws.rs.core.UriInfo;
 @Produces(MediaType.APPLICATION_JSON)
 public class TaskResource {
 
-    private final TaskService service;
+    private final TaskService taskService;
     @Context
     private UriInfo uriInfo;
 
     @Autowired
     public TaskResource(TaskService service) {
-        this.service = service;
+        this.taskService = service;
     }
 
     @POST
     public Response createTask(Task task){
-        task = service.saveTask(task);
+        task = taskService.saveTask(task);
+
         return Response.ok(task).header("Location", uriInfo.getAbsolutePathBuilder()
-                .path(task.getDescription().toString())).build();
+                .path(task.getTaskNumber().toString())).build();
     }
 
     @GET

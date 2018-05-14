@@ -6,10 +6,12 @@ public class Task {
 
     private String description;
     private TaskStatus status;
+    private Long taskNumber;
 
-    public Task(String description, TaskStatus taskStatus) {
+    public Task(String description, TaskStatus status, Long taskNumber) {
         this.description = description;
-        this.status = taskStatus;
+        this.status = status;
+        this.taskNumber = taskNumber;
     }
 
     public String getDescription() {
@@ -20,9 +22,13 @@ public class Task {
         return status;
     }
 
-    // ETT FÖRSLAG ISTÄLLET FÖR "VANLIG" SETTER (SOM ANDERS ANVÄNDE - GOOD PRACTICE ATT SKICKA
-    // TILLBAKA ETT NYTT OBJEKT ISTÄLLET FÖR ATT MODIFIERA DET GAMLA)
-//    public Task setTaskStatus(TaskStatus taskStatus) {
-//        return new Task(this.description, taskStatus);
-//    }
+    public Long getTaskNumber() {
+        return taskNumber;
+    }
+
+    public Task setTaskNumber(Long taskNumber) {
+        this.taskNumber = taskNumber;
+        return this;
+    }
+
 }

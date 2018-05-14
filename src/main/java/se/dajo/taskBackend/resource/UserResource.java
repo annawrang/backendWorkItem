@@ -38,11 +38,8 @@ public class UserResource {
         this.service = service;
     }
 
-//    private static final AtomicLong ids = new AtomicLong(1000000000);
-
     @POST
     public Response createUser(User user) {
-//        user = user.setUserNumber(ids.incrementAndGet());
         user = service.saveUser(user);
 
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()
