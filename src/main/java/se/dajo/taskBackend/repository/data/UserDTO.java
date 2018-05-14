@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.repository.data;
 
 import se.dajo.taskBackend.enums.Status;
+import se.dajo.taskBackend.model.data.User;
 
 import javax.persistence.*;
 
@@ -21,6 +22,14 @@ public class UserDTO {
     protected UserDTO(){}
 
     public UserDTO(String firstName, String surName, Long userNumber, Status status) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.userNumber = userNumber;
+        this.status = status;
+    }
+
+    public UserDTO(Long id, String firstName, String surName, Long userNumber, Status status) {
+        this.id = id;
         this.firstName = firstName;
         this.surName = surName;
         this.userNumber = userNumber;
@@ -57,5 +66,9 @@ public class UserDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public UserDTO updateUserDTO(User user){
+        return new UserDTO(this.id, user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
     }
 }

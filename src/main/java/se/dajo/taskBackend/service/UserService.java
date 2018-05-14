@@ -89,4 +89,10 @@ public class UserService {
         userRepository.save(userDTO);
         return user;
     }
+
+    public void updateUser(User user){
+        UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
+        oldUserDTO = oldUserDTO.updateUserDTO(user);
+        oldUserDTO = userRepository.save(oldUserDTO);
+    }
 }
