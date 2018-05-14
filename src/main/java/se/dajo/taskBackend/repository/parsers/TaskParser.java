@@ -9,11 +9,11 @@ import java.util.List;
 public final class TaskParser {
 
     public static Task parseTaskDTOToTask(TaskDTO taskDTO){
-        return new Task(taskDTO.getDescription(), taskDTO.getStatus());
+        return new Task(taskDTO.getDescription(), taskDTO.getStatus(), taskDTO.getTaskNumber());
     }
 
     public static TaskDTO parseTaskToTaskDTO(Task task) {
-        return new TaskDTO(task.getDescription(), task.getStatus());
+        return new TaskDTO(task.getDescription(), task.getStatus(), task.getTaskNumber());
     }
 
     public static List<Task> parseTaskDTOListToTaskList(List<TaskDTO> taskDTOS){
