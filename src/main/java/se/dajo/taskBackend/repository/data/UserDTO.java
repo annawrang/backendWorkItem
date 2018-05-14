@@ -36,10 +36,6 @@ public class UserDTO {
         this.status = status;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getFirstName() {
         return firstName;
     }

@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.repository.data;
 
 import se.dajo.taskBackend.enums.TaskStatus;
+import se.dajo.taskBackend.model.data.Task;
 
 import javax.persistence.*;
 
@@ -23,6 +24,12 @@ public class TaskDTO {
         this.status = status;
     }
 
+    public TaskDTO(Long id, String description, TaskStatus status) {
+        this.id = id;
+        this.description = description;
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
@@ -41,5 +48,9 @@ public class TaskDTO {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public TaskDTO updateUserDTO(Task task){
+        return new TaskDTO(this.id, task.getDescription(), task.getStatus());
     }
 }
