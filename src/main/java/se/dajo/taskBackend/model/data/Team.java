@@ -7,6 +7,8 @@ public class Team {
     private String teamName;
     private Status status;
 
+    protected Team(){}
+
     public Team(String teamName, Status status) {
         this.teamName = teamName;
         this.status = status;
@@ -21,8 +23,12 @@ public class Team {
     }
 
     // HÄR ÄR ETT FÖRSLAG (SOM ANDERS ANVÄNDE) ISTÄLLET FÖR EN VANLIG SETTER
-    public Team setStatus(Status status) {
-        return new Team(this.teamName, status);
-    }
+//    public Team setStatus(Status status) {
+//        return new Team(this.teamName, status);
+//    }
 
+
+//    public void setStatus(Status status) {
+//        this.status = status;
+//    }
 }
