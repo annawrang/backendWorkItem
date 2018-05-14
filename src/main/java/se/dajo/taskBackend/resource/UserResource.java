@@ -50,26 +50,16 @@ public class UserResource {
     }
 
     @PUT
-    @Path("{userNumber}")
-    public Response updateUser(@PathParam("userNumber") Long userNumber, User user) {
-        if(service.getUser(userNumber) == null){
-            return Response.status(NOT_FOUND).build();
-        } else{
+    public Response updateUser(User user) {
             service.updateUser(user);
             return Response.ok().build();
-        }
     }
 
     @GET
     @Path("{userNumber}")
     public Response getUserByUserNumber(@PathParam("userNumber") Long userNumber) {
-
         User user = service.getUser(userNumber);
-        if (user == null) {
-            return Response.status(NOT_FOUND).build();
-        } else {
             return Response.ok(user).build();
-        }
     }
 
     @GET

@@ -35,6 +35,6 @@ public class TaskResource {
 
     @GET
     public Response getTaskByStatus(){
-        return;
+        return null;
     }
 }
