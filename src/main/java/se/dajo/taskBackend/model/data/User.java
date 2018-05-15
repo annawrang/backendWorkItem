@@ -2,8 +2,6 @@ package se.dajo.taskBackend.model.data;
 
 import se.dajo.taskBackend.enums.Status;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public class User {
 
     private String firstName;
