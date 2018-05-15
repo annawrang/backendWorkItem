@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.resource;
 
 import se.dajo.taskBackend.enums.Status;
+import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -69,5 +70,12 @@ public class UserResource {
         } else {
             return Response.ok(user).build();
         }
+    }
+
+    @GET
+    @Path("{userNumber}/tasks")
+    public Response getUsersTasks(@PathParam("userNumber") Long userNumber){
+        List<Task> tasks = service.getUsersTasks(userNumber);
+        return Response.ok(tasks).build();
     }
 }
