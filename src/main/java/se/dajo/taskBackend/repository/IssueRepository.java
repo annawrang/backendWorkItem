@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IssueRepository extends CrudRepository<IssueDTO, Long> {
 
-    //@Query("SELECT MAX(taskNumber) FROM TaskDTO")
-    //Optional<Long> getHighestTaskNumber();
 }

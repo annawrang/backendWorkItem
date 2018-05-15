@@ -1,13 +1,14 @@
 package se.dajo.taskBackend.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import se.dajo.taskBackend.model.data.Issue;
 import se.dajo.taskBackend.enums.TaskStatus;
+import se.dajo.taskBackend.model.data.Issue;
 import se.dajo.taskBackend.model.data.Task;
 import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.service.IssueService;
 import se.dajo.taskBackend.resource.param.TaskParam;
 import se.dajo.taskBackend.service.TaskService;
+import se.dajo.taskBackend.service.exception.InvalidStatusException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -60,7 +61,7 @@ public class TaskResource {
             List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
             return Response.ok(tasks).build();
         }
-        else if (taskParam.getStatus() != null) {
+        else if (!taskParam.getStatus().equals(null)) {
             TaskStatus status;
             switch (taskParam.getStatus()) {
                 case "unstarted":
@@ -72,7 +73,7 @@ public class TaskResource {
                 case "done":
                     status = TaskStatus.DONE;
                     break;
-                case "annuled":
+                case "annulled":
                     status = TaskStatus.ANNULLED;
                     break;
                 default:
@@ -87,22 +88,17 @@ public class TaskResource {
         return status(BAD_REQUEST).build();
     }
 
-    public Response getTasks(){
-        return null;
-    }
-
     @POST
     @Path("{taskNumber}/issues")
-    public Response createIssue(@PathParam("taskNumber") Long taskNumber, Issue issue){
+    public Response createIssue(@PathParam("taskNumber") Long taskNumber, Issue issue) {
+        Task task = taskService.getTask(taskNumber);
+        if (task.getStatus() != TaskStatus.DONE) {
+            throw new InvalidStatusException("Task does not have status done, cannot add an issue");
+        }
         issueService.saveIssue(issue, taskNumber);
-        return ok ().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
-    }
-
-    @PUT
-    @Path("{taskNumber}/issues")
-    public Response updateIssue(@PathParam("taskNumber") Long taskNumber, Issue issue){
-        issueService.saveIssue(issue, taskNumber);
-        return ok ().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
+        task.setStatus(TaskStatus.UNSTARTED);
+        taskService.updateTask(task);
+        return ok().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
     }
 
 }
