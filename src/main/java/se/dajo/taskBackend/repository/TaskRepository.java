@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.dajo.taskBackend.repository.data.TaskDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import se.dajo.taskBackend.repository.data.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,4 +32,5 @@ public interface TaskRepository extends CrudRepository<TaskDTO, Long> {
 
     @Query("select t from TaskDTO t where t.user.id = ?1")
     List<TaskDTO> getTaskDTOsInUserDTO(Long id);
+    int countTaskDTOByUser(UserDTO userDTO);
 }

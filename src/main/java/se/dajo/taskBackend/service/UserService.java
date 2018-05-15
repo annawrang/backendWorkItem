@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.resource.param.UserParam;
+import se.dajo.taskBackend.service.exception.InactiveUserException;
 import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
@@ -25,6 +26,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class UserService {
 
     private final int maxUsersInTeam = 10;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -106,9 +108,7 @@ public class UserService {
     public boolean checkForSpaceInTeam(TeamDTO teamDTO) {
 
         return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
-        }
-
-
+    }
 
     public void updateUser(User user){
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
@@ -135,4 +135,6 @@ public class UserService {
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
         return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
     }
+
+
 }
