@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.Team;
 import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.model.data.User;
@@ -75,5 +76,12 @@ public class TeamResource {
     public Response getUsersInTeam(@PathParam("teamName") String teamName){
         List<User> users = teamService.getUsersInTeam(teamName);
         return Response.ok(users).build();
+    }
+
+    @GET
+    @Path("{teamName}/tasks")
+    public Response getTasksInTeam(@PathParam("teamName") String teamName){
+        List<Task> teams = teamService.getTasksInTeam(teamName);
+        return Response.ok(teams).build();
     }
 }
