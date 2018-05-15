@@ -20,11 +20,14 @@ import java.util.List;
 @Service
 public class TeamService {
 
+    private final TeamRepository teamRepository;
+
     @Autowired
-    private TeamRepository teamRepository;
+    public TeamService(TeamRepository teamRepository){
+        this.teamRepository = teamRepository;
+    }
 
     public Team saveTeam(Team team) {
-
         TeamDTO teamDTO = new TeamDTO(team.getTeamName(), team.getStatus());
         teamDTO = teamRepository.save(teamDTO);
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
