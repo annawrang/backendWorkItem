@@ -2,19 +2,17 @@ package se.dajo.taskBackend.model.data;
 
 public class Issue {
 
-    private String description;
-    private Task task;
+    protected Issue (){
+    }
 
-    public Issue(String description, Task task) {
+    private String description;
+
+    public Issue(String description) {
         this.description = description;
-        this.task = task;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public Task getTask() {
-        return task;
-    }
 }

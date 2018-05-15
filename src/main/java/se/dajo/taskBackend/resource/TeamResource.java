@@ -59,7 +59,6 @@ public class TeamResource {
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()).build();
     }
 
-
     @PUT
     @Path("/{teamName}")
     public Response updateTeam(@PathParam("teamName")String teamName, Team team){

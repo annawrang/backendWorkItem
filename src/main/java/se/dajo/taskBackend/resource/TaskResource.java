@@ -1,8 +1,10 @@
 package se.dajo.taskBackend.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import se.dajo.taskBackend.model.data.Issue;
 import se.dajo.taskBackend.model.data.Task;
 import org.springframework.stereotype.Component;
+import se.dajo.taskBackend.service.IssueService;
 import se.dajo.taskBackend.service.TaskService;
 
 import javax.ws.rs.*;
@@ -23,12 +25,15 @@ import static javax.ws.rs.core.Response.Status.*;
 public class TaskResource {
 
     private final TaskService taskService;
+    private final IssueService issueService;
+
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public TaskResource(TaskService service) {
+    public TaskResource(TaskService service, IssueService issueService) {
         this.taskService = service;
+        this.issueService = issueService;
     }
 
     @POST
@@ -50,6 +55,20 @@ public class TaskResource {
     @GET
     public Response getTasks(){
         return null;
+    }
+
+    @POST
+    @Path("{taskNumber}/issues")
+    public Response createIssue(@PathParam("taskNumber") Long taskNumber, Issue issue){
+        issueService.saveIssue(issue, taskNumber);
+        return ok ().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
+    }
+
+    @PUT
+    @Path("{taskNumber}/issues")
+    public Response updateIssue(@PathParam("taskNumber") Long taskNumber, Issue issue){
+        issueService.saveIssue(issue, taskNumber);
+        return ok ().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
     }
 
 }

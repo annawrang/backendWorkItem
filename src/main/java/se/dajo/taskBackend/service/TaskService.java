@@ -18,7 +18,6 @@ public class TaskService {
     private TaskRepository taskRepository;
     private AtomicLong taskNumbers;
 
-
     public Task saveTask(Task task) {
 
         this.taskNumbers = new AtomicLong(this.taskRepository.getHighestTaskNumber().orElse(1000000000L));
