@@ -2,14 +2,17 @@ package se.dajo.taskBackend.service;
 
 import org.glassfish.jersey.internal.guava.Lists;
 import se.dajo.taskBackend.enums.Status;
+import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.TaskRepository;
 import se.dajo.taskBackend.repository.TeamRepository;
 import se.dajo.taskBackend.repository.UserRepository;
+import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
@@ -121,5 +124,15 @@ public class UserService {
         if(userDTO.getStatus().equals(Status.INACTIVE)){
             taskRepository.setUsersTasksUnstarted(userDTO.getId());
         }
+    }
+
+    public List<Task> getUsersTasks(Long userNumber) {
+        List<UserDTO> userDTOS = userRepository.findByUserNumber(userNumber);
+        UserDTO userDTO = userDTOS.get(0);
+        if(userDTO == null){
+            throw new InvalidUserNumberException("No user found");
+        }
+        List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
+        return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
     }
 }
