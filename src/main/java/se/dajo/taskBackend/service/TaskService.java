@@ -3,7 +3,6 @@ package se.dajo.taskBackend.service;
 import se.dajo.taskBackend.enums.Status;
 import org.glassfish.jersey.internal.guava.Lists;
 import se.dajo.taskBackend.enums.TaskStatus;
-import se.dajo.taskBackend.model.data.Issue;
 import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.IssueRepository;
@@ -33,9 +32,10 @@ public class TaskService {
     private UserRepository userRepository;
     @Autowired
     private IssueRepository issueRepository;
-    private AtomicLong taskNumbers;
     @Autowired
     private UserService userService;
+    private AtomicLong taskNumbers;
+
 
     private final int maximumAmountOfTasksForUser = 5;
 
