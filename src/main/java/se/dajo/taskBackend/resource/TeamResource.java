@@ -35,15 +35,16 @@ public class TeamResource {
     @POST
     public Response createTeam(Team team) {
         team = teamService.saveTeam(team);
-
-        return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
+        return Response.ok(team).header("Location",
+                uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
     }
 
     @GET
     @Path("/{teamName}")
     public Response displayTeam(@PathParam("teamName") String teamName) {
         Team team = teamService.getTeam(teamName);
-        return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
+        return Response.ok(team).header("Location",
+                uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
     }
 
     @GET
@@ -56,30 +57,27 @@ public class TeamResource {
     @Path("/{teamName}/users/{userNumber}")
     public Response addTeamUser(@PathParam("teamName") String teamName,
                                 @PathParam("userNumber") Long userNumber) {
-
         User user = userService.updateUser(teamName, userNumber);
-
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()).build();
     }
 
     @PUT
     @Path("/{teamName}")
-    public Response updateTeam(@PathParam("teamName")String teamName, Team team){
-        //userService.updateUser(teamName,team);
+    public Response updateTeam(@PathParam("teamName") String teamName, Team team) {
         teamService.updateTeam(teamName, team);
         return Response.ok().build();
     }
 
     @GET
     @Path("{teamName}/users")
-    public Response getUsersInTeam(@PathParam("teamName") String teamName){
+    public Response getUsersInTeam(@PathParam("teamName") String teamName) {
         List<User> users = teamService.getUsersInTeam(teamName);
         return Response.ok(users).build();
     }
 
     @GET
     @Path("{teamName}/tasks")
-    public Response getTasksInTeam(@PathParam("teamName") String teamName){
+    public Response getTasksInTeam(@PathParam("teamName") String teamName) {
         List<Task> teams = teamService.getTasksInTeam(teamName);
         return Response.ok(teams).build();
     }
