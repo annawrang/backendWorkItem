@@ -22,13 +22,4 @@ public class Team {
         return status;
     }
 
-    // HÄR ÄR ETT FÖRSLAG (SOM ANDERS ANVÄNDE) ISTÄLLET FÖR EN VANLIG SETTER
-//    public Team setStatus(Status status) {
-//        return new Team(this.teamName, status);
-//    }
-
-
-//    public void setStatus(Status status) {
-//        this.status = status;
-//    }
 }
