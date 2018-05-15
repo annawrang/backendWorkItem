@@ -1,13 +1,16 @@
 package se.dajo.taskBackend.service;
 
 import org.glassfish.jersey.internal.guava.Lists;
+import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.Team;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
+import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.repository.parsers.TeamParser;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.service.exception.InvalidTeamNameException;
@@ -55,7 +58,15 @@ public class TeamService {
             throw new InvalidTeamNameException("Team not found");
         }
         List<UserDTO> userDTOS = teamRepository.getUserDTOSInTeamDTO(teamDTO.getId());
-        List<User> users = UserParser.parseUserDTOListToUserList(userDTOS);
-        return users;
+        return UserParser.parseUserDTOListToUserList(userDTOS);
+    }
+
+    public List<Task> getTasksInTeam(String teamName) {
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
+        if(teamDTO == null){
+            throw new InvalidTeamNameException("Team not found");
+        }
+        List<TaskDTO> taskDTOS = teamRepository.getTaskDTOSInTeamDTO(teamDTO.getId());
+        return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
     }
 }
