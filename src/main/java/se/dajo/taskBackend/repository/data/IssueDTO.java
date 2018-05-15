@@ -1,7 +1,5 @@
 package se.dajo.taskBackend.repository.data;
 
-import se.dajo.taskBackend.model.data.Issue;
-
 import javax.persistence.*;
 
 @Entity

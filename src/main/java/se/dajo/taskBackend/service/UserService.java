@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.resource.param.UserParam;
-import se.dajo.taskBackend.service.exception.InactiveUserException;
 import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 

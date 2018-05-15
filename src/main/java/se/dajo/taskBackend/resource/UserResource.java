@@ -1,6 +1,5 @@
 package se.dajo.taskBackend.resource;
 
-import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.TaskService;
 import se.dajo.taskBackend.service.UserService;
-import se.dajo.taskBackend.service.exception.InactiveUserException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -32,8 +30,8 @@ public class UserResource {
     private UriInfo uriInfo;
 
     @Autowired
-    public UserResource(UserService service, TaskService taskService){
-        this.userService = service;
+    public UserResource(UserService userService, TaskService taskService){
+        this.userService = userService;
         this.taskService = taskService;
     }
 
@@ -81,7 +79,7 @@ public class UserResource {
     @GET
     @Path("{userNumber}/tasks")
     public Response getUsersTasks(@PathParam("userNumber") Long userNumber){
-        List<Task> tasks = service.getUsersTasks(userNumber);
+        List<Task> tasks = userService.getUsersTasks(userNumber);
         return Response.ok(tasks).build();
     }
 }

@@ -1,7 +1,6 @@
 package se.dajo.taskBackend.service;
 
 import se.dajo.taskBackend.model.data.Issue;
-import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.repository.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +8,7 @@ import se.dajo.taskBackend.repository.TaskRepository;
 import se.dajo.taskBackend.repository.data.IssueDTO;
 import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.parsers.IssueParser;
-import se.dajo.taskBackend.repository.parsers.TaskParser;
 
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class IssueService {
