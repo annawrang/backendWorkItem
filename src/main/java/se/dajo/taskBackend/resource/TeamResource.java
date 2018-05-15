@@ -66,4 +66,11 @@ public class TeamResource {
         service.updateTeam(teamName, team);
         return Response.ok().build();
     }
+
+    @GET
+    @Path("{teamName}/users")
+    public Response getUsersInTeam(@PathParam("teamName") String teamName){
+        List<User> users = service.getUsersInTeam(teamName);
+        return Response.ok(users).build();
+    }
 }

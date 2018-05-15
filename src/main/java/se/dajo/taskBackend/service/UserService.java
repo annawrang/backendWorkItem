@@ -3,10 +3,12 @@ package se.dajo.taskBackend.service;
 import org.glassfish.jersey.internal.guava.Lists;
 import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.User;
+import se.dajo.taskBackend.repository.TaskRepository;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
@@ -18,6 +20,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TaskRepository taskRepository;
     private AtomicLong userNumbers;
 
     public User saveUser(User user) {
@@ -99,7 +103,14 @@ public class UserService {
         if(oldUserDTO == null){
             throw new InvalidUserNumberException("No user found");
         }
-        oldUserDTO = oldUserDTO.updateUserDTO(user);
+        oldUserDTO = UserParser.prepareForUpdateUserDTO(oldUserDTO, user);
+        updateUsersTasks(oldUserDTO);
         userRepository.save(oldUserDTO);
+    }
+
+    private void updateUsersTasks(UserDTO userDTO){
+        if(userDTO.getStatus().equals(Status.INACTIVE)){
+            taskRepository.setUsersTasksUnstarted(userDTO.getId());
+        }
     }
 }

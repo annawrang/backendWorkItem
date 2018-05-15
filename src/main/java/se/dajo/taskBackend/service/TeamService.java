@@ -1,7 +1,6 @@
 package se.dajo.taskBackend.service;
 
 import org.glassfish.jersey.internal.guava.Lists;
-import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.Team;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.TeamRepository;
@@ -11,10 +10,9 @@ import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import se.dajo.taskBackend.repository.parsers.TeamParser;
+import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.service.exception.InvalidTeamNameException;
-import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -65,5 +63,15 @@ public class TeamService {
         }
         oldTeamDTO = oldTeamDTO.updateTeamDTO(team);
         teamRepository.save(oldTeamDTO);
+    }
+
+    public List<User> getUsersInTeam(String teamName) {
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
+        if(teamDTO == null){
+            throw new InvalidTeamNameException("Team not found");
+        }
+        List<UserDTO> userDTOS = teamRepository.getUserDTOSInTeamDTO(teamDTO.getId());
+        List<User> users = UserParser.parseUserDTOListToUserList(userDTOS);
+        return users;
     }
 }
