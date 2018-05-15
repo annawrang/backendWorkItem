@@ -1,8 +1,12 @@
 package se.dajo.taskBackend.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import se.dajo.taskBackend.model.data.Issue;
+import se.dajo.taskBackend.enums.TaskStatus;
 import se.dajo.taskBackend.model.data.Task;
 import org.springframework.stereotype.Component;
+import se.dajo.taskBackend.service.IssueService;
+import se.dajo.taskBackend.resource.param.TaskParam;
 import se.dajo.taskBackend.service.TaskService;
 
 import javax.ws.rs.*;
@@ -23,12 +27,15 @@ import static javax.ws.rs.core.Response.Status.*;
 public class TaskResource {
 
     private final TaskService taskService;
+    private final IssueService issueService;
+
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public TaskResource(TaskService service) {
+    public TaskResource(TaskService service, IssueService issueService) {
         this.taskService = service;
+        this.issueService = issueService;
     }
 
     @POST
@@ -48,8 +55,54 @@ public class TaskResource {
 
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
+    public Response getTasks(@BeanParam TaskParam taskParam){
+        if (taskParam.getText() != null) {
+            List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
+            return Response.ok(tasks).build();
+        }
+        else if (taskParam.getStatus() != null) {
+            TaskStatus status;
+            switch (taskParam.getStatus()) {
+                case "unstarted":
+                    status = TaskStatus.UNSTARTED;
+                    break;
+                case "started":
+                    status = TaskStatus.STARTED;
+                    break;
+                case "done":
+                    status = TaskStatus.DONE;
+                    break;
+                case "annuled":
+                    status = TaskStatus.ANNULLED;
+                    break;
+                default:
+                    return status(BAD_REQUEST).build();
+            }
+            List<Task> tasks = taskService.getTaskByStatus(status);
+            return Response.ok(tasks).build();
+        }
+        else if (taskParam.hasIssue() == true) {
+            taskService.getTasksWithIssue();
+        }
+        return status(BAD_REQUEST).build();
+    }
+
     public Response getTasks(){
         return null;
+    }
+
+    @POST
+    @Path("{taskNumber}/issues")
+    public Response createIssue(@PathParam("taskNumber") Long taskNumber, Issue issue){
+        issueService.saveIssue(issue, taskNumber);
+        return ok ().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
+    }
+
+    @PUT
+    @Path("{taskNumber}/issues")
+    public Response updateIssue(@PathParam("taskNumber") Long taskNumber, Issue issue){
+        issueService.saveIssue(issue, taskNumber);
+        return ok ().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
     }
 
 }

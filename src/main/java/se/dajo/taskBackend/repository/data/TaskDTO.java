@@ -15,7 +15,6 @@ public class TaskDTO {
     private TaskStatus status;
     private Long taskNumber;
 
-
     @ManyToOne
     private UserDTO user;
 
