@@ -5,7 +5,9 @@ import se.dajo.taskBackend.model.data.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.resource.param.UserParam;
+import se.dajo.taskBackend.service.TaskService;
 import se.dajo.taskBackend.service.UserService;
+import se.dajo.taskBackend.service.exception.InactiveUserException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -14,14 +16,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
-import static java.util.Collections.singletonMap;
 
 @Component
 @Path("users")
@@ -29,18 +25,20 @@ import static java.util.Collections.singletonMap;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    private final UserService service;
+    private final UserService userService;
+    private final TaskService taskService;
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public UserResource(UserService service){
-        this.service = service;
+    public UserResource(UserService service, TaskService taskService){
+        this.userService = service;
+        this.taskService = taskService;
     }
 
     @POST
     public Response createUser(User user) {
-        user = service.saveUser(user);
+        user = userService.saveUser(user);
 
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()
                 .path(user.getUserNumber().toString())).build();
@@ -48,20 +46,28 @@ public class UserResource {
 
     @PUT
     public Response updateUser(User user) {
-            service.updateUser(user);
+            userService.updateUser(user);
             return Response.ok().build();
+    }
+
+    @PUT
+    @Path("{userNumber}/tasks/{taskNumber}")
+    public Response attatchTaskToUser(@PathParam("userNumber") Long userNumber,
+                                        @PathParam("taskNumber") Long taskNumber) {
+        taskService.updateTask(userNumber, taskNumber);
+        return Response.ok().build();
     }
 
     @GET
     @Path("{userNumber}")
     public Response getUserByUserNumber(@PathParam("userNumber") Long userNumber) {
-        User user = service.getUser(userNumber);
+        User user = userService.getUser(userNumber);
             return Response.ok(user).build();
     }
 
     @GET
     public Response getUser(@BeanParam UserParam userParam) {
-        List<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
+        List<User> user = userService.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
         // kan vi anropa en metod här som returnerar en Response?
         // typ: return checkIfUsersInList(user);
         if (user.size() == 0) {
