@@ -4,12 +4,15 @@ import org.glassfish.jersey.internal.guava.Lists;
 import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.TaskRepository;
+import se.dajo.taskBackend.repository.TeamRepository;
 import se.dajo.taskBackend.repository.UserRepository;
+import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.resource.param.UserParam;
+import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
 import java.util.List;
@@ -18,8 +21,12 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class UserService {
 
+    private final int maxUsersInTeam = 10;
+
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TeamRepository teamRepository;
     @Autowired
     private TaskRepository taskRepository;
     private AtomicLong userNumbers;
@@ -97,6 +104,27 @@ public class UserService {
         userRepository.save(userDTO);
         return user;
     }
+
+
+    public User updateUser(String teamName, Long userNumber) {
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
+
+        if (checkForSpaceInTeam(teamDTO) == false)
+            throw new InvalidSpaceInTeamException("No space in team for user");
+
+        UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
+        userDTO.setTeam(teamDTO);
+        userRepository.save(userDTO);
+
+        return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
+    }
+
+    public boolean checkForSpaceInTeam(TeamDTO teamDTO) {
+
+        return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
+        }
+
+
 
     public void updateUser(User user){
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);

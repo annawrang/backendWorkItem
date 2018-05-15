@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.repository;
 
 import org.springframework.data.jpa.repository.Query;
+import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -29,4 +30,6 @@ public interface UserRepository extends CrudRepository<UserDTO, Long>{
 
     @Query("SELECT MAX(userNumber) FROM UserDTO")
     Optional<Long> getHighestUserNumber();
+
+    int countUserDTOByTeam(TeamDTO teamDTO);
 }
