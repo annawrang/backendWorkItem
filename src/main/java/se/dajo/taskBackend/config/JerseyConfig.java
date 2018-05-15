@@ -1,5 +1,6 @@
 package se.dajo.taskBackend.config;
 
+import se.dajo.taskBackend.enums.TaskStatus;
 import se.dajo.taskBackend.resource.IssueResource;
 import se.dajo.taskBackend.resource.TaskResource;
 import se.dajo.taskBackend.resource.TeamResource;
@@ -7,6 +8,7 @@ import se.dajo.taskBackend.resource.UserResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
 import se.dajo.taskBackend.resource.mapper.*;
+import se.dajo.taskBackend.resource.param.TaskParam;
 
 @Configuration
 public class JerseyConfig extends ResourceConfig{

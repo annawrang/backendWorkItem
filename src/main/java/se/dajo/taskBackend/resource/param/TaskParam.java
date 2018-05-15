@@ -1,5 +1,6 @@
 package se.dajo.taskBackend.resource.param;
 
+import org.springframework.data.repository.query.Param;
 import se.dajo.taskBackend.enums.TaskStatus;
 
 import javax.ws.rs.QueryParam;
@@ -10,7 +11,7 @@ public final class TaskParam {
     private String text;
 
     @QueryParam("status")
-    private TaskStatus status;
+    private String status;
 
     @QueryParam("issue")
     private boolean issue;
@@ -19,7 +20,7 @@ public final class TaskParam {
         return text;
     }
 
-    public TaskStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 

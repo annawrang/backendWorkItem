@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import se.dajo.taskBackend.enums.TaskStatus;
 import se.dajo.taskBackend.model.data.Task;
 import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.resource.param.TaskParam;
@@ -50,12 +51,14 @@ public class TaskResource {
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
     public Response getTasks(@BeanParam TaskParam taskParam){
-        if (taskParam.getText().length() != 0) {
-            List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
-            return Response.ok(tasks).build();
-        }
-        else if (taskParam.getStatus() != null) {
-            List<Task> tasks = taskService.getTaskByStatus(taskParam.getStatus());
+        System.out.println("Hallå");
+//        if (taskParam.getText().isEmpty()) {
+//            List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
+//            return Response.ok(tasks).build();
+//        }
+        if (taskParam.getStatus().equals("unstarted")) {
+            TaskStatus status = TaskStatus.UNSTARTED;
+            List<Task> tasks = taskService.getTaskByStatus(status);
             return Response.ok(tasks).build();
         }
         else if (taskParam.hasIssue() == true) {
