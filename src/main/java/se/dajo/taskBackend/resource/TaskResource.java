@@ -12,6 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import java.util.List;
+
 import static javax.ws.rs.core.Response.*;
 import static javax.ws.rs.core.Response.Status.*;
 
@@ -49,14 +51,17 @@ public class TaskResource {
     @GET
     public Response getTasks(@BeanParam TaskParam taskParam){
         if (taskParam.getText().length() != 0) {
-            taskService.getTaskByDescription(taskParam.getText());
+            List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
+            return Response.ok(tasks).build();
         }
         else if (taskParam.getStatus() != null) {
-            taskService.getTaskByStatus(taskParam.getStatus());
+            List<Task> tasks = taskService.getTaskByStatus(taskParam.getStatus());
+            return Response.ok(tasks).build();
         }
         else if (taskParam.hasIssue() == true) {
             taskService.getTaskWithIssue(taskParam.hasIssue());
         }
+        System.out.println("Ingen if går igenom");
         return status(BAD_REQUEST).build();
     }
 
