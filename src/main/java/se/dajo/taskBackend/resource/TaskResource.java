@@ -1,8 +1,10 @@
 package se.dajo.taskBackend.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import se.dajo.taskBackend.enums.TaskStatus;
 import se.dajo.taskBackend.model.data.Task;
 import org.springframework.stereotype.Component;
+import se.dajo.taskBackend.resource.param.TaskParam;
 import se.dajo.taskBackend.service.TaskService;
 
 import javax.ws.rs.*;
@@ -48,8 +50,36 @@ public class TaskResource {
 
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
-    public Response getTasks(){
-        return null;
+    public Response getTasks(@BeanParam TaskParam taskParam){
+        if (taskParam.getText() != null) {
+            List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
+            return Response.ok(tasks).build();
+        }
+        else if (!taskParam.getStatus().equals(null)) {
+            TaskStatus status;
+            switch (taskParam.getStatus()) {
+                case "unstarted":
+                    status = TaskStatus.UNSTARTED;
+                    break;
+                case "started":
+                    status = TaskStatus.STARTED;
+                    break;
+                case "done":
+                    status = TaskStatus.DONE;
+                    break;
+                case "annuled":
+                    status = TaskStatus.ANNULLED;
+                    break;
+                default:
+                    return status(BAD_REQUEST).build();
+            }
+            List<Task> tasks = taskService.getTaskByStatus(status);
+            return Response.ok(tasks).build();
+        }
+        else if (taskParam.hasIssue() == true) {
+            taskService.getTaskWithIssue(taskParam.hasIssue());
+        }
+        return status(BAD_REQUEST).build();
     }
 
 }
