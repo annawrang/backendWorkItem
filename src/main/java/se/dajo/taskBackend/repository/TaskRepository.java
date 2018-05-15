@@ -15,4 +15,8 @@ public interface TaskRepository extends CrudRepository<TaskDTO, Long> {
 
     TaskDTO findByTaskNumber(Long taskNumber);
 
+    @Query("update TaskDTO t set t.status = 0 where t.user.id = ?1")
+    void setUsersTasksUnstarted(Long id);
+
+
 }
