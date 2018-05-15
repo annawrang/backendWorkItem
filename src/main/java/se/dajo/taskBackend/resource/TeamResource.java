@@ -5,6 +5,7 @@ import se.dajo.taskBackend.model.data.Team;
 import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.service.TeamService;
+import se.dajo.taskBackend.service.UserService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -19,18 +20,20 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class TeamResource {
 
-    private final TeamService service;
+    private final TeamService teamService;
+    private final UserService userService;
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public TeamResource(TeamService service) {
-        this.service = service;
+    public TeamResource(TeamService service, UserService userService) {
+        this.teamService = service;
+        this.userService = userService;
     }
 
     @POST
     public Response createTeam(Team team) {
-        team = service.saveTeam(team);
+        team = teamService.saveTeam(team);
 
         return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
     }
@@ -38,13 +41,13 @@ public class TeamResource {
     @GET
     @Path("/{teamName}")
     public Response displayTeam(@PathParam("teamName") String teamName) {
-        Team team = service.getTeam(teamName);
+        Team team = teamService.getTeam(teamName);
         return Response.ok(team).header("Location", uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
     }
 
     @GET
     public Response getAllTeams() {
-        List<Team> teams = service.getAllTeams();
+        List<Team> teams = teamService.getAllTeams();
         return Response.ok(teams).build();
     }
 
@@ -53,9 +56,8 @@ public class TeamResource {
     public Response addTeamUser(@PathParam("teamName") String teamName,
                                 @PathParam("userNumber") Long userNumber) {
 
-        User user = service.updateUser(teamName, userNumber);
+        User user = userService.updateUser(teamName, userNumber);
 
-        ///teams/{teamName}/users/{userNumber}
         return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()).build();
     }
 
@@ -63,7 +65,15 @@ public class TeamResource {
     @PUT
     @Path("/{teamName}")
     public Response updateTeam(@PathParam("teamName")String teamName, Team team){
-        service.updateTeam(teamName, team);
+        //userService.updateUser(teamName,team);
+        teamService.updateTeam(teamName, team);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("{teamName}/users")
+    public Response getUsersInTeam(@PathParam("teamName") String teamName){
+        List<User> users = teamService.getUsersInTeam(teamName);
+        return Response.ok(users).build();
     }
 }

@@ -62,6 +62,8 @@ public class UserResource {
     @GET
     public Response getUser(@BeanParam UserParam userParam) {
         List<User> user = service.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
+        // kan vi anropa en metod här som returnerar en Response?
+        // typ: return checkIfUsersInList(user);
         if (user.size() == 0) {
             return Response.status(NO_CONTENT).build();
         } else {
