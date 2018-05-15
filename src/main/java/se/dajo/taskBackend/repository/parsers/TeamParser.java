@@ -18,5 +18,9 @@ public final class TeamParser {
         return teams;
     }
 
+    public static TeamDTO prepareForUpdateTeamDTO(Team team){
+        return new TeamDTO(team.getTeamName(), team.getStatus());
+    }
+
 }
 

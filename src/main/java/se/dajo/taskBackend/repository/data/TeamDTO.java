@@ -16,7 +16,8 @@ public class TeamDTO {
     private String teamName;
     private Status status;
 
-    protected TeamDTO(){}
+    protected TeamDTO() {
+    }
 
     public TeamDTO(String teamName, Status status) {
         this.teamName = teamName;
@@ -45,7 +46,4 @@ public class TeamDTO {
         this.status = status;
     }
 
-    public TeamDTO updateTeamDTO(Team team) {
-        return new TeamDTO(this.id, team.getTeamName(), team.getStatus());
-    }
 }
