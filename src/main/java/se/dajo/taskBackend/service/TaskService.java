@@ -1,16 +1,21 @@
 package se.dajo.taskBackend.service;
 
+import org.glassfish.jersey.internal.guava.Lists;
 import se.dajo.taskBackend.enums.TaskStatus;
+import se.dajo.taskBackend.model.data.Issue;
 import se.dajo.taskBackend.model.data.Task;
+import se.dajo.taskBackend.repository.IssueRepository;
 import se.dajo.taskBackend.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.dajo.taskBackend.repository.data.IssueDTO;
 import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.service.exception.InvalidDescriptionException;
 import se.dajo.taskBackend.service.exception.InvalidStatusException;
 import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -19,6 +24,8 @@ public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private IssueRepository issueRepository;
     private AtomicLong taskNumbers;
 
     public Task saveTask(Task task) {
@@ -68,7 +75,12 @@ public class TaskService {
         return TaskParser.parseTaskDTOListToTaskList(taskDTOs);
     }
 
-    public List<Task> getTaskWithIssue(boolean issue) {
-        return null;
+    public List<Task> getTasksWithIssue() {
+        List<IssueDTO> issueDTOs = Lists.newArrayList(issueRepository.findAll());
+        List<Task> tasks = new ArrayList<>();
+        for (IssueDTO issueDTO : issueDTOs) {
+            tasks.add(TaskParser.parseTaskDTOToTask(issueDTO.getTaskDTO()));
+        }
+        return tasks;
     }
 }

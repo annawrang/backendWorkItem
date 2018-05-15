@@ -60,7 +60,7 @@ public class TaskResource {
             List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
             return Response.ok(tasks).build();
         }
-        else if (!taskParam.getStatus().equals(null)) {
+        else if (taskParam.getStatus() != null) {
             TaskStatus status;
             switch (taskParam.getStatus()) {
                 case "unstarted":
@@ -82,10 +82,11 @@ public class TaskResource {
             return Response.ok(tasks).build();
         }
         else if (taskParam.hasIssue() == true) {
-            taskService.getTaskWithIssue(taskParam.hasIssue());
+            taskService.getTasksWithIssue();
         }
         return status(BAD_REQUEST).build();
     }
+
     public Response getTasks(){
         return null;
     }
