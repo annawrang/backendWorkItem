@@ -1,11 +1,14 @@
 package se.dajo.taskBackend.service;
 
+import se.dajo.taskBackend.enums.TaskStatus;
 import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
+import se.dajo.taskBackend.service.exception.InvalidDescriptionException;
+import se.dajo.taskBackend.service.exception.InvalidStatusException;
 import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
 
 import java.util.List;
@@ -48,5 +51,25 @@ public class TaskService {
     public Iterable<Task> getAllTasks() {
         Iterable<TaskDTO> taskDTOS = taskRepository.findAll();
         return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
+    }
+
+    public List<Task> getTaskByDescription(String text) {
+        List<TaskDTO> taskDTOs = taskRepository.findByDescriptionContaining(text);
+        if (taskDTOs.isEmpty()) {
+            throw new InvalidDescriptionException("No task description containing " + text);
+        }
+        return TaskParser.parseTaskDTOListToTaskList(taskDTOs);
+    }
+
+    public List<Task> getTaskByStatus(TaskStatus status) {
+        List<TaskDTO> taskDTOs = taskRepository.findByStatus(status);
+        if (taskDTOs.isEmpty()) {
+            throw new InvalidStatusException("No task with status " + status.toString() + " found");
+        }
+        return TaskParser.parseTaskDTOListToTaskList(taskDTOs);
+    }
+
+    public List<Task> getTaskWithIssue(boolean issue) {
+        return null;
     }
 }

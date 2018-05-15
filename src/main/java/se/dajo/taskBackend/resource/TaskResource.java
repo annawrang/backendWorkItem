@@ -3,6 +3,7 @@ package se.dajo.taskBackend.resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.dajo.taskBackend.model.data.Task;
 import org.springframework.stereotype.Component;
+import se.dajo.taskBackend.resource.param.TaskParam;
 import se.dajo.taskBackend.service.TaskService;
 
 import javax.ws.rs.*;
@@ -10,8 +11,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
-import java.util.List;
 
 import static javax.ws.rs.core.Response.*;
 import static javax.ws.rs.core.Response.Status.*;
@@ -48,8 +47,17 @@ public class TaskResource {
 
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
-    public Response getTasks(){
-        return null;
+    public Response getTasks(@BeanParam TaskParam taskParam){
+        if (taskParam.getText().length() != 0) {
+            taskService.getTaskByDescription(taskParam.getText());
+        }
+        else if (taskParam.getStatus() != null) {
+            taskService.getTaskByStatus(taskParam.getStatus());
+        }
+        else if (taskParam.hasIssue() == true) {
+            taskService.getTaskWithIssue(taskParam.hasIssue());
+        }
+        return status(BAD_REQUEST).build();
     }
 
 }
