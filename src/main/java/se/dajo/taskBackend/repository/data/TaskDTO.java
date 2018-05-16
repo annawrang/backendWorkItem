@@ -2,7 +2,10 @@ package se.dajo.taskBackend.repository.data;
 
 import se.dajo.taskBackend.enums.TaskStatus;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public final class TaskDTO {
