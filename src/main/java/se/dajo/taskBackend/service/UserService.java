@@ -47,7 +47,7 @@ public class UserService {
     public User getUser(Long userNumber) {
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
         if(userDTO == null){
-            throw new InvalidUserNumberException("User not found");
+            throw new InvalidUserNumberException();
         }
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
@@ -95,7 +95,7 @@ public class UserService {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
 
         if (checkForSpaceInTeam(teamDTO) == false)
-            throw new InvalidSpaceInTeamException("No space in team for user");
+            throw new InvalidSpaceInTeamException();
 
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
         userDTO.setTeam(teamDTO);
@@ -112,7 +112,7 @@ public class UserService {
     public void updateUser(User user){
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
         if(oldUserDTO == null){
-            throw new InvalidUserNumberException("No user found");
+            throw new InvalidUserNumberException();
         }
         oldUserDTO = UserParser.prepareForUpdateUserDTO(oldUserDTO, user);
         updateUsersTasks(oldUserDTO);
@@ -129,7 +129,7 @@ public class UserService {
         List<UserDTO> userDTOS = userRepository.findByUserNumber(userNumber);
         UserDTO userDTO = userDTOS.get(0);
         if(userDTO == null){
-            throw new InvalidUserNumberException("No user found");
+            throw new InvalidUserNumberException();
         }
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
         return TaskParser.parseTaskDTOListToTaskList(taskDTOS);

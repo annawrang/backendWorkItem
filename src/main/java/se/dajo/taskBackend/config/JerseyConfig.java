@@ -6,10 +6,6 @@ import se.dajo.taskBackend.resource.TeamResource;
 import se.dajo.taskBackend.resource.UserResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
-import se.dajo.taskBackend.resource.mapper.InvalidSpaceInTeamMapper;
-import se.dajo.taskBackend.resource.mapper.InvalidStatusMapper;
-import se.dajo.taskBackend.resource.mapper.InvalidTaskNumberMapper;
-import se.dajo.taskBackend.resource.mapper.InvalidUserNumberMapper;
 import se.dajo.taskBackend.resource.mapper.*;
 
 @Configuration
@@ -20,11 +16,6 @@ public class JerseyConfig extends ResourceConfig{
         register(IssueResource.class);
         register(TeamResource.class);
         register(TaskResource.class);
-        register(InvalidUserNumberMapper.class);
-        register(InvalidTaskNumberMapper.class);
-        register(InvalidSpaceInTeamMapper.class);
-        register(InactiveUserMapper.class);
-        register(OverworkedUserMapper.class);
-        register(InvalidStatusMapper.class);
+        register(GeneralExceptionMapper.class);
     }
 }

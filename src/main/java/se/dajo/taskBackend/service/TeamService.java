@@ -36,7 +36,7 @@ public class TeamService {
     public Team getTeam(String teamName) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         if(teamDTO == null){
-            throw new InvalidTeamNameException("No team found");
+            throw new InvalidTeamNameException();
         }
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
@@ -49,7 +49,7 @@ public class TeamService {
     public void updateTeam(String teamName, Team team) {
         TeamDTO oldTeamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         if(oldTeamDTO == null){
-            throw new InvalidTeamNameException("No team found");
+            throw new InvalidTeamNameException();
         }
         oldTeamDTO = TeamParser.prepareForUpdateTeamDTO(team);
         teamRepository.save(oldTeamDTO);
@@ -58,7 +58,7 @@ public class TeamService {
     public List<User> getUsersInTeam(String teamName) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         if(teamDTO == null){
-            throw new InvalidTeamNameException("No team found");
+            throw new InvalidTeamNameException();
         }
         List<UserDTO> userDTOS = teamRepository.getUserDTOSInTeamDTO(teamDTO.getId());
         return UserParser.parseUserDTOListToUserList(userDTOS);
@@ -67,7 +67,7 @@ public class TeamService {
     public List<Task> getTasksInTeam(String teamName) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         if(teamDTO == null){
-            throw new InvalidTeamNameException("No team found");
+            throw new InvalidTeamNameException();
         }
         List<TaskDTO> taskDTOS = teamRepository.getTaskDTOSInTeamDTO(teamDTO.getId());
         return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
