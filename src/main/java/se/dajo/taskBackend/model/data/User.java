@@ -2,15 +2,15 @@ package se.dajo.taskBackend.model.data;
 
 import se.dajo.taskBackend.enums.Status;
 
-public class User {
+public final class User {
 
     private String firstName;
     private String surName;
     private Long userNumber;
     private Status status;
 
-    protected User() {
-    }
+//     protected User() {
+//        }
 
     public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
