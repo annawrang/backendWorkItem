@@ -1,6 +1,6 @@
 package se.dajo.taskBackend.service.exception;
 
-public class InactiveUserException extends GeneralException {
+public final class InactiveUserException extends GeneralException {
     public InactiveUserException() {
 
         super("The user is not active");

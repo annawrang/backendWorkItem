@@ -20,7 +20,6 @@ import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
 
 @Service
 public class UserService {
