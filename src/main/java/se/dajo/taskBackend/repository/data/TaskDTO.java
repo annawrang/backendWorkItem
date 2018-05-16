@@ -54,10 +54,6 @@ public class TaskDTO {
         this.user = user;
     }
 
-    public TaskDTO updateUserDTO(Task task) {
-        return new TaskDTO(this.id, task.getDescription(), task.getStatus(), taskNumber);
-    }
-
     public Long getTaskNumber() {
         return taskNumber;
     }

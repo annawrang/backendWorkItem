@@ -7,24 +7,13 @@ import javax.ws.rs.QueryParam;
 public final class TaskParam {
 
     @QueryParam("text")
-    private String text;
+    public String text;
 
     @QueryParam("status")
-    private String status;
+    public String status;
 
     @QueryParam("issue")
     @Nullable
-    private Boolean issue;
+    public Boolean issue;
 
-    public String getText() {
-        return text;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Boolean hasIssue() {
-        return issue;
-    }
 }

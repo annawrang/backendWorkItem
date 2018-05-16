@@ -69,7 +69,4 @@ public class UserDTO {
         this.status = status;
     }
 
-    public UserDTO updateUserDTO(User user) {
-        return new UserDTO(this.id, user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
-    }
 }
