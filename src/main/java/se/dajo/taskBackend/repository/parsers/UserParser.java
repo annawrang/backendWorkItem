@@ -8,24 +8,24 @@ import java.util.List;
 
 public class UserParser {
 
-    public static User parseUserDTOToUser(UserDTO userDTO){
+    public static User toUser(UserDTO userDTO) {
         return new User(userDTO.getFirstName(), userDTO.getSurName(),
                 userDTO.getUserNumber(), userDTO.getStatus());
     }
 
-    public static List<User> parseUserDTOListToUserList(List<UserDTO> userDTOS){
+    public static List<User> toUserList(List<UserDTO> userDTOS) {
         List<User> modelUsers = new ArrayList<>();
         userDTOS.forEach(u -> {
-            modelUsers.add(UserParser.parseUserDTOToUser(u));
+            modelUsers.add(UserParser.toUser(u));
         });
         return modelUsers;
     }
 
-    public static UserDTO prepareForUpdateUserDTO(UserDTO userDTO, User user){
+    public static UserDTO updateUserDTO(UserDTO userDTO, User user) {
         return new UserDTO(userDTO.getId(), user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
     }
 
-    public static UserDTO parseUserToUserDTO(User user) {
+    public static UserDTO toUserDTO(User user) {
         return new UserDTO(user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
     }
 }

@@ -8,17 +8,17 @@ import java.util.List;
 
 public final class TeamParser {
 
-    public static Team parseTeamDTOToTeam(TeamDTO teamDTO) {
+    public static Team toTeam(TeamDTO teamDTO) {
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
 
-    public static List<Team> parseTeamDTOToTeamList(List<TeamDTO> teamDTOS) {
+    public static List<Team> toTeamList(List<TeamDTO> teamDTOS) {
         List<Team> teams = new ArrayList<>();
-        teamDTOS.forEach(teamDTO -> teams.add(parseTeamDTOToTeam(teamDTO)));
+        teamDTOS.forEach(teamDTO -> teams.add(toTeam(teamDTO)));
         return teams;
     }
 
-    public static TeamDTO prepareForUpdateTeamDTO(Team team){
+    public static TeamDTO updateTeamDTO(Team team) {
         return new TeamDTO(team.getTeamName(), team.getStatus());
     }
 

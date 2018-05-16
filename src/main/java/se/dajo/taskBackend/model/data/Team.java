@@ -3,11 +3,12 @@ package se.dajo.taskBackend.model.data;
 import se.dajo.taskBackend.enums.Status;
 
 public class Team {
-    
+
     private String teamName;
     private Status status;
 
-    protected Team(){}
+    protected Team() {
+    }
 
     public Team(String teamName, Status status) {
         this.teamName = teamName;

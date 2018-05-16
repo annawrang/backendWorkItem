@@ -18,7 +18,8 @@ public class TaskDTO {
     @ManyToOne
     private UserDTO user;
 
-    protected TaskDTO(){}
+    protected TaskDTO() {
+    }
 
     public TaskDTO(String description, TaskStatus status, Long taskNumber) {
         this.description = description;
@@ -53,7 +54,7 @@ public class TaskDTO {
         this.user = user;
     }
 
-    public TaskDTO updateUserDTO(Task task){
+    public TaskDTO updateUserDTO(Task task) {
         return new TaskDTO(this.id, task.getDescription(), task.getStatus(), taskNumber);
     }
 

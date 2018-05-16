@@ -24,7 +24,6 @@ public interface TaskRepository extends CrudRepository<TaskDTO, Long> {
 
     List<TaskDTO> findByStatus(TaskStatus status);
 
-    //List<TaskDTO>
     @Transactional
     @Modifying
     @Query("update TaskDTO t set t.status = 0 where t.user.id = ?1")
@@ -32,5 +31,6 @@ public interface TaskRepository extends CrudRepository<TaskDTO, Long> {
 
     @Query("select t from TaskDTO t where t.user.id = ?1")
     List<TaskDTO> getTaskDTOsInUserDTO(Long id);
+
     int countTaskDTOByUser(UserDTO userDTO);
 }
