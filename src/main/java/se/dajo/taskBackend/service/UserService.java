@@ -26,6 +26,7 @@ public class UserService {
 
     private final int maxUsersInTeam = 10;
 
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -106,9 +107,7 @@ public class UserService {
     public boolean checkForSpaceInTeam(TeamDTO teamDTO) {
 
         return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
-        }
-
-
+    }
 
     public void updateUser(User user){
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
@@ -135,4 +134,6 @@ public class UserService {
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
         return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
     }
+
+
 }
