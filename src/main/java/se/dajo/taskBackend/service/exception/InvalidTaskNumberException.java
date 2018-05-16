@@ -1,7 +1,8 @@
 package se.dajo.taskBackend.service.exception;
 
-public final class InvalidTaskNumberException extends RuntimeException {
-    public InvalidTaskNumberException(String message) {
-        super(message);
+public final class InvalidTaskNumberException extends GeneralException {
+    public InvalidTaskNumberException() {
+
+        super("No task found");
     }
 }

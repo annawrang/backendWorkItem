@@ -55,7 +55,7 @@ public class TaskService {
 
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         if(taskDTO == null){
-            throw new InvalidTaskNumberException("No user found");
+            throw new InvalidTaskNumberException();
         }
         taskDTO.setUser(userRepository.findUserDTOByUserNumber(userNumber));
         taskRepository.save(taskDTO);
@@ -66,7 +66,7 @@ public class TaskService {
         TaskDTO oldTaskDTO = taskRepository.findByTaskNumber(task.getTaskNumber());
 
         if(oldTaskDTO == null){
-            throw new InvalidTaskNumberException("No user found");
+            throw new InvalidTaskNumberException();
         }
 
         oldTaskDTO = TaskParser.updateTaskDTO(oldTaskDTO, task);
@@ -76,7 +76,7 @@ public class TaskService {
     public Task getTask(Long taskNumber) {
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         if(taskDTO == null){
-            throw new InvalidTaskNumberException("Task not found");
+            throw new InvalidTaskNumberException();
         }
         return TaskParser.toTask(taskDTO);
     }
@@ -89,7 +89,7 @@ public class TaskService {
     public List<Task> getTaskByDescription(String text) {
         List<TaskDTO> taskDTOs = taskRepository.findByDescriptionContaining(text);
         if (taskDTOs.isEmpty()) {
-            throw new InvalidDescriptionException("No task description containing " + text);
+            throw new InvalidDescriptionException(text);
         }
         return TaskParser.toTaskList(taskDTOs);
     }
@@ -97,7 +97,7 @@ public class TaskService {
     public List<Task> getTaskByStatus(TaskStatus status) {
         List<TaskDTO> taskDTOs = taskRepository.findByStatus(status);
         if (taskDTOs.isEmpty()) {
-            throw new InvalidStatusException("No task with status " + status.toString() + " found");
+            throw new InvalidStatusException(status);
         }
         return TaskParser.toTaskList(taskDTOs);
     }
@@ -114,14 +114,14 @@ public class TaskService {
     public void validateRoomForTask(Long userNumber) {
 
         if (taskRepository.countTaskDTOByUser(userRepository.findUserDTOByUserNumber(userNumber)) >= maximumAmountOfTasksForUser) {
-            throw new OverworkedUserException("Poor user has too little time");
+            throw new OverworkedUserException();
         }
     }
     public void validateUserActiveStatus(Long userNumber) {
 
         User user = userService.getUser(userNumber);
         if (user.getStatus().equals(Status.INACTIVE)) {
-            throw new InactiveUserException("The user is not active");
+            throw new InactiveUserException();
         }
     }
 

@@ -1,11 +1,11 @@
 package se.dajo.taskBackend.model.data;
 
-public class Issue {
-
-    protected Issue() {
-    }
+public final class Issue {
 
     private String description;
+
+//    protected Issue() {
+//    }
 
     public Issue(String description) {
         this.description = description;
@@ -14,5 +14,4 @@ public class Issue {
     public String getDescription() {
         return description;
     }
-
 }

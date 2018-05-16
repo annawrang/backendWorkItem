@@ -2,11 +2,14 @@ package se.dajo.taskBackend.model.data;
 
 import se.dajo.taskBackend.enums.TaskStatus;
 
-public class Task {
+public final class Task {
 
     private String description;
     private TaskStatus status;
     private Long taskNumber;
+
+//    public Task() {
+//    }
 
     public Task(String description, TaskStatus status, Long taskNumber) {
         this.description = description;

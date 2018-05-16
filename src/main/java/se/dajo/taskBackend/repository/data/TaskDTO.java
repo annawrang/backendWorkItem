@@ -50,15 +50,18 @@ public class TaskDTO {
         return status;
     }
 
+    public Long getTaskNumber() {
+        return taskNumber;
+    }
+
     public void setUser(UserDTO user) {
         this.user = user;
     }
 
-    public TaskDTO updateUserDTO(Task task) {
-        return new TaskDTO(this.id, task.getDescription(), task.getStatus(), taskNumber);
-    }
-
-    public Long getTaskNumber() {
-        return taskNumber;
-    }
+    // FUNKAR INTE ÄN
+    //    public TaskDTO setUser(UserDTO user) {
+//        return new TaskDTO(this.getId(), this.getDescription(),
+//                this.getStatus(), this.getTaskNumber(), user);
+//    }
 }
+
