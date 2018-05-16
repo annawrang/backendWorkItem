@@ -46,8 +46,8 @@ public class TaskService {
         this.taskNumbers = new AtomicLong(this.taskRepository.getHighestTaskNumber().orElse(1000000000L));
         task = task.setTaskNumber(taskNumbers.incrementAndGet());
 
-        TaskDTO taskDTO = taskRepository.save(TaskParser.parseTaskToTaskDTO(task));
-        return TaskParser.parseTaskDTOToTask(taskDTO);
+        TaskDTO taskDTO = taskRepository.save(TaskParser.toTaskDTO(task));
+        return TaskParser.toTask(taskDTO);
     }
 
     public void updateTask(Long userNumber, Long taskNumber) {
@@ -72,7 +72,7 @@ public class TaskService {
             throw new InvalidTaskNumberException("No user found");
         }
 
-        oldTaskDTO = TaskParser.prepareForUpdateTaskDTO(oldTaskDTO, task);
+        oldTaskDTO = TaskParser.updateTaskDTO(oldTaskDTO, task);
         taskRepository.save(oldTaskDTO);
     }
 
@@ -81,12 +81,12 @@ public class TaskService {
         if(taskDTO == null){
             throw new InvalidTaskNumberException("Task not found");
         }
-        return TaskParser.parseTaskDTOToTask(taskDTO);
+        return TaskParser.toTask(taskDTO);
     }
 
     public Iterable<Task> getAllTasks() {
         Iterable<TaskDTO> taskDTOS = taskRepository.findAll();
-        return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
+        return TaskParser.toTaskList(taskDTOS);
     }
 
     public List<Task> getTaskByDescription(String text) {
@@ -94,7 +94,7 @@ public class TaskService {
         if (taskDTOs.isEmpty()) {
             throw new InvalidDescriptionException("No task description containing " + text);
         }
-        return TaskParser.parseTaskDTOListToTaskList(taskDTOs);
+        return TaskParser.toTaskList(taskDTOs);
     }
 
     public List<Task> getTaskByStatus(TaskStatus status) {
@@ -102,14 +102,14 @@ public class TaskService {
         if (taskDTOs.isEmpty()) {
             throw new InvalidStatusException("No task with status " + status.toString() + " found");
         }
-        return TaskParser.parseTaskDTOListToTaskList(taskDTOs);
+        return TaskParser.toTaskList(taskDTOs);
     }
 
     public List<Task> getTasksWithIssue() {
         List<IssueDTO> issueDTOs = Lists.newArrayList(issueRepository.findAll());
         Set<Task> tasksSet = new HashSet<>();
         for (IssueDTO issueDTO : issueDTOs) {
-            tasksSet.add(TaskParser.parseTaskDTOToTask(issueDTO.getTaskDTO()));
+            tasksSet.add(TaskParser.toTask(issueDTO.getTaskDTO()));
         }
         return new ArrayList<>(tasksSet);
     }
