@@ -40,7 +40,7 @@ public class TaskResource {
     }
 
     @POST
-    public Response createTask(Task task){
+    public Response createTask(Task task) {
         task = taskService.saveTask(task);
 
         return ok(task).header("Location", uriInfo.getAbsolutePathBuilder()
@@ -49,7 +49,7 @@ public class TaskResource {
 
     @PUT
     @Path("{taskNumber}")
-    public Response updateTask(@PathParam("taskNumber")Long taskNumber, Task task){
+    public Response updateTask(@PathParam("taskNumber") Long taskNumber, Task task) {
         Task oldTask = taskService.getTask(taskNumber);
         return status(NO_CONTENT).build();
     }

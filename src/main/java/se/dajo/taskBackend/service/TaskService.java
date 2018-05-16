@@ -130,7 +130,7 @@ public class TaskService {
             List<Task> tasks = getTaskByDescription(taskParam.getText());
             return tasks;
         }
-        else if (!taskParam.getStatus().equals(null)) {
+        else if (taskParam.getStatus() != null) {
             TaskStatus status;
             switch (taskParam.getStatus()) {
                 case "unstarted":

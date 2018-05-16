@@ -6,6 +6,6 @@ import se.dajo.taskBackend.repository.data.TaskDTO;
 
 public class IssueParser {
     public static IssueDTO parseIssueToIssueDTO(Issue issue, TaskDTO taskDTO) {
-        return new IssueDTO (issue.getDescription(), taskDTO);
+        return new IssueDTO(issue.getDescription(), taskDTO);
     }
 }
