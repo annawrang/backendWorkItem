@@ -13,11 +13,8 @@ import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.IssueDTO;
 import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
-import se.dajo.taskBackend.service.exception.InactiveUserException;
-import se.dajo.taskBackend.service.exception.InvalidDescriptionException;
-import se.dajo.taskBackend.service.exception.InvalidStatusException;
-import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
-import se.dajo.taskBackend.service.exception.OverworkedUserException;
+import se.dajo.taskBackend.resource.param.TaskParam;
+import se.dajo.taskBackend.service.exception.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -127,4 +124,38 @@ public class TaskService {
             throw new InactiveUserException("The user is not active");
         }
     }
+
+    public List<Task> getTasks(TaskParam taskParam) {
+        if (taskParam.getText() != null) {
+            List<Task> tasks = getTaskByDescription(taskParam.getText());
+            return tasks;
+        }
+        else if (taskParam.getStatus() != null) {
+            TaskStatus status;
+            switch (taskParam.getStatus()) {
+                case "unstarted":
+                    status = TaskStatus.UNSTARTED;
+                    break;
+                case "started":
+                    status = TaskStatus.STARTED;
+                    break;
+                case "done":
+                    status = TaskStatus.DONE;
+                    break;
+                case "annulled":
+                    status = TaskStatus.ANNULLED;
+                    break;
+                default:
+                    throw new InvalidTaskRequestException("Could not recognize parameter");
+            }
+            List<Task> tasks = getTaskByStatus(status);
+            return tasks;
+        }
+        else if (taskParam.hasIssue() == true) {
+            List<Task> tasks = getTasksWithIssue();
+            return tasks;
+        }
+        throw new InvalidTaskRequestException("Could not recognize parameter");
+    }
+
 }
