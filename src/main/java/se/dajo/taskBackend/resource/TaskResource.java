@@ -82,7 +82,8 @@ public class TaskResource {
             return Response.ok(tasks).build();
         }
         else if (taskParam.hasIssue() == true) {
-            taskService.getTasksWithIssue();
+                List<Task> tasks = taskService.getTasksWithIssue();
+                return Response.ok(tasks).build();
         }
         return status(BAD_REQUEST).build();
     }

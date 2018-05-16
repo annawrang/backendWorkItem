@@ -16,7 +16,9 @@ import se.dajo.taskBackend.service.exception.InvalidStatusException;
 import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -77,10 +79,10 @@ public class TaskService {
 
     public List<Task> getTasksWithIssue() {
         List<IssueDTO> issueDTOs = Lists.newArrayList(issueRepository.findAll());
-        List<Task> tasks = new ArrayList<>();
+        Set<Task> tasksSet = new HashSet<>();
         for (IssueDTO issueDTO : issueDTOs) {
-            tasks.add(TaskParser.parseTaskDTOToTask(issueDTO.getTaskDTO()));
+            tasksSet.add(TaskParser.parseTaskDTOToTask(issueDTO.getTaskDTO()));
         }
-        return tasks;
+        return new ArrayList<>(tasksSet);
     }
 }

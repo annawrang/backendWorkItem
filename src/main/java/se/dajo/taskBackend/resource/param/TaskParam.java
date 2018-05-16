@@ -17,7 +17,7 @@ public final class TaskParam {
 
     @QueryParam("issue")
     @Nullable
-    private boolean issue;
+    private Boolean issue;
 
     public String getText() {
         return text;
@@ -27,7 +27,7 @@ public final class TaskParam {
         return status;
     }
 
-    public boolean hasIssue() {
+    public Boolean hasIssue() {
         return issue;
     }
 }
