@@ -3,7 +3,7 @@ package se.dajo.taskBackend.repository.data;
 import javax.persistence.*;
 
 @Entity
-public class IssueDTO {
+public final class IssueDTO {
 
     @Id
     @GeneratedValue

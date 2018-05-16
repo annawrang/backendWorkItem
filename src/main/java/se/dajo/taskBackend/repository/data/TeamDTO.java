@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class TeamDTO {
+public final class TeamDTO {
 
     @Id
     @GeneratedValue
@@ -41,8 +41,8 @@ public class TeamDTO {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public TeamDTO setStatus(Status status) {
+        return new TeamDTO(this.getId(), this.getTeamName(), status);
     }
 
 }

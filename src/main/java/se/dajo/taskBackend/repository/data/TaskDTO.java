@@ -6,7 +6,7 @@ import se.dajo.taskBackend.model.data.Task;
 import javax.persistence.*;
 
 @Entity
-public class TaskDTO {
+public final class TaskDTO {
 
     @Id
     @GeneratedValue
