@@ -8,4 +8,8 @@ public class IssueParser {
     public static IssueDTO parseIssueToIssueDTO(Issue issue, TaskDTO taskDTO) {
         return new IssueDTO(issue.getDescription(), taskDTO);
     }
+
+    public static Issue parseIssueDTOToIssue(IssueDTO issueDTO) {
+        return new Issue(issueDTO.getDescription());
+    }
 }

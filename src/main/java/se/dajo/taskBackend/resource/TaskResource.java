@@ -64,13 +64,7 @@ public class TaskResource {
     @POST
     @Path("{taskNumber}/issues")
     public Response createIssue(@PathParam("taskNumber") Long taskNumber, Issue issue) {
-        Task task = taskService.getTask(taskNumber);
-        if (task.getStatus() != TaskStatus.DONE) {
-            throw new InvalidStatusException("Task does not have status done, cannot add an issue");
-        }
         issueService.saveIssue(issue, taskNumber);
-        task.setStatus(TaskStatus.UNSTARTED);
-        taskService.updateTask(task);
         return ok().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
     }
 
