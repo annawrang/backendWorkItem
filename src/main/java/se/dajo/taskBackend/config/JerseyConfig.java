@@ -19,3 +19,4 @@ public class JerseyConfig extends ResourceConfig {
         register(GeneralExceptionMapper.class);
     }
 }
+
