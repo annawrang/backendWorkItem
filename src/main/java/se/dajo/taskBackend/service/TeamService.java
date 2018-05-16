@@ -51,7 +51,7 @@ public class TeamService {
         if(oldTeamDTO == null){
             throw new InvalidTeamNameException();
         }
-        oldTeamDTO = TeamParser.updateTeamDTO(team);
+        oldTeamDTO = TeamParser.updateTeamDTO(oldTeamDTO, team);
         teamRepository.save(oldTeamDTO);
     }
 

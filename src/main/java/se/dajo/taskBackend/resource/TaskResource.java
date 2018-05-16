@@ -57,12 +57,12 @@ public class TaskResource {
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
     public Response getTasks(@BeanParam TaskParam taskParam) {
-        if (taskParam.getText() != null) {
-            List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
+        if (taskParam.text != null) {
+            List<Task> tasks = taskService.getTaskByDescription(taskParam.status);
             return Response.ok(tasks).build();
-        } else if (!taskParam.getStatus().equals(null)) {
+        } else if (taskParam.status != null) {
             TaskStatus status;
-            switch (taskParam.getStatus()) {
+            switch (taskParam.status) {
                 case "unstarted":
                     status = TaskStatus.UNSTARTED;
                     break;
@@ -80,9 +80,11 @@ public class TaskResource {
             }
             List<Task> tasks = taskService.getTaskByStatus(status);
             return Response.ok(tasks).build();
-        } else if (taskParam.hasIssue() == true) {
+        } else if (taskParam.issue != null) {
+            if(taskParam.issue == true){
             List<Task> tasks = taskService.getTasksWithIssue();
             return Response.ok(tasks).build();
+            }
         }
         return status(BAD_REQUEST).build();
     }
