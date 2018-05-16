@@ -8,7 +8,7 @@ import java.util.List;
 
 public final class TaskParser {
 
-    public static Task parseTaskDTOToTask(TaskDTO taskDTO){
+    public static Task parseTaskDTOToTask(TaskDTO taskDTO) {
         return new Task(taskDTO.getDescription(), taskDTO.getStatus(), taskDTO.getTaskNumber());
     }
 
@@ -16,7 +16,7 @@ public final class TaskParser {
         return new TaskDTO(task.getDescription(), task.getStatus(), task.getTaskNumber());
     }
 
-    public static List<Task> parseTaskDTOListToTaskList(Iterable<TaskDTO> taskDTOS){
+    public static List<Task> parseTaskDTOListToTaskList(Iterable<TaskDTO> taskDTOS) {
         List<Task> modelTasks = new ArrayList<>();
         taskDTOS.forEach(task -> {
             modelTasks.add(TaskParser.parseTaskDTOToTask(task));
@@ -24,7 +24,7 @@ public final class TaskParser {
         return modelTasks;
     }
 
-    public static TaskDTO prepareForUpdateTaskDTO(TaskDTO taskDTO, Task task){
+    public static TaskDTO prepareForUpdateTaskDTO(TaskDTO taskDTO, Task task) {
         return new TaskDTO(taskDTO.getId(), task.getDescription(), task.getStatus(), task.getTaskNumber());
     }
 }

@@ -5,6 +5,6 @@ import javax.ws.rs.*;
 public class IssueResource {
 
     @POST
-    public void createIssue(){
+    public void createIssue() {
     }
 }

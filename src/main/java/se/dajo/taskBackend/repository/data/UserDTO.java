@@ -19,17 +19,18 @@ public class UserDTO {
     @ManyToOne
     private TeamDTO team;
 
-    protected UserDTO(){}
+    protected UserDTO() {
+    }
 
-    public UserDTO(String firstName, String surName, Long userNumber, Status status) {
+    public UserDTO(Long id, String firstName, String surName, Long userNumber, Status status) {
+        this.id = id;
         this.firstName = firstName;
         this.surName = surName;
         this.userNumber = userNumber;
         this.status = status;
     }
 
-    public UserDTO(Long id, String firstName, String surName, Long userNumber, Status status) {
-        this.id = id;
+    public UserDTO(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
         this.surName = surName;
         this.userNumber = userNumber;
@@ -68,7 +69,7 @@ public class UserDTO {
         this.status = status;
     }
 
-    public UserDTO updateUserDTO(User user){
+    public UserDTO updateUserDTO(User user) {
         return new UserDTO(this.id, user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
     }
 }

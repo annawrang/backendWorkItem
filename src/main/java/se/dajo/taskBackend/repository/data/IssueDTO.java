@@ -13,7 +13,8 @@ public class IssueDTO {
     @ManyToOne
     private TaskDTO taskDTO;
 
-    protected IssueDTO(){}
+    protected IssueDTO() {
+    }
 
     public IssueDTO(String description, TaskDTO taskDTO) {
         this.description = description;

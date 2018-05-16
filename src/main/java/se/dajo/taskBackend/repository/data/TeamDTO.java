@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.repository.data;
 
 import se.dajo.taskBackend.enums.Status;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

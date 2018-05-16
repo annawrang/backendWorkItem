@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.resource.param;
 
 import org.springframework.lang.Nullable;
+
 import javax.ws.rs.QueryParam;
 
 public final class TaskParam {
