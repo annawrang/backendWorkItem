@@ -40,9 +40,9 @@ public class UserService {
         this.userNumbers = new AtomicLong(this.userRepository.getHighestUserNumber().orElse(1000000000L));
         user = user.setUserNumber(userNumbers.incrementAndGet());
 
-        UserDTO userDTO = UserParser.parseUserToUserDTO(user);
+        UserDTO userDTO = UserParser.toUserDTO(user);
         userDTO = userRepository.save(userDTO);
-        return UserParser.parseUserDTOToUser(userDTO);
+        return UserParser.toUser(userDTO);
     }
 
     public User getUser(Long userNumber) {
@@ -59,21 +59,21 @@ public class UserService {
 
     private List<User> checkUserParams(UserParam param) {
         if (param.firstName == null && param.surName == null && param.userNumber == null) {
-            return UserParser.parseUserDTOListToUserList(Lists.newArrayList(userRepository.findAll()));
+            return UserParser.toUserList(Lists.newArrayList(userRepository.findAll()));
         } else if (param.firstName != null && param.surName == null && param.userNumber == null) {
-            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstName(param.firstName));
+            return UserParser.toUserList(userRepository.findByFirstName(param.firstName));
         } else if (param.firstName == null && param.surName != null && param.userNumber == null) {
-            return UserParser.parseUserDTOListToUserList(userRepository.findBySurName(param.surName));
+            return UserParser.toUserList(userRepository.findBySurName(param.surName));
         } else if (param.firstName == null && param.surName == null && param.userNumber != null) {
-            return UserParser.parseUserDTOListToUserList(userRepository.findByUserNumber(param.userNumber));
+            return UserParser.toUserList(userRepository.findByUserNumber(param.userNumber));
         } else if (param.firstName != null && param.surName != null && param.userNumber == null) {
-            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndSurName(param.firstName, param.surName));
+            return UserParser.toUserList(userRepository.findByFirstNameAndSurName(param.firstName, param.surName));
         } else if (param.firstName != null && param.surName == null && param.userNumber != null) {
-            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndUserNumber(param.firstName, param.userNumber));
+            return UserParser.toUserList(userRepository.findByFirstNameAndUserNumber(param.firstName, param.userNumber));
         } else if (param.firstName == null && param.surName != null && param.userNumber != null) {
-            return UserParser.parseUserDTOListToUserList(userRepository.findBySurNameAndUserNumber(param.surName, param.userNumber));
+            return UserParser.toUserList(userRepository.findBySurNameAndUserNumber(param.surName, param.userNumber));
         } else {
-            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndSurNameAndUserNumber(param.firstName, param.surName, param.userNumber));
+            return UserParser.toUserList(userRepository.findByFirstNameAndSurNameAndUserNumber(param.firstName, param.surName, param.userNumber));
         }
     }
 
@@ -100,7 +100,7 @@ public class UserService {
         if (oldUserDTO == null) {
             throw new InvalidUserNumberException();
         }
-        oldUserDTO = UserParser.prepareForUpdateUserDTO(oldUserDTO, user);
+        oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
         updateUsersTasks(oldUserDTO);
         userRepository.save(oldUserDTO);
     }
@@ -118,7 +118,7 @@ public class UserService {
             throw new InvalidUserNumberException();
         }
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
-        return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
+        return TaskParser.toTaskList(taskDTOS);
     }
 
 
