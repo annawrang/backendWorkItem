@@ -1,7 +1,6 @@
 package se.dajo.taskBackend.repository.data;
 
 import se.dajo.taskBackend.enums.TaskStatus;
-import se.dajo.taskBackend.model.data.Task;
 
 import javax.persistence.*;
 
@@ -58,10 +57,5 @@ public final class TaskDTO {
         this.user = user;
     }
 
-    // FUNKAR INTE ÄN
-    //    public TaskDTO setUser(UserDTO user) {
-//        return new TaskDTO(this.getId(), this.getDescription(),
-//                this.getStatus(), this.getTaskNumber(), user);
-//    }
 }
 
