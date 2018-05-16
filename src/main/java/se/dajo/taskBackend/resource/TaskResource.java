@@ -57,36 +57,8 @@ public class TaskResource {
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
     public Response getTasks(@BeanParam TaskParam taskParam){
-        if (taskParam.getText() != null) {
-            List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
-            return Response.ok(tasks).build();
-        }
-        else if (!taskParam.getStatus().equals(null)) {
-            TaskStatus status;
-            switch (taskParam.getStatus()) {
-                case "unstarted":
-                    status = TaskStatus.UNSTARTED;
-                    break;
-                case "started":
-                    status = TaskStatus.STARTED;
-                    break;
-                case "done":
-                    status = TaskStatus.DONE;
-                    break;
-                case "annulled":
-                    status = TaskStatus.ANNULLED;
-                    break;
-                default:
-                    return status(BAD_REQUEST).build();
-            }
-            List<Task> tasks = taskService.getTaskByStatus(status);
-            return Response.ok(tasks).build();
-        }
-        else if (taskParam.hasIssue() == true) {
-                List<Task> tasks = taskService.getTasksWithIssue();
-                return Response.ok(tasks).build();
-        }
-        return status(BAD_REQUEST).build();
+        List<Task> tasks = taskService.getTasks(taskParam);
+        return Response.ok(tasks).build();
     }
 
     @POST
