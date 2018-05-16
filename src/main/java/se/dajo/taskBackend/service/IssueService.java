@@ -20,7 +20,7 @@ public class IssueService {
 
     public IssueDTO saveIssue(Issue issue, Long taskNumber) {
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
-        IssueDTO issueDTO = IssueParser.parseIssueToIssueDTO(issue, taskDTO);
+        IssueDTO issueDTO = IssueParser.toIssueDTO(issue, taskDTO);
         return issueRepository.save(issueDTO);
     }
 

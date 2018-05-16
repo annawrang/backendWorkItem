@@ -43,7 +43,7 @@ public class TeamService {
 
     public List<Team> getAllTeams() {
         List<TeamDTO> teamDTOS = Lists.newArrayList(teamRepository.findAll());
-        return TeamParser.parseTeamDTOToTeamList(teamDTOS);
+        return TeamParser.toTeamList(teamDTOS);
     }
 
     public void updateTeam(String teamName, Team team) {
@@ -51,7 +51,7 @@ public class TeamService {
         if(oldTeamDTO == null){
             throw new InvalidTeamNameException();
         }
-        oldTeamDTO = TeamParser.prepareForUpdateTeamDTO(team);
+        oldTeamDTO = TeamParser.updateTeamDTO(team);
         teamRepository.save(oldTeamDTO);
     }
 
@@ -61,7 +61,7 @@ public class TeamService {
             throw new InvalidTeamNameException();
         }
         List<UserDTO> userDTOS = teamRepository.getUserDTOSInTeamDTO(teamDTO.getId());
-        return UserParser.parseUserDTOListToUserList(userDTOS);
+        return UserParser.toUserList(userDTOS);
     }
 
     public List<Task> getTasksInTeam(String teamName) {
@@ -70,6 +70,6 @@ public class TeamService {
             throw new InvalidTeamNameException();
         }
         List<TaskDTO> taskDTOS = teamRepository.getTaskDTOSInTeamDTO(teamDTO.getId());
-        return TaskParser.parseTaskDTOListToTaskList(taskDTOS);
+        return TaskParser.toTaskList(taskDTOS);
     }
 }
