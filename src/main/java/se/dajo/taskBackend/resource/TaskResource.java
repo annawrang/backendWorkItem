@@ -92,7 +92,7 @@ public class TaskResource {
     public Response createIssue(@PathParam("taskNumber") Long taskNumber, Issue issue) {
         Task task = taskService.getTask(taskNumber);
         if (task.getStatus() != TaskStatus.DONE) {
-            throw new InvalidStatusException("Task does not have status done, cannot add an issue");
+            throw new InvalidStatusException();
         }
         issueService.saveIssue(issue, taskNumber);
         task.setStatus(TaskStatus.UNSTARTED);

@@ -14,5 +14,4 @@ public class Issue {
     public String getDescription() {
         return description;
     }
-
 }
