@@ -27,7 +27,7 @@ public class IssueService {
 
         Task task = taskService.getTask(taskNumber);
         if (task.getStatus() != TaskStatus.DONE) {
-            throw new InvalidStatusException("Task does not have status done, cannot add an issue");
+            throw new InvalidStatusException();
         }
         saveIssue(issue, taskNumber);
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
