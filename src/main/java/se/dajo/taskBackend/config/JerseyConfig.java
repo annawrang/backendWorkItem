@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import se.dajo.taskBackend.resource.mapper.*;
 
 @Configuration
-public class JerseyConfig extends ResourceConfig{
+public class JerseyConfig extends ResourceConfig {
 
-    public JerseyConfig(){
+    public JerseyConfig() {
         register(UserResource.class);
         register(IssueResource.class);
         register(TeamResource.class);

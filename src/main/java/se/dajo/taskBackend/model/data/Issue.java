@@ -2,7 +2,7 @@ package se.dajo.taskBackend.model.data;
 
 public class Issue {
 
-    protected Issue (){
+    protected Issue() {
     }
 
     private String description;

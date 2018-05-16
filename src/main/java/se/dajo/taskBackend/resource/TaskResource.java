@@ -40,7 +40,7 @@ public class TaskResource {
     }
 
     @POST
-    public Response createTask(Task task){
+    public Response createTask(Task task) {
         task = taskService.saveTask(task);
 
         return ok(task).header("Location", uriInfo.getAbsolutePathBuilder()
@@ -49,19 +49,18 @@ public class TaskResource {
 
     @PUT
     @Path("{taskNumber}")
-    public Response updateTask(@PathParam("taskNumber")Long taskNumber, Task task){
+    public Response updateTask(@PathParam("taskNumber") Long taskNumber, Task task) {
         Task oldTask = taskService.getTask(taskNumber);
         return status(NO_CONTENT).build();
     }
 
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
-    public Response getTasks(@BeanParam TaskParam taskParam){
+    public Response getTasks(@BeanParam TaskParam taskParam) {
         if (taskParam.getText() != null) {
             List<Task> tasks = taskService.getTaskByDescription(taskParam.getText());
             return Response.ok(tasks).build();
-        }
-        else if (!taskParam.getStatus().equals(null)) {
+        } else if (!taskParam.getStatus().equals(null)) {
             TaskStatus status;
             switch (taskParam.getStatus()) {
                 case "unstarted":
@@ -81,10 +80,9 @@ public class TaskResource {
             }
             List<Task> tasks = taskService.getTaskByStatus(status);
             return Response.ok(tasks).build();
-        }
-        else if (taskParam.hasIssue() == true) {
-                List<Task> tasks = taskService.getTasksWithIssue();
-                return Response.ok(tasks).build();
+        } else if (taskParam.hasIssue() == true) {
+            List<Task> tasks = taskService.getTasksWithIssue();
+            return Response.ok(tasks).build();
         }
         return status(BAD_REQUEST).build();
     }

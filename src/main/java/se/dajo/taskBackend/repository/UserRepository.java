@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository<UserDTO, Long>{
+public interface UserRepository extends CrudRepository<UserDTO, Long> {
 
     List<UserDTO> findByFirstNameAndSurNameAndUserNumber(String firstName, String surName, Long userNumber);
 

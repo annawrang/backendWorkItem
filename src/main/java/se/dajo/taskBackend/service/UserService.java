@@ -20,6 +20,7 @@ import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -46,7 +47,7 @@ public class UserService {
 
     public User getUser(Long userNumber) {
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
-        if(userDTO == null){
+        if (userDTO == null) {
             throw new InvalidUserNumberException();
         }
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
@@ -57,38 +58,23 @@ public class UserService {
     }
 
     private List<User> checkUserParams(UserParam param) {
-        Long userNumber = Long.parseLong(param.getUserNumber().toString());
-        String firstName = param.getFirstName();
-        String surName = param.getSurName();
-
-        if (!firstName.equals("0")) {
-            if (!surName.equals("0")) {
-                if (userNumber != 0) {
-                    return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndSurNameAndUserNumber(firstName, surName, userNumber));
-                } else {
-                    return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndSurName(firstName, surName));
-                }
-            } else {
-                if (userNumber != 0) {
-                    return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndUserNumber(firstName, userNumber));
-                } else {
-                    return UserParser.parseUserDTOListToUserList(userRepository.findByFirstName(firstName));
-                }
-            }
+        if (param.firstName == null && param.surName == null && param.userNumber == null) {
+            return UserParser.parseUserDTOListToUserList(Lists.newArrayList(userRepository.findAll()));
+        } else if (param.firstName != null && param.surName == null && param.userNumber == null) {
+            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstName(param.firstName));
+        } else if (param.firstName == null && param.surName != null && param.userNumber == null) {
+            return UserParser.parseUserDTOListToUserList(userRepository.findBySurName(param.surName));
+        } else if (param.firstName == null && param.surName == null && param.userNumber != null) {
+            return UserParser.parseUserDTOListToUserList(userRepository.findByUserNumber(param.userNumber));
+        } else if (param.firstName != null && param.surName != null && param.userNumber == null) {
+            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndSurName(param.firstName, param.surName));
+        } else if (param.firstName != null && param.surName == null && param.userNumber != null) {
+            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndUserNumber(param.firstName, param.userNumber));
+        } else if (param.firstName == null && param.surName != null && param.userNumber != null) {
+            return UserParser.parseUserDTOListToUserList(userRepository.findBySurNameAndUserNumber(param.surName, param.userNumber));
         } else {
-            if (!surName.equals("0")) {
-                if (userNumber != 0) {
-                    return UserParser.parseUserDTOListToUserList(userRepository.findBySurNameAndUserNumber(surName, userNumber));
-                } else {
-                    return UserParser.parseUserDTOListToUserList(userRepository.findBySurName(surName));
-                }
-            } else {
-                if (userNumber != 0) {
-                    return UserParser.parseUserDTOListToUserList(userRepository.findByUserNumber(userNumber));
-                }
-            }
+            return UserParser.parseUserDTOListToUserList(userRepository.findByFirstNameAndSurNameAndUserNumber(param.firstName, param.surName, param.userNumber));
         }
-        return UserParser.parseUserDTOListToUserList(Lists.newArrayList(userRepository.findAll()));
     }
 
     public User updateUser(String teamName, Long userNumber) {
@@ -109,9 +95,9 @@ public class UserService {
         return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
     }
 
-    public void updateUser(User user){
+    public void updateUser(User user) {
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
-        if(oldUserDTO == null){
+        if (oldUserDTO == null) {
             throw new InvalidUserNumberException();
         }
         oldUserDTO = UserParser.prepareForUpdateUserDTO(oldUserDTO, user);
@@ -119,8 +105,8 @@ public class UserService {
         userRepository.save(oldUserDTO);
     }
 
-    private void updateUsersTasks(UserDTO userDTO){
-        if(userDTO.getStatus().equals(Status.INACTIVE)){
+    private void updateUsersTasks(UserDTO userDTO) {
+        if (userDTO.getStatus().equals(Status.INACTIVE)) {
             taskRepository.setUsersTasksUnstarted(userDTO.getId());
         }
     }
@@ -128,7 +114,7 @@ public class UserService {
     public List<Task> getUsersTasks(Long userNumber) {
         List<UserDTO> userDTOS = userRepository.findByUserNumber(userNumber);
         UserDTO userDTO = userDTOS.get(0);
-        if(userDTO == null){
+        if (userDTO == null) {
             throw new InvalidUserNumberException();
         }
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());

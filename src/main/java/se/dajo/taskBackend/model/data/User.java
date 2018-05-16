@@ -9,7 +9,8 @@ public class User {
     private Long userNumber;
     private Status status;
 
-    protected User(){}
+    protected User() {
+    }
 
     public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
@@ -26,7 +27,9 @@ public class User {
         return surName;
     }
 
-    public Long getUserNumber() { return userNumber; }
+    public Long getUserNumber() {
+        return userNumber;
+    }
 
     public Status getStatus() {
         return status;
