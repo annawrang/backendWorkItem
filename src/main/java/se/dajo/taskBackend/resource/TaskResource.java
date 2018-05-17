@@ -47,12 +47,13 @@ public final class TaskResource {
 
     @PUT
     @Path("{taskNumber}")
-    public Response updateTask(@PathParam("taskNumber") Long taskNumber, Task task) {
-        Task oldTask = taskService.getTask(taskNumber);
-        return status(NO_CONTENT).build();
+    public Response updateTask(Task task) {
+        taskService.saveTask(task);
+
+        return Response.ok().build();
+
     }
 
-    // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
     public Response getTasks(@BeanParam TaskParam taskParam) {
         List<Task> tasks = taskService.getTasks(taskParam);

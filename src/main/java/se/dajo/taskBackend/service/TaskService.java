@@ -41,37 +41,28 @@ public class TaskService {
     }
 
     public Task saveTask(Task task) {
-
-        this.taskNumbers = new AtomicLong(this.taskRepository.getHighestTaskNumber().orElse(1000000000L));
-        task = task.setTaskNumber(taskNumbers.incrementAndGet());
-
-        TaskDTO taskDTO = taskRepository.save(TaskParser.toTaskDTO(task));
-        return TaskParser.toTask(taskDTO);
+        if (task.getTaskNumber() == null) {
+            this.taskNumbers = new AtomicLong(this.taskRepository.getHighestTaskNumber().orElse(1000000000L));
+            task = task.setTaskNumber(taskNumbers.incrementAndGet());
+            return TaskParser.toTask(taskRepository.save(TaskParser.toTaskDTO(task)));
+        }
+        else {
+            TaskDTO oldTaskDTO = taskRepository.findByTaskNumber(task.getTaskNumber());
+            if (oldTaskDTO == null) { throw new InvalidTaskNumberException(); }
+            oldTaskDTO = TaskParser.updateTaskDTO(oldTaskDTO, task);
+            return TaskParser.toTask(taskRepository.save(oldTaskDTO));
+        }
     }
 
     public void updateTask(Long userNumber, Long taskNumber) {
-
         validateRoomForTask(userNumber);
         validateUserActiveStatus(userNumber);
         getTask(taskNumber);
 
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
-        if(taskDTO == null){
-            throw new InvalidTaskNumberException();
-        }
+        if(taskDTO == null) { throw new InvalidTaskNumberException(); }
         taskDTO.setUser(userRepository.findUserDTOByUserNumber(userNumber));
         taskRepository.save(taskDTO);
-    }
-
-
-    public void updateTask(Task task){
-        TaskDTO oldTaskDTO = taskRepository.findByTaskNumber(task.getTaskNumber());
-
-        if(oldTaskDTO == null){
-            throw new InvalidTaskNumberException();
-        }
-        oldTaskDTO = TaskParser.updateTaskDTO(oldTaskDTO, task);
-        taskRepository.save(oldTaskDTO);
     }
 
     public Task getTask(Long taskNumber) {

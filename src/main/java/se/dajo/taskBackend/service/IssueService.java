@@ -36,7 +36,7 @@ public final class IssueService {
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         IssueDTO issueDTO = IssueParser.toIssueDTO(issue, taskDTO);
         task.setStatus(TaskStatus.UNSTARTED);
-        taskService.updateTask(task);
+        taskService.saveTask(task);
         issueRepository.save(issueDTO);
         issue = IssueParser.parseIssueDTOToIssue(issueDTO);
         return issue;
