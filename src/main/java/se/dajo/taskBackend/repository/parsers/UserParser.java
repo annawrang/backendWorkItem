@@ -6,7 +6,7 @@ import se.dajo.taskBackend.repository.data.UserDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserParser {
+public final class UserParser {
 
     public static User toUser(UserDTO userDTO) {
         return new User(userDTO.getFirstName(), userDTO.getSurName(),

@@ -29,7 +29,6 @@ public class UserService {
 
     private final int maxUsersInTeam = 10;
 
-
     @Autowired
     private UserRepository userRepository;
     @Autowired

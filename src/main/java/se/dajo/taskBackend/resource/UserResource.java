@@ -16,13 +16,11 @@ import javax.ws.rs.core.UriInfo;
 
 import java.util.List;
 
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
-
 @Component
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class UserResource {
+public final class UserResource {
 
     private final UserService userService;
     private final TaskService taskService;

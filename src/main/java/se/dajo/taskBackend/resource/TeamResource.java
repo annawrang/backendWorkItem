@@ -19,7 +19,7 @@ import java.util.List;
 @Path("teams")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class TeamResource {
+public final class TeamResource {
 
     private final TeamService teamService;
     private final UserService userService;

@@ -1,14 +1,12 @@
 package se.dajo.taskBackend.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import se.dajo.taskBackend.enums.TaskStatus;
 import se.dajo.taskBackend.model.data.Issue;
 import se.dajo.taskBackend.model.data.Task;
 import org.springframework.stereotype.Component;
 import se.dajo.taskBackend.service.IssueService;
 import se.dajo.taskBackend.resource.param.TaskParam;
 import se.dajo.taskBackend.service.TaskService;
-import se.dajo.taskBackend.service.exception.InvalidStatusException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -25,7 +23,7 @@ import static javax.ws.rs.core.Response.Status.*;
 @Path("tasks")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class TaskResource {
+public final class TaskResource {
 
     private final TaskService taskService;
     private final IssueService issueService;
@@ -56,7 +54,7 @@ public class TaskResource {
 
     // Den här tar hand om Status & om den innehåller en viss text & ett visst issue
     @GET
-    public Response getTasks(@BeanParam TaskParam taskParam){
+    public Response getTasks(@BeanParam TaskParam taskParam) {
         List<Task> tasks = taskService.getTasks(taskParam);
         return Response.ok(tasks).build();
     }
