@@ -49,8 +49,8 @@ public final class UserResource {
 
     @PUT
     @Path("{userNumber}/tasks/{taskNumber}")
-    public Response attatchTaskToUser(@PathParam("userNumber") Long userNumber,
-                                      @PathParam("taskNumber") Long taskNumber) {
+    public Response attachTaskToUser(@PathParam("userNumber") Long userNumber,
+                                     @PathParam("taskNumber") Long taskNumber) {
         taskService.updateTask(userNumber, taskNumber);
         return Response.ok().build();
     }
