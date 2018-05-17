@@ -29,7 +29,6 @@ public class IssueService {
         if (task.getStatus() != TaskStatus.DONE) {
             throw new InvalidStatusException();
         }
-        saveIssue(issue, taskNumber);
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         IssueDTO issueDTO = IssueParser.toIssueDTO(issue, taskDTO);
         task.setStatus(TaskStatus.UNSTARTED);
