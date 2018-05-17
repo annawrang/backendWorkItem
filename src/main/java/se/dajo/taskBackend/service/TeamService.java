@@ -14,11 +14,10 @@ import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.repository.parsers.TeamParser;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.service.exception.InvalidTeamNameException;
-
 import java.util.List;
 
 @Service
-public class TeamService {
+public final class TeamService {
 
     private final TeamRepository teamRepository;
 
