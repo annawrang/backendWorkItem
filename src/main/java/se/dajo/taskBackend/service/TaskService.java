@@ -146,7 +146,7 @@ public class TaskService {
                     status = TaskStatus.ANNULLED;
                     break;
                 default:
-                    throw new InvalidTaskRequestException("Could not recognize parameter");
+                    throw new InvalidTaskRequestException();
             }
             List<Task> tasks = getTaskByStatus(status);
             return tasks;
@@ -155,7 +155,7 @@ public class TaskService {
             List<Task> tasks = getTasksWithIssue();
             return tasks;
         }
-        throw new InvalidTaskRequestException("Could not recognize parameter");
+        throw new InvalidTaskRequestException();
     }
 
 }
