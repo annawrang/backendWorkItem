@@ -69,11 +69,7 @@ public class UserResource {
         List<User> user = userService.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
         // kan vi anropa en metod här som returnerar en Response?
         // typ: return checkIfUsersInList(user);
-        if (user.size() == 0) {
-            return Response.status(NO_CONTENT).build();
-        } else {
-            return Response.ok(user).build();
-        }
+        return  Response.ok(user).build();
     }
 
     @GET

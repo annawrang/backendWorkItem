@@ -18,8 +18,11 @@ import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
 @Service
 public class UserService {
@@ -53,7 +56,13 @@ public class UserService {
     }
 
     public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
-        return checkUserParams(userParam);
+        List<User> user = checkUserParams(userParam);
+        if (user.size() == 0) {
+            //Skapa nytt exception för denna?
+            throw new InvalidUserNumberException();
+        } else {
+            return user;
+        }
     }
 
     private List<User> checkUserParams(UserParam param) {
