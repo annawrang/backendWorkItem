@@ -14,14 +14,18 @@ import se.dajo.taskBackend.service.exception.InvalidStatusException;
 
 
 @Service
-public class IssueService {
+public final class IssueService {
+
+    private final IssueRepository issueRepository;
+    private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
     @Autowired
-    private IssueRepository issueRepository;
-    @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private TaskService taskService;
+    public IssueService(IssueRepository issueRepository, TaskRepository taskRepository, TaskService taskService) {
+        this.issueRepository = issueRepository;
+        this.taskRepository = taskRepository;
+        this.taskService = taskService;
+    }
 
     public Issue saveIssue(Issue issue, Long taskNumber) {
 

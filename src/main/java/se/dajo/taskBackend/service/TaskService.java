@@ -1,5 +1,6 @@
 package se.dajo.taskBackend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import se.dajo.taskBackend.enums.Status;
 import org.glassfish.jersey.internal.guava.Lists;
 import se.dajo.taskBackend.enums.TaskStatus;
@@ -7,7 +8,6 @@ import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.User;
 import se.dajo.taskBackend.repository.IssueRepository;
 import se.dajo.taskBackend.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.IssueDTO;
@@ -25,18 +25,20 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private IssueRepository issueRepository;
-    @Autowired
-    private UserService userService;
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+    private final IssueRepository issueRepository;
+    private final UserService userService;
     private AtomicLong taskNumbers;
-
-
     private final int maximumAmountOfTasksForUser = 5;
+
+    @Autowired
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository, IssueRepository issueRepository, UserService userService) {
+        this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
+        this.issueRepository = issueRepository;
+        this.userService = userService;
+    }
 
     public Task saveTask(Task task) {
 
@@ -68,7 +70,6 @@ public class TaskService {
         if(oldTaskDTO == null){
             throw new InvalidTaskNumberException();
         }
-
         oldTaskDTO = TaskParser.updateTaskDTO(oldTaskDTO, task);
         taskRepository.save(oldTaskDTO);
     }
@@ -79,11 +80,6 @@ public class TaskService {
             throw new InvalidTaskNumberException();
         }
         return TaskParser.toTask(taskDTO);
-    }
-
-    public Iterable<Task> getAllTasks() {
-        Iterable<TaskDTO> taskDTOS = taskRepository.findAll();
-        return TaskParser.toTaskList(taskDTOS);
     }
 
     public List<Task> getTaskByDescription(String text) {
@@ -113,7 +109,8 @@ public class TaskService {
 
     public void validateRoomForTask(Long userNumber) {
 
-        if (taskRepository.countTaskDTOByUser(userRepository.findUserDTOByUserNumber(userNumber)) >= maximumAmountOfTasksForUser) {
+        int amountOfTasksForUser = taskRepository.countTaskDTOByUser(userRepository.findUserDTOByUserNumber(userNumber));
+        if (amountOfTasksForUser >= maximumAmountOfTasksForUser) {
             throw new OverworkedUserException();
         }
     }
@@ -157,5 +154,4 @@ public class TaskService {
         }
         throw new InvalidTaskRequestException();
     }
-
 }

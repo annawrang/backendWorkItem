@@ -1,6 +1,7 @@
 package se.dajo.taskBackend.service;
 
 import org.glassfish.jersey.internal.guava.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
 import se.dajo.taskBackend.enums.Status;
 import se.dajo.taskBackend.model.data.Task;
 import se.dajo.taskBackend.model.data.User;
@@ -10,32 +11,31 @@ import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
-
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
 @Service
-public class UserService {
+public final class UserService {
 
+    private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
+    private final TaskRepository taskRepository;
     private final int maxUsersInTeam = 10;
+    private AtomicLong userNumbers;
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TeamRepository teamRepository;
-    @Autowired
-    private TaskRepository taskRepository;
-    private AtomicLong userNumbers;
+    public UserService(UserRepository userRepository, TeamRepository teamRepository, TaskRepository taskRepository) {
+        this.userRepository = userRepository;
+        this.teamRepository = teamRepository;
+        this.taskRepository = taskRepository;
+    }
 
     public User saveUser(User user) {
         this.userNumbers = new AtomicLong(this.userRepository.getHighestUserNumber().orElse(1000000000L));
@@ -57,11 +57,9 @@ public class UserService {
     public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
         List<User> user = checkUserParams(userParam);
         if (user.size() == 0) {
-            //Skapa nytt exception för denna?
             throw new InvalidUserNumberException();
-        } else {
-            return user;
         }
+        return user;
     }
 
     private List<User> checkUserParams(UserParam param) {
@@ -86,10 +84,9 @@ public class UserService {
 
     public User updateUser(String teamName, Long userNumber) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
-
-        if (checkForSpaceInTeam(teamDTO) == false)
+        if (checkForSpaceInTeam(teamDTO) == false) {
             throw new InvalidSpaceInTeamException();
-
+        }
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
         userDTO.setTeam(teamDTO);
         userRepository.save(userDTO);
@@ -127,6 +124,4 @@ public class UserService {
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
         return TaskParser.toTaskList(taskDTOS);
     }
-
-
 }
