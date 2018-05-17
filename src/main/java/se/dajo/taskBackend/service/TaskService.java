@@ -126,13 +126,13 @@ public class TaskService {
     }
 
     public List<Task> getTasks(TaskParam taskParam) {
-        if (taskParam.getText() != null) {
-            List<Task> tasks = getTaskByDescription(taskParam.getText());
+        if (taskParam.text != null) {
+            List<Task> tasks = getTaskByDescription(taskParam.text);
             return tasks;
         }
-        else if (taskParam.getStatus() != null) {
+        else if (taskParam.status != null) {
             TaskStatus status;
-            switch (taskParam.getStatus()) {
+            switch (taskParam.status) {
                 case "unstarted":
                     status = TaskStatus.UNSTARTED;
                     break;
@@ -151,7 +151,7 @@ public class TaskService {
             List<Task> tasks = getTaskByStatus(status);
             return tasks;
         }
-        else if (taskParam.hasIssue() == true) {
+        else if (taskParam.issue == true) {
             List<Task> tasks = getTasksWithIssue();
             return tasks;
         }
