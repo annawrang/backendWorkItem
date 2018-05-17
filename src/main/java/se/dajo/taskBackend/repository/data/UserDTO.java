@@ -1,12 +1,14 @@
 package se.dajo.taskBackend.repository.data;
 
 import se.dajo.taskBackend.enums.Status;
-import se.dajo.taskBackend.model.data.User;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class UserDTO {
+public final class UserDTO {
 
     @Id
     @GeneratedValue
