@@ -36,6 +36,14 @@ public final class TaskDTO {
         this.taskNumber = taskNumber;
     }
 
+    public TaskDTO(Long id, String description, TaskStatus status, Long taskNumber, UserDTO user) {
+        this.id = id;
+        this.description = description;
+        this.status = status;
+        this.taskNumber = taskNumber;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
@@ -55,10 +63,5 @@ public final class TaskDTO {
     public Long getTaskNumber() {
         return taskNumber;
     }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
 }
 
