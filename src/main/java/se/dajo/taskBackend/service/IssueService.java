@@ -10,7 +10,11 @@ import se.dajo.taskBackend.repository.TaskRepository;
 import se.dajo.taskBackend.repository.data.IssueDTO;
 import se.dajo.taskBackend.repository.data.TaskDTO;
 import se.dajo.taskBackend.repository.parsers.IssueParser;
+import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.service.exception.InvalidStatusException;
+import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
+
+import static se.dajo.taskBackend.enums.TaskStatus.UNSTARTED;
 
 
 @Service
@@ -29,17 +33,16 @@ public final class IssueService {
 
     public Issue saveIssue(Issue issue, Long taskNumber) {
 
-        Task task = taskService.getTask(taskNumber);
-        if (task.getStatus() != TaskStatus.DONE) {
-            throw new InvalidStatusException();
-        }
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
+        if (taskDTO == null) { throw new InvalidTaskNumberException(); }
+        if (taskDTO.getStatus() != TaskStatus.DONE) { throw new InvalidStatusException(); }
+        Task task = TaskParser.toTask(taskDTO);
         IssueDTO issueDTO = IssueParser.toIssueDTO(issue, taskDTO);
-        task.setStatus(TaskStatus.UNSTARTED);
-        taskService.saveTask(task);
-        issueRepository.save(issueDTO);
-        issue = IssueParser.parseIssueDTOToIssue(issueDTO);
-        return issue;
-    }
+        issueDTO = issueRepository.save(issueDTO);
 
+        task.setStatus(UNSTARTED);
+        taskService.saveTask(task);
+
+        return IssueParser.parseIssueDTOToIssue(issueDTO);
+    }
 }
