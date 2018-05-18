@@ -39,6 +39,15 @@ public final class UserDTO {
         this.status = status;
     }
 
+    public UserDTO(Long id, String firstName, String surName, Long userNumber, Status status, TeamDTO team) {
+        this.id = id;
+        this.firstName = firstName;
+        this.surName = surName;
+        this.userNumber = userNumber;
+        this.status = status;
+        this.team = team;
+    }
+
     public Long getId() {
         return id;
     }
@@ -67,8 +76,11 @@ public final class UserDTO {
         this.team = team;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public UserDTO setStatus(Status status) {
+        if(this.team == null){
+            return new UserDTO(this.getId(), this.firstName, this.surName, this.userNumber, status);
+        }
+        return new UserDTO(this.getId(), this.firstName, this.surName, this.userNumber, status, this.team);
     }
 
 }
