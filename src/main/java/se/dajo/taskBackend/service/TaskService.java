@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.IssueDTO;
 import se.dajo.taskBackend.repository.data.TaskDTO;
+import se.dajo.taskBackend.repository.data.UserDTO;
 import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.resource.param.TaskParam;
 import se.dajo.taskBackend.service.exception.*;
@@ -54,15 +55,26 @@ public class TaskService {
         }
     }
 
-    public void updateTask(Long userNumber, Long taskNumber) {
+    /**
+     * Used to add a UserDTO to a TaskDTO.
+     * @param userNumber Identifier for UserDTO
+     * @param taskNumber Identifier for TaskDTO
+     * @return An domain model of the type Task.
+     */
+    public Task updateTask(Long userNumber, Long taskNumber) {
         validateRoomForTask(userNumber);
         validateUserActiveStatus(userNumber);
         getTask(taskNumber);
 
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         if(taskDTO == null) { throw new InvalidTaskNumberException(); }
-        taskDTO.setUser(userRepository.findUserDTOByUserNumber(userNumber));
-        taskRepository.save(taskDTO);
+
+        UserDTO userDTOtoSave = userRepository.findUserDTOByUserNumber(userNumber);
+        TaskDTO taskDTOtoSave = new TaskDTO(taskDTO.getId(), taskDTO.getDescription(),
+                                        taskDTO.getStatus(), taskDTO.getTaskNumber(), userDTOtoSave);
+
+        return TaskParser.toTask(taskRepository.save(taskDTOtoSave));
+
     }
 
     public Task getTask(Long taskNumber) {
