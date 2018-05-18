@@ -76,7 +76,6 @@ public class TaskService {
         return TaskParser.toTask(taskRepository.save(taskDTOtoSave));
 
     }
-
     public Task getTask(Long taskNumber) {
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         if(taskDTO == null){
