@@ -22,7 +22,11 @@ public final class UserParser {
     }
 
     public static UserDTO updateUserDTO(UserDTO userDTO, User user) {
-        return new UserDTO(userDTO.getId(), user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
+        if(userDTO.getUserNumber() == null){
+            return new UserDTO(userDTO.getId(), user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
+        } else {
+            return new UserDTO(userDTO.getId(), user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus(), userDTO.getTeam());
+        }
     }
 
     public static UserDTO toUserDTO(User user) {

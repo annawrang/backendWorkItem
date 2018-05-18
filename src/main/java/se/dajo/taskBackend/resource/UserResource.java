@@ -42,8 +42,9 @@ public final class UserResource {
     }
 
     @PUT
+    @Path("{userNumber}")
     public Response updateUser(User user) {
-        userService.updateUser(user);
+        userService.updateUserDouble(user);
         return Response.ok().build();
     }
 
