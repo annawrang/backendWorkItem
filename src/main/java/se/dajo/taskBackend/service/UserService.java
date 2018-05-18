@@ -82,7 +82,7 @@ public final class UserService {
         }
     }
 
-    public User updateUser(String teamName, Long userNumber) {
+    public User setTeamToUser(String teamName, Long userNumber) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         if (checkForSpaceInTeam(teamDTO) == false) {
             throw new InvalidSpaceInTeamException();
@@ -99,7 +99,7 @@ public final class UserService {
         return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
     }
 
-    public void updateUser(User user) {
+    public void setTeamToUser(User user) {
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
         if (oldUserDTO == null) {
             throw new InvalidUserNumberException();
@@ -123,5 +123,15 @@ public final class UserService {
         }
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
         return TaskParser.toTaskList(taskDTOS);
+    }
+
+    public void updateUser(User user) {
+        if(user.getUserNumber() == null ||
+                userRepository.findByUserNumber(user.getUserNumber()).get(0) == null){
+            throw new InvalidUserNumberException();
+        }
+        UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
+        oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
+        userRepository.save(oldUserDTO);
     }
 }

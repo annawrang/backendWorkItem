@@ -9,9 +9,6 @@ public final class User {
     private Long userNumber;
     private Status status;
 
-//     protected User() {
-//        }
-
     public User(String firstName, String surName, Long userNumber, Status status) {
         this.firstName = firstName;
         this.surName = surName;
@@ -35,23 +32,12 @@ public final class User {
         return status;
     }
 
+    // To be decided: Use setters here or constuctor instead in UserService
     public User setUserNumber(Long userNumber) {
-        this.userNumber = userNumber;
-        return this;
-    }
-
-    public User setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public User setSurName(String surName) {
-        this.surName = surName;
-        return this;
+        return new User(this.getFirstName(), this.getSurName(), userNumber, this.getStatus());
     }
 
     public User setStatus(Status status) {
-        this.status = status;
-        return this;
+        return new User(this.getFirstName(), this.getSurName(), this.getUserNumber(), status);
     }
 }
