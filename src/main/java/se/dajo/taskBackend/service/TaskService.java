@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class TaskService {
+public final class TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;

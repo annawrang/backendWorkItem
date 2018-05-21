@@ -77,10 +77,9 @@ public final class UserDTO {
     }
 
     public UserDTO setStatus(Status status) {
-        if(this.team == null){
+        if (this.team == null) {
             return new UserDTO(this.getId(), this.firstName, this.surName, this.userNumber, status);
         }
         return new UserDTO(this.getId(), this.firstName, this.surName, this.userNumber, status, this.team);
     }
-
 }
