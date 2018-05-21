@@ -82,7 +82,7 @@ public final class UserService {
 
     public User updateUser(String teamName, Long userNumber) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
-        if (!checkForSpaceInTeam(teamDTO)) {
+        if (checkForSpaceInTeam(teamDTO) == false) {
             throw new InvalidSpaceInTeamException();
         }
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
@@ -92,13 +92,13 @@ public final class UserService {
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
 
-    private boolean checkForSpaceInTeam(TeamDTO teamDTO) {
+    public boolean checkForSpaceInTeam(TeamDTO teamDTO) {
 
         return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
     }
 
     public void updateUser(User user) {
-        UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
+        UserDTO oldUserDTO = userRepository.findUserDTOByUserNumber(user.getUserNumber());
         validateUserNumber(oldUserDTO);
         oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
         updateUsersTasks(oldUserDTO);
@@ -112,8 +112,7 @@ public final class UserService {
     }
 
     public List<Task> getUsersTasks(Long userNumber) {
-        List<UserDTO> userDTOS = userRepository.findByUserNumber(userNumber);
-        UserDTO userDTO = userDTOS.get(0);
+        UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
         validateUserNumber(userDTO);
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
         return TaskParser.toTaskList(taskDTOS);
@@ -121,10 +120,10 @@ public final class UserService {
 
     public void updateUserDouble(User user) {
         if(user.getUserNumber() == null ||
-                userRepository.findByUserNumber(user.getUserNumber()).get(0) == null){
+                userRepository.findUserDTOByUserNumber(user.getUserNumber()) == null){
             throw new InvalidUserNumberException();
         }
-        UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
+        UserDTO oldUserDTO = userRepository.findUserDTOByUserNumber(user.getUserNumber());
         oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
         userRepository.save(oldUserDTO);
     }
