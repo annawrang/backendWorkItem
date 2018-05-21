@@ -53,6 +53,20 @@ public final class TeamResource {
         return Response.ok(teams).build();
     }
 
+    @GET
+    @Path("{teamName}/users")
+    public Response getUsersInTeam(@PathParam("teamName") String teamName) {
+        List<User> users = teamService.getUsersInTeam(teamName);
+        return Response.ok(users).build();
+    }
+
+    @GET
+    @Path("{teamName}/tasks")
+    public Response getTasksInTeam(@PathParam("teamName") String teamName) {
+        List<Task> teams = teamService.getTasksInTeam(teamName);
+        return Response.ok(teams).build();
+    }
+
     @PUT
     @Path("/{teamName}/users/{userNumber}")
     public Response addTeamUser(@PathParam("teamName") String teamName,
@@ -66,19 +80,5 @@ public final class TeamResource {
     public Response updateTeam(@PathParam("teamName") String teamName, Team team) {
         teamService.updateTeam(teamName, team);
         return Response.ok().build();
-    }
-
-    @GET
-    @Path("{teamName}/users")
-    public Response getUsersInTeam(@PathParam("teamName") String teamName) {
-        List<User> users = teamService.getUsersInTeam(teamName);
-        return Response.ok(users).build();
-    }
-
-    @GET
-    @Path("{teamName}/tasks")
-    public Response getTasksInTeam(@PathParam("teamName") String teamName) {
-        List<Task> teams = teamService.getTasksInTeam(teamName);
-        return Response.ok(teams).build();
     }
 }
