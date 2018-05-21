@@ -12,5 +12,4 @@ public final class UserParam {
 
     @QueryParam("userNumber")
     public Long userNumber;
-
 }
