@@ -17,6 +17,8 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 import static javax.ws.rs.core.Response.*;
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static javax.ws.rs.core.Response.Status.CREATED;
 
 @Component
 @Path("tasks")
@@ -39,8 +41,7 @@ public final class TaskResource {
     @POST
     public Response createTask(Task task) {
         task = taskService.saveTask(task);
-
-        return ok(task).header("Location", uriInfo.getAbsolutePathBuilder()
+        return Response.status(CREATED).header("Location", uriInfo.getAbsolutePathBuilder()
                 .path(task.getTaskNumber().toString())).build();
     }
 
@@ -48,7 +49,7 @@ public final class TaskResource {
     @Path("{taskNumber}/issues")
     public Response createIssue(@PathParam("taskNumber") Long taskNumber, Issue issue) {
         issueService.saveIssue(issue, taskNumber);
-        return ok().header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
+        return Response.status(CREATED).header("Location", uriInfo.getAbsolutePathBuilder().path(issue.getDescription())).build();
     }
 
     @GET
@@ -61,8 +62,6 @@ public final class TaskResource {
     @Path("{taskNumber}")
     public Response updateTask(Task task) {
         taskService.saveTask(task);
-
-        return Response.ok().build();
-
+        return Response.status(ACCEPTED).build();
     }
 }
