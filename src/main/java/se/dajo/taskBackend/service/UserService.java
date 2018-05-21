@@ -48,9 +48,7 @@ public final class UserService {
 
     public User getUser(Long userNumber) {
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
-        if (userDTO == null) {
-            throw new InvalidUserNumberException();
-        }
+        validateUserNumber(userDTO);
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
 
@@ -101,9 +99,7 @@ public final class UserService {
 
     public void updateUser(User user) {
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
-        if (oldUserDTO == null) {
-            throw new InvalidUserNumberException();
-        }
+        validateUserNumber(oldUserDTO);
         oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
         updateUsersTasks(oldUserDTO);
         userRepository.save(oldUserDTO);
@@ -118,9 +114,7 @@ public final class UserService {
     public List<Task> getUsersTasks(Long userNumber) {
         List<UserDTO> userDTOS = userRepository.findByUserNumber(userNumber);
         UserDTO userDTO = userDTOS.get(0);
-        if (userDTO == null) {
-            throw new InvalidUserNumberException();
-        }
+        validateUserNumber(userDTO);
         List<TaskDTO> taskDTOS = taskRepository.getTaskDTOsInUserDTO(userDTO.getId());
         return TaskParser.toTaskList(taskDTOS);
     }
@@ -133,5 +127,11 @@ public final class UserService {
         UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
         oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
         userRepository.save(oldUserDTO);
+    }
+
+    private void validateUserNumber(UserDTO userDTO) {
+        if (userDTO == null) {
+            throw new InvalidUserNumberException();
+        }
     }
 }
