@@ -74,7 +74,7 @@ public final class TeamResource {
     @Path("/{teamName}/users/{userNumber}")
     public Response addTeamUser(@PathParam("teamName") String teamName,
                                 @PathParam("userNumber") Long userNumber) {
-        User user = userService.updateUser(teamName, userNumber);
+        userService.updateUser(teamName, userNumber);
         return Response.status(ACCEPTED).header("Location", uriInfo.getAbsolutePathBuilder()).build();
     }
 

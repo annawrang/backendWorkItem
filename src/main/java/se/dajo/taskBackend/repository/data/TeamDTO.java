@@ -44,5 +44,4 @@ public final class TeamDTO {
     public TeamDTO setStatus(Status status) {
         return new TeamDTO(this.getId(), this.getTeamName(), status);
     }
-
 }

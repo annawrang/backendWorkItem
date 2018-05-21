@@ -34,12 +34,12 @@ public final class IssueService {
     public Issue saveIssue(Issue issue, Long taskNumber) {
 
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
-            if (taskDTO == null) {
-                throw new InvalidTaskNumberException();
-            }
-            if (taskDTO.getStatus() != TaskStatus.DONE) {
-                throw new InvalidStatusException();
-            }
+        if (taskDTO == null) {
+            throw new InvalidTaskNumberException();
+        }
+        if (taskDTO.getStatus() != TaskStatus.DONE) {
+            throw new InvalidStatusException();
+        }
         Task task = TaskParser.toTask(taskDTO);
         IssueDTO issueDTO = IssueParser.toIssueDTO(issue, taskDTO);
         issueDTO = issueRepository.save(issueDTO);

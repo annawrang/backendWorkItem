@@ -21,10 +21,6 @@ public final class IssueDTO {
         this.taskDTO = taskDTO;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -32,6 +28,5 @@ public final class IssueDTO {
     public TaskDTO getTaskDTO() {
         return taskDTO;
     }
-
 }
 

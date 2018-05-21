@@ -14,6 +14,7 @@ import se.dajo.taskBackend.repository.parsers.TaskParser;
 import se.dajo.taskBackend.repository.parsers.TeamParser;
 import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.service.exception.InvalidTeamNameException;
+
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ public final class TeamService {
     private final TeamRepository teamRepository;
 
     @Autowired
-    public TeamService(TeamRepository teamRepository){
+    public TeamService(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
     }
 
@@ -66,7 +67,7 @@ public final class TeamService {
     }
 
     private void validateTeamNumber(TeamDTO teamDTO) {
-        if(teamDTO == null){
+        if (teamDTO == null) {
             throw new InvalidTeamNameException();
         }
     }
