@@ -46,10 +46,11 @@ public final class TaskService {
             this.taskNumbers = new AtomicLong(this.taskRepository.getHighestTaskNumber().orElse(1000000000L));
             task = task.setTaskNumber(taskNumbers.incrementAndGet());
             return TaskParser.toTask(taskRepository.save(TaskParser.toTaskDTO(task)));
-        }
-        else {
+        } else {
             TaskDTO oldTaskDTO = taskRepository.findByTaskNumber(task.getTaskNumber());
-            if (oldTaskDTO == null) { throw new InvalidTaskNumberException(); }
+            if (oldTaskDTO == null) {
+                throw new InvalidTaskNumberException();
+            }
             oldTaskDTO = TaskParser.updateTaskDTO(oldTaskDTO, task);
             return TaskParser.toTask(taskRepository.save(oldTaskDTO));
         }
@@ -61,18 +62,20 @@ public final class TaskService {
         getTask(taskNumber);
 
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
-        if(taskDTO == null) { throw new InvalidTaskNumberException(); }
+        if (taskDTO == null) {
+            throw new InvalidTaskNumberException();
+        }
 
         UserDTO userDTOtoSave = userRepository.findUserDTOByUserNumber(userNumber);
         TaskDTO taskDTOtoSave = new TaskDTO(taskDTO.getId(), taskDTO.getDescription(),
-                                        taskDTO.getStatus(), taskDTO.getTaskNumber(), userDTOtoSave);
+                taskDTO.getStatus(), taskDTO.getTaskNumber(), userDTOtoSave);
 
         return TaskParser.toTask(taskRepository.save(taskDTOtoSave));
     }
 
     public Task getTask(Long taskNumber) {
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
-        if(taskDTO == null){
+        if (taskDTO == null) {
             throw new InvalidTaskNumberException();
         }
         return TaskParser.toTask(taskDTO);
@@ -106,8 +109,7 @@ public final class TaskService {
     public List<Task> getTasks(TaskParam taskParam) {
         if (taskParam.text != null) {
             return getTaskByDescription(taskParam.text);
-        }
-        else if (taskParam.status != null) {
+        } else if (taskParam.status != null) {
             TaskStatus status;
             switch (taskParam.status) {
                 case "unstarted":
@@ -126,8 +128,7 @@ public final class TaskService {
                     throw new InvalidTaskRequestException();
             }
             return getTaskByStatus(status);
-        }
-        else if (taskParam.issue) {
+        } else if (taskParam.issue) {
             return getTasksWithIssue();
         }
         throw new InvalidTaskRequestException();

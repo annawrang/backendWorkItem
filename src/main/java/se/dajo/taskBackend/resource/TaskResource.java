@@ -16,7 +16,6 @@ import javax.ws.rs.core.UriInfo;
 
 import java.util.List;
 
-import static javax.ws.rs.core.Response.*;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.CREATED;
 

@@ -26,16 +26,16 @@ public final class TaskParser {
 
     /**
      * Checks if TaskDTO has instansiated UserDTO or not.
+     *
      * @param taskDTO An object of type TaskDTO carrying id and UserDTO.
-     * @param task An object of type Task carrying description and status.
+     * @param task    An object of type Task carrying description and status.
      * @return A TaskDTO with or without a UserDTO.
      */
     public static TaskDTO updateTaskDTO(TaskDTO taskDTO, Task task) {
 
         if (taskDTO.getUser() == null) {
             return new TaskDTO(taskDTO.getId(), task.getDescription(), task.getStatus(), task.getTaskNumber());
-        }
-        else {
+        } else {
             return new TaskDTO(taskDTO.getId(), task.getDescription(), task.getStatus(), task.getTaskNumber(), taskDTO.getUser());
         }
     }

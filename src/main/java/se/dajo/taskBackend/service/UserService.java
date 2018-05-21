@@ -17,6 +17,7 @@ import se.dajo.taskBackend.repository.parsers.UserParser;
 import se.dajo.taskBackend.resource.param.UserParam;
 import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
 import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -42,8 +43,7 @@ public final class UserService {
             this.userNumbers = new AtomicLong(this.userRepository.getHighestUserNumber().orElse(1000000000L));
             user = user.setUserNumber(userNumbers.incrementAndGet());
             return UserParser.toUser(userRepository.save(UserParser.toUserDTO(user)));
-        }
-        else {
+        } else {
             UserDTO userDTO = userRepository.findUserDTOByUserNumber(user.getUserNumber());
             validateUserNumber(userDTO);
             userDTO = UserParser.updateUserDTO(userDTO, user);
