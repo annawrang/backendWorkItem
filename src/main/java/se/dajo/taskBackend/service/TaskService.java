@@ -55,12 +55,6 @@ public final class TaskService {
         }
     }
 
-    /**
-     * Used to add a UserDTO to a TaskDTO.
-     * @param userNumber Identifier for UserDTO
-     * @param taskNumber Identifier for TaskDTO
-     * @return An domain model of the type Task.
-     */
     public Task updateTask(Long userNumber, Long taskNumber) {
         validateRoomForTask(userNumber);
         validateUserActiveStatus(userNumber);
@@ -74,8 +68,8 @@ public final class TaskService {
                                         taskDTO.getStatus(), taskDTO.getTaskNumber(), userDTOtoSave);
 
         return TaskParser.toTask(taskRepository.save(taskDTOtoSave));
-
     }
+
     public Task getTask(Long taskNumber) {
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         if(taskDTO == null){
@@ -140,13 +134,12 @@ public final class TaskService {
     }
 
     private void validateRoomForTask(Long userNumber) {
-
         int amountOfTasksForUser = taskRepository.countTaskDTOByUser(userRepository.findUserDTOByUserNumber(userNumber));
         if (amountOfTasksForUser >= maximumAmountOfTasksForUser) {
             throw new OverworkedUserException();
         }
-
     }
+
     private void validateUserActiveStatus(Long userNumber) {
 
         User user = userService.getUser(userNumber);
