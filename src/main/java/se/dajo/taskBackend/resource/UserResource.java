@@ -16,6 +16,9 @@ import javax.ws.rs.core.UriInfo;
 
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static javax.ws.rs.core.Response.Status.CREATED;
+
 @Component
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +40,7 @@ public final class UserResource {
     public Response createUser(User user) {
         user = userService.saveUser(user);
 
-        return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()
+        return Response.status(CREATED).header("Location", uriInfo.getAbsolutePathBuilder()
                 .path(user.getUserNumber().toString())).build();
     }
 
@@ -65,7 +68,7 @@ public final class UserResource {
     @Path("{userNumber}")
     public Response updateUser(User user) {
         userService.saveUser(user);
-        return Response.ok().build();
+        return Response.status(ACCEPTED).build();
     }
 
     @PUT
@@ -73,6 +76,6 @@ public final class UserResource {
     public Response attachTaskToUser(@PathParam("userNumber") Long userNumber,
                                      @PathParam("taskNumber") Long taskNumber) {
         taskService.updateTask(userNumber, taskNumber);
-        return Response.ok().build();
+        return Response.status(ACCEPTED).build();
     }
 }

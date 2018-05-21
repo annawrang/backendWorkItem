@@ -15,6 +15,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static javax.ws.rs.core.Response.Status.CREATED;
+
 @Component
 @Path("teams")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -35,7 +38,7 @@ public final class TeamResource {
     @POST
     public Response createTeam(Team team) {
         team = teamService.saveTeam(team);
-        return Response.ok(team).header("Location",
+        return Response.status(CREATED).header("Location",
                 uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
     }
 
@@ -72,13 +75,13 @@ public final class TeamResource {
     public Response addTeamUser(@PathParam("teamName") String teamName,
                                 @PathParam("userNumber") Long userNumber) {
         User user = userService.updateUser(teamName, userNumber);
-        return Response.ok(user).header("Location", uriInfo.getAbsolutePathBuilder()).build();
+        return Response.status(ACCEPTED).header("Location", uriInfo.getAbsolutePathBuilder()).build();
     }
 
     @PUT
     @Path("/{teamName}")
     public Response updateTeam(@PathParam("teamName") String teamName, Team team) {
         teamService.updateTeam(teamName, team);
-        return Response.ok().build();
+        return Response.status(ACCEPTED).build();
     }
 }
