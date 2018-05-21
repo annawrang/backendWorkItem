@@ -68,7 +68,7 @@ public final class UserService {
 
     public User updateUser(String teamName, Long userNumber) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
-        if (!checkForSpaceInTeam(teamDTO)) {
+        if (!validateSpaceInTeam(teamDTO)) {
             throw new InvalidSpaceInTeamException();
         }
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
@@ -78,23 +78,32 @@ public final class UserService {
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
 
-    private boolean checkForSpaceInTeam(TeamDTO teamDTO) {
+    private boolean validateSpaceInTeam(TeamDTO teamDTO) {
 
         return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
     }
 
-    public void updateUser(User user) {
-        UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
-        validateUserNumber(oldUserDTO);
-        oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
-        updateUsersTasks(oldUserDTO);
-        userRepository.save(oldUserDTO);
+//    public void updateUser(User user) {
+//        UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
+//        validateUserNumber(oldUserDTO);
+//        oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
+//        updateUsersTasks(oldUserDTO);
+//        userRepository.save(oldUserDTO);
+//    }
+
+
+    public User getUser(Long userNumber) {
+        UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
+        validateUserNumber(userDTO);
+        return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
 
-    private void updateUsersTasks(UserDTO userDTO) {
-        if (userDTO.getStatus().equals(Status.INACTIVE)) {
-            taskRepository.setUsersTasksUnstarted(userDTO.getId());
+    public List<User> getUserByFirstNAmeOrSurNameOrUserNumber(UserParam userParam) {
+        List<User> user = checkUserParams(userParam);
+        if (user.size() == 0) {
+            throw new InvalidUserNumberException();
         }
+        return user;
     }
 
     public User getUser(Long userNumber) {
@@ -119,19 +128,27 @@ public final class UserService {
         return TaskParser.toTaskList(taskDTOS);
     }
 
-    public void updateUserDouble(User user) {
+    public User updateUserDouble(User user) {
         if(user.getUserNumber() == null ||
                 userRepository.findByUserNumber(user.getUserNumber()).get(0) == null){
             throw new InvalidUserNumberException();
         }
-        UserDTO oldUserDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
-        oldUserDTO = UserParser.updateUserDTO(oldUserDTO, user);
-        userRepository.save(oldUserDTO);
+        UserDTO userDTO = userRepository.findByUserNumber(user.getUserNumber()).get(0);
+        userDTO = UserParser.updateUserDTO(userDTO, user);
+        updateUsersTasks(userDTO);
+
+        return UserParser.toUser(userRepository.save(userDTO));
     }
 
     private void validateUserNumber(UserDTO userDTO) {
         if (userDTO == null) {
             throw new InvalidUserNumberException();
+        }
+    }
+
+    private void updateUsersTasks(UserDTO userDTO) {
+        if (userDTO.getStatus().equals(Status.INACTIVE)) {
+            taskRepository.setUsersTasksUnstarted(userDTO.getId());
         }
     }
 }

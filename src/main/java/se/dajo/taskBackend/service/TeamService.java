@@ -32,11 +32,12 @@ public final class TeamService {
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
 
-    public void updateTeam(String teamName, Team team) {
+    public Team updateTeam(String teamName, Team team) {
         TeamDTO oldTeamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         validateTeamNumber(oldTeamDTO);
         oldTeamDTO = TeamParser.updateTeamDTO(oldTeamDTO, team);
-        teamRepository.save(oldTeamDTO);
+
+        return TeamParser.toTeam(teamRepository.save(oldTeamDTO));
     }
 
     public Team getTeam(String teamName) {
