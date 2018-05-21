@@ -7,9 +7,6 @@ public final class Team {
     private String teamName;
     private Status status;
 
-//    protected Team() {
-//    }
-
     public Team(String teamName, Status status) {
         this.teamName = teamName;
         this.status = status;

@@ -109,14 +109,15 @@ public class TaskService {
         return new ArrayList<>(tasksSet);
     }
 
-    public void validateRoomForTask(Long userNumber) {
+    private void validateRoomForTask(Long userNumber) {
 
         int amountOfTasksForUser = taskRepository.countTaskDTOByUser(userRepository.findUserDTOByUserNumber(userNumber));
         if (amountOfTasksForUser >= maximumAmountOfTasksForUser) {
             throw new OverworkedUserException();
         }
+
     }
-    public void validateUserActiveStatus(Long userNumber) {
+    private void validateUserActiveStatus(Long userNumber) {
 
         User user = userService.getUser(userNumber);
         if (user.getStatus().equals(Status.INACTIVE)) {
@@ -126,8 +127,7 @@ public class TaskService {
 
     public List<Task> getTasks(TaskParam taskParam) {
         if (taskParam.text != null) {
-            List<Task> tasks = getTaskByDescription(taskParam.text);
-            return tasks;
+            return getTaskByDescription(taskParam.text);
         }
         else if (taskParam.status != null) {
             TaskStatus status;
@@ -147,12 +147,10 @@ public class TaskService {
                 default:
                     throw new InvalidTaskRequestException();
             }
-            List<Task> tasks = getTaskByStatus(status);
-            return tasks;
+            return getTaskByStatus(status);
         }
-        else if (taskParam.issue == true) {
-            List<Task> tasks = getTasksWithIssue();
-            return tasks;
+        else if (taskParam.issue) {
+            return getTasksWithIssue();
         }
         throw new InvalidTaskRequestException();
     }

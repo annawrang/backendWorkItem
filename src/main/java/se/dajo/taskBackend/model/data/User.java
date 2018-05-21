@@ -32,12 +32,13 @@ public final class User {
         return status;
     }
 
-    // To be decided: Use setters here or constuctor instead in UserService
     public User setUserNumber(Long userNumber) {
-        return new User(this.getFirstName(), this.getSurName(), userNumber, this.getStatus());
+        this.userNumber = userNumber;
+        return this;
     }
 
     public User setStatus(Status status) {
-        return new User(this.getFirstName(), this.getSurName(), this.getUserNumber(), status);
+        this.status = status;
+        return this;
     }
 }
