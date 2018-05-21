@@ -32,6 +32,14 @@ public final class TeamService {
         return new Team(teamDTO.getTeamName(), teamDTO.getStatus());
     }
 
+    public Team updateTeam(String teamName, Team team) {
+        TeamDTO oldTeamDTO = teamRepository.findTeamDTOByTeamName(teamName);
+        validateTeamNumber(oldTeamDTO);
+        oldTeamDTO = TeamParser.updateTeamDTO(oldTeamDTO, team);
+
+        return TeamParser.toTeam(teamRepository.save(oldTeamDTO));
+    }
+
     public Team getTeam(String teamName) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         validateTeamNumber(teamDTO);
@@ -41,13 +49,6 @@ public final class TeamService {
     public List<Team> getAllTeams() {
         List<TeamDTO> teamDTOS = Lists.newArrayList(teamRepository.findAll());
         return TeamParser.toTeamList(teamDTOS);
-    }
-
-    public Team updateTeam(String teamName, Team team) {
-        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
-        validateTeamNumber(teamDTO);
-        teamDTO = TeamParser.updateTeamDTO(teamDTO, team);
-        return TeamParser.toTeam(teamRepository.save(teamDTO));
     }
 
     public List<User> getUsersInTeam(String teamName) {
