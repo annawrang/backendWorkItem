@@ -51,8 +51,6 @@ public final class UserResource {
     @GET
     public Response getUser(@BeanParam UserParam userParam) {
         List<User> user = userService.getUserByFirstNAmeOrSurNameOrUserNumber(userParam);
-        // kan vi anropa en metod här som returnerar en Response?
-        // typ: return checkIfUsersInList(user);
         return Response.ok(user).build();
     }
 
@@ -66,7 +64,7 @@ public final class UserResource {
     @PUT
     @Path("{userNumber}")
     public Response updateUser(User user) {
-        userService.updateUserDouble(user);
+        userService.saveUser(user);
         return Response.ok().build();
     }
 
