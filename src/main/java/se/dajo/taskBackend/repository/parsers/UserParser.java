@@ -25,7 +25,7 @@ public final class UserParser {
         if(userDTO.getUserNumber() == null){
             return new UserDTO(userDTO.getId(), user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus());
         } else {
-            return new UserDTO(userDTO.getId(), user.getFirstName(), user.getSurName(), user.getUserNumber(), user.getStatus(), userDTO.getTeam());
+            return new UserDTO(userDTO.getId(), user.getFirstName(), user.getSurName(), userDTO.getUserNumber(), user.getStatus(), userDTO.getTeam());
         }
     }
 

@@ -110,7 +110,6 @@ public final class TaskService {
     }
 
     private void validateRoomForTask(Long userNumber) {
-
         int amountOfTasksForUser = taskRepository.countTaskDTOByUser(userRepository.findUserDTOByUserNumber(userNumber));
         if (amountOfTasksForUser >= maximumAmountOfTasksForUser) {
             throw new OverworkedUserException();
@@ -118,7 +117,6 @@ public final class TaskService {
 
     }
     private void validateUserActiveStatus(Long userNumber) {
-
         User user = userService.getUser(userNumber);
         if (user.getStatus().equals(Status.INACTIVE)) {
             throw new InactiveUserException();

@@ -43,11 +43,11 @@ public final class TeamService {
         return TeamParser.toTeamList(teamDTOS);
     }
 
-    public void updateTeam(String teamName, Team team) {
-        TeamDTO oldTeamDTO = teamRepository.findTeamDTOByTeamName(teamName);
-        validateTeamNumber(oldTeamDTO);
-        oldTeamDTO = TeamParser.updateTeamDTO(oldTeamDTO, team);
-        teamRepository.save(oldTeamDTO);
+    public Team updateTeam(String teamName, Team team) {
+        TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
+        validateTeamNumber(teamDTO);
+        teamDTO = TeamParser.updateTeamDTO(teamDTO, team);
+        return TeamParser.toTeam(teamRepository.save(teamDTO));
     }
 
     public List<User> getUsersInTeam(String teamName) {
