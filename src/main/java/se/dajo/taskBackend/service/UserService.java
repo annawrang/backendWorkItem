@@ -84,7 +84,7 @@ public final class UserService {
 
     public User updateUser(String teamName, Long userNumber) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
-        if (checkForSpaceInTeam(teamDTO) == false) {
+        if (!checkForSpaceInTeam(teamDTO)) {
             throw new InvalidSpaceInTeamException();
         }
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
@@ -94,7 +94,7 @@ public final class UserService {
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
 
-    public boolean checkForSpaceInTeam(TeamDTO teamDTO) {
+    private boolean checkForSpaceInTeam(TeamDTO teamDTO) {
 
         return userRepository.countUserDTOByTeam(teamDTO) < maxUsersInTeam;
     }

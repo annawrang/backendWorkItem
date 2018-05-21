@@ -8,9 +8,6 @@ public final class Task {
     private TaskStatus status;
     private Long taskNumber;
 
-//    public Task() {
-//    }
-
     public Task(String description, TaskStatus status, Long taskNumber) {
         this.description = description;
         this.status = status;
