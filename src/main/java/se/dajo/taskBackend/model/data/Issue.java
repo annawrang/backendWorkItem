@@ -4,9 +4,6 @@ public final class Issue {
 
     private String description;
 
-    protected Issue() {
-    }
-
     public Issue(String description) {
         this.description = description;
     }
