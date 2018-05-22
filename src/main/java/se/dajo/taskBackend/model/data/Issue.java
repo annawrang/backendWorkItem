@@ -8,6 +8,8 @@ public final class Issue {
         this.description = description;
     }
 
+    protected Issue(){}
+
     public String getDescription() {
         return description;
     }
