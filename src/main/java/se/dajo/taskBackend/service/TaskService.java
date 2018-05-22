@@ -98,11 +98,12 @@ public final class TaskService {
 
     public List<Task> getTasksWithIssue() {
         List<IssueDTO> issueDTOs = Lists.newArrayList(issueRepository.findAll());
-        Set<Task> tasksSet = new HashSet<>();
+        List<Task> tasksList = new ArrayList<>();
         for (IssueDTO issueDTO : issueDTOs) {
-            tasksSet.add(TaskParser.toTask(issueDTO.getTaskDTO()));
+            tasksList.add(TaskParser.toTask(issueDTO.getTaskDTO()));
         }
-        return new ArrayList<>(tasksSet);
+        Set<Task> taskSet = new HashSet<>(tasksList);
+        return new ArrayList<>(taskSet);
     }
 
     public List<Task> getTasks(TaskParam taskParam) {
