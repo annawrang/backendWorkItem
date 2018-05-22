@@ -34,17 +34,19 @@ public final class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
-//
-//    @Override
-//    public boolean equals(Task task){
-//        if(task instanceof Task){
-//            return (task.taskNumber == taskNumber);
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public int hashCode(){
-//        return Integer.parseInt(this.taskNumber);
-//    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof Task){
+            return ((Task) object).taskNumber == taskNumber;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        String last4digist = taskNumber.toString();
+        last4digist = last4digist.substring(6);
+        return Integer.parseInt(last4digist);
+    }
 }
