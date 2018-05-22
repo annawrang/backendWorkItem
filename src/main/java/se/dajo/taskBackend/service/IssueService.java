@@ -16,7 +16,6 @@ import se.dajo.taskBackend.service.exception.InvalidTaskNumberException;
 
 import static se.dajo.taskBackend.enums.TaskStatus.UNSTARTED;
 
-
 @Service
 public final class IssueService {
 
