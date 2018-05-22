@@ -60,15 +60,19 @@ public final class TaskService {
         validateRoomForTask(userNumber);
         validateUserActiveStatus(userNumber);
         getTask(taskNumber);
-
         TaskDTO taskDTO = taskRepository.findByTaskNumber(taskNumber);
         if (taskDTO == null) {
             throw new InvalidTaskNumberException();
         }
-
         UserDTO userDTOtoSave = userRepository.findUserDTOByUserNumber(userNumber);
+        if (taskDTO.getUser() != null) {
+            if (userNumber.equals(taskDTO.getUser().getUserNumber())) {
+                userDTOtoSave = null;
+            }
+        }
         TaskDTO taskDTOtoSave = new TaskDTO(taskDTO.getId(), taskDTO.getDescription(),
                 taskDTO.getStatus(), taskDTO.getTaskNumber(), userDTOtoSave);
+
         return TaskParser.toTask(taskRepository.save(taskDTOtoSave));
     }
 
