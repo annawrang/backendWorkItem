@@ -37,7 +37,6 @@ public final class TeamService {
         TeamDTO oldTeamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         validateTeamNumber(oldTeamDTO);
         oldTeamDTO = TeamParser.updateTeamDTO(oldTeamDTO, team);
-
         return TeamParser.toTeam(teamRepository.save(oldTeamDTO));
     }
 

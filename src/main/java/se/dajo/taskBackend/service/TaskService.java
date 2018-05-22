@@ -69,7 +69,6 @@ public final class TaskService {
         UserDTO userDTOtoSave = userRepository.findUserDTOByUserNumber(userNumber);
         TaskDTO taskDTOtoSave = new TaskDTO(taskDTO.getId(), taskDTO.getDescription(),
                 taskDTO.getStatus(), taskDTO.getTaskNumber(), userDTOtoSave);
-
         return TaskParser.toTask(taskRepository.save(taskDTOtoSave));
     }
 

@@ -60,7 +60,6 @@ public final class UserService {
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
         userDTO.setTeam(teamDTO);
         userRepository.save(userDTO);
-
         return new User(userDTO.getFirstName(), userDTO.getSurName(), userDTO.getUserNumber(), userDTO.getStatus());
     }
 

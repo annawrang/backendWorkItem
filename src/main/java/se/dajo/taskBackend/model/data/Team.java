@@ -19,5 +19,4 @@ public final class Team {
     public Status getStatus() {
         return status;
     }
-
 }

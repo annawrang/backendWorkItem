@@ -7,5 +7,4 @@ public enum Status {
     ACTIVE,
     @JsonProperty("inactive")
     INACTIVE
-
 }
