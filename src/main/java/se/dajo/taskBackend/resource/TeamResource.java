@@ -46,8 +46,7 @@ public final class TeamResource {
     @Path("/{teamName}")
     public Response displayTeam(@PathParam("teamName") String teamName) {
         Team team = teamService.getTeam(teamName);
-        return Response.ok(team).header("Location",
-                uriInfo.getAbsolutePathBuilder().path(team.getTeamName())).build();
+        return Response.ok(team).build();
     }
 
     @GET
@@ -75,7 +74,7 @@ public final class TeamResource {
     public Response addTeamUser(@PathParam("teamName") String teamName,
                                 @PathParam("userNumber") Long userNumber) {
         userService.updateUser(teamName, userNumber);
-        return Response.status(ACCEPTED).header("Location", uriInfo.getAbsolutePathBuilder()).build();
+        return Response.status(ACCEPTED).build();
     }
 
     @PUT
