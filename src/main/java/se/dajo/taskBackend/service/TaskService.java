@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static se.dajo.taskBackend.repository.parsers.TaskParser.*;
-
 @Service
 public final class TaskService {
 
@@ -36,8 +34,7 @@ public final class TaskService {
     private final int maximumAmountOfTasksForUser = 5;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository,
-                       IssueRepository issueRepository, UserService userService) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository, IssueRepository issueRepository, UserService userService) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.issueRepository = issueRepository;
@@ -48,14 +45,14 @@ public final class TaskService {
         if (task.getTaskNumber() == null) {
             this.taskNumbers = new AtomicLong(this.taskRepository.getHighestTaskNumber().orElse(1000000000L));
             task = task.setTaskNumber(taskNumbers.incrementAndGet());
-            return toTask(taskRepository.save(toTaskDTO(task)));
+            return TaskParser.toTask(taskRepository.save(TaskParser.toTaskDTO(task)));
         } else {
             TaskDTO oldTaskDTO = taskRepository.findByTaskNumber(task.getTaskNumber());
             if (oldTaskDTO == null) {
                 throw new InvalidTaskNumberException();
             }
-            oldTaskDTO = updateTaskDTO(oldTaskDTO, task);
-            return toTask(taskRepository.save(oldTaskDTO));
+            oldTaskDTO = TaskParser.updateTaskDTO(oldTaskDTO, task);
+            return TaskParser.toTask(taskRepository.save(oldTaskDTO));
         }
     }
 
@@ -76,7 +73,7 @@ public final class TaskService {
         TaskDTO taskDTOtoSave = new TaskDTO(taskDTO.getId(), taskDTO.getDescription(),
                 taskDTO.getStatus(), taskDTO.getTaskNumber(), userDTOtoSave);
 
-        return toTask(taskRepository.save(taskDTOtoSave));
+        return TaskParser.toTask(taskRepository.save(taskDTOtoSave));
     }
 
     public Task getTask(Long taskNumber) {
@@ -84,7 +81,7 @@ public final class TaskService {
         if (taskDTO == null) {
             throw new InvalidTaskNumberException();
         }
-        return toTask(taskDTO);
+        return TaskParser.toTask(taskDTO);
     }
 
     public List<Task> getTaskByDescription(String text) {
@@ -92,7 +89,7 @@ public final class TaskService {
         if (taskDTOs.isEmpty()) {
             throw new InvalidDescriptionException(text);
         }
-        return toTaskList(taskDTOs);
+        return TaskParser.toTaskList(taskDTOs);
     }
 
     public List<Task> getTaskByStatus(TaskStatus status) {
@@ -100,16 +97,17 @@ public final class TaskService {
         if (taskDTOs.isEmpty()) {
             throw new InvalidStatusException(status);
         }
-        return toTaskList(taskDTOs);
+        return TaskParser.toTaskList(taskDTOs);
     }
 
     public List<Task> getTasksWithIssue() {
         List<IssueDTO> issueDTOs = Lists.newArrayList(issueRepository.findAll());
-        Set<Task> tasksSet = new HashSet<>();
+        List<Task> tasksList = new ArrayList<>();
         for (IssueDTO issueDTO : issueDTOs) {
-            tasksSet.add(toTask(issueDTO.getTaskDTO()));
+            tasksList.add(TaskParser.toTask(issueDTO.getTaskDTO()));
         }
-        return new ArrayList<>(tasksSet);
+        Set<Task> taskSet = new HashSet<>(tasksList);
+        return new ArrayList<>(taskSet);
     }
 
     public List<Task> getTasks(TaskParam taskParam) {
