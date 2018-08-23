@@ -3,53 +3,27 @@ package se.dajo.taskBackend;
 import junit.framework.TestCase;
 import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 import org.junit.Test;
-import junit.framework.TestCase;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import javax.ws.rs.core.*;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import se.dajo.taskBackend.enums.TaskStatus;
-import se.dajo.taskBackend.model.data.Issue;
-import se.dajo.taskBackend.model.data.Task;
-import se.dajo.taskBackend.repository.IssueRepository;
-import se.dajo.taskBackend.repository.TaskRepository;
-import se.dajo.taskBackend.repository.data.IssueDTO;
-import se.dajo.taskBackend.repository.data.TaskDTO;
-import se.dajo.taskBackend.repository.parsers.TaskParser;
-import se.dajo.taskBackend.resource.TaskResource;
-import se.dajo.taskBackend.service.IssueService;
-import se.dajo.taskBackend.service.TaskService;
-
-import static se.dajo.taskBackend.enums.TaskStatus.DONE;
-import static se.dajo.taskBackend.enums.TaskStatus.UNSTARTED;
+import se.dajo.taskBackend.model.data.*;
+import se.dajo.taskBackend.repository.*;
+import se.dajo.taskBackend.repository.data.*;
+import se.dajo.taskBackend.service.*;
 import se.dajo.taskBackend.enums.Status;
-import se.dajo.taskBackend.model.data.User;
-import se.dajo.taskBackend.repository.TaskRepository;
-import se.dajo.taskBackend.repository.TeamRepository;
-import se.dajo.taskBackend.repository.UserRepository;
-import se.dajo.taskBackend.repository.data.TeamDTO;
-import se.dajo.taskBackend.repository.data.UserDTO;
-import se.dajo.taskBackend.resource.TeamResource;
-import se.dajo.taskBackend.resource.UserResource;
-import se.dajo.taskBackend.service.UserService;
-import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
-import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
-
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import se.dajo.taskBackend.resource.*;
+import se.dajo.taskBackend.service.exception.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TaskBackendApplicationTests {
-
-//    public TaskBackendApplicationTests() {
-//    }
 
     @Autowired
     private TeamResource teamResource;
@@ -68,8 +42,6 @@ public class TaskBackendApplicationTests {
     @Autowired
     TaskRepository taskRepository;
 
-
-
     /**
      * Testar att description i Issue sparas ner korrekt.
      * Jämför det som avses att sparas ner med det som sparades.
@@ -77,24 +49,19 @@ public class TaskBackendApplicationTests {
     @Test
     public void addIssueTest() {
 
+        Task task = taskService.saveTask(new Task("Testa programmet", TaskStatus.UNSTARTED, null));
+        task.setStatus(TaskStatus.DONE);
+        task = taskService.saveTask(task);
+
         String testDescription = "testDescription";
-        Long taskNumber = 1000000001L;
 
-        taskService.saveTask(new Task("Testa programmet", TaskStatus.DONE, null));
-
-        Issue tempIssue = issueService.saveIssue(new Issue(testDescription), taskNumber);
+        Issue tempIssue = issueService.saveIssue(new Issue(testDescription), task.getTaskNumber());
         TestCase.assertEquals(tempIssue.getDescription(), testDescription);
 
-        Task task = taskService.getTask(taskNumber);
+        task = taskService.getTask(task.getTaskNumber());
         TestCase.assertEquals(task.getStatus(), TaskStatus.UNSTARTED);
-        //        Resterande kod återställer databasen till förutvarande skick.
-        Iterable<IssueDTO> allIssueDTOs = issueRepository.findAll();
-        allIssueDTOs.forEach( k -> {
-            if (k.getTaskDTO().getTaskNumber().equals(taskNumber)) {
-                issueRepository.delete(k);
-                taskRepository.delete(k.getTaskDTO());
-            }
-        });
+        issueRepository.deleteAll();
+        taskRepository.deleteAll();
     }
 
 
@@ -165,19 +132,20 @@ public class TaskBackendApplicationTests {
 
         TestCase.assertTrue(userService.thrownInvalidSpaceInTeamException == true);
 
-        userRepository.delete(user1);
-        userRepository.delete(user2);
-        userRepository.delete(user3);
-        userRepository.delete(user4);
-        userRepository.delete(user5);
-        userRepository.delete(user6);
-        userRepository.delete(user7);
-        userRepository.delete(user8);
-        userRepository.delete(user9);
-        userRepository.delete(user10);
-        userRepository.delete(user11);
+        userRepository.deleteAll();
+//        userRepository.delete(user1);
+//        userRepository.delete(user2);
+//        userRepository.delete(user3);
+//        userRepository.delete(user4);
+//        userRepository.delete(user5);
+//        userRepository.delete(user6);
+//        userRepository.delete(user7);
+//        userRepository.delete(user8);
+//        userRepository.delete(user9);
+//        userRepository.delete(user10);
+//        userRepository.delete(user11);
 
-        teamRepository.delete(team);
+        teamRepository.deleteAll();
     }
 
     @Test
