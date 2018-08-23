@@ -230,6 +230,20 @@ public class TaskBackendApplicationTests {
         assertEquals(201, response.getStatus());
     }
 
+    //This test will not pass
+    @Test
+    public void createTaskTest() {
+        String description = "Eat the food";
+        TaskStatus taskStatus = TaskStatus.UNSTARTED;
+        Long taskNumber = 1235556L;
+        Long invalidTaskNumber = 1235599L;
+
+        Task task = taskService.saveTask(new Task(description, taskStatus, taskNumber));
+        TaskDTO taskDTO = taskRepository.findByTaskNumber(task.getTaskNumber());
+        TestCase.assertEquals(task.getTaskNumber(), taskDTO.getTaskNumber());
+        TestCase.assertEquals(false, task.getTaskNumber() == invalidTaskNumber);
+        taskRepository.delete(taskDTO);
+    }
 }
 
 
