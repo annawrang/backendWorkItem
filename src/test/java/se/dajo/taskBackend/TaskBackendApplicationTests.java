@@ -1,8 +1,11 @@
 package se.dajo.taskBackend;
 
+import junit.framework.TestCase;
+import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 import org.junit.Test;
 import junit.framework.TestCase;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,13 +24,25 @@ import se.dajo.taskBackend.service.TaskService;
 import static se.dajo.taskBackend.enums.TaskStatus.DONE;
 import static se.dajo.taskBackend.enums.TaskStatus.UNSTARTED;
 import se.dajo.taskBackend.enums.Status;
+import se.dajo.taskBackend.model.data.User;
+import se.dajo.taskBackend.repository.TaskRepository;
 import se.dajo.taskBackend.repository.TeamRepository;
 import se.dajo.taskBackend.repository.UserRepository;
 import se.dajo.taskBackend.repository.data.TeamDTO;
 import se.dajo.taskBackend.repository.data.UserDTO;
 import se.dajo.taskBackend.resource.TeamResource;
+import se.dajo.taskBackend.resource.UserResource;
 import se.dajo.taskBackend.service.UserService;
 import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
+import se.dajo.taskBackend.service.exception.InvalidUserNumberException;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -50,6 +65,8 @@ public class TaskBackendApplicationTests {
     private TaskService taskService;
     @Autowired
     private IssueRepository issueRepository;
+    @Autowired
+    TaskRepository taskRepository;
 
     /**
      * Testar att description i Issue sparas ner korrekt.
@@ -159,6 +176,55 @@ public class TaskBackendApplicationTests {
         userRepository.delete(user11);
 
         teamRepository.delete(team);
+    }
+
+    @Test
+    public void createUserTestHappyFlow() {
+        User user = new User("Mark", "Hansen", null, Status.ACTIVE);
+        User saved = userService.saveUser(user);
+        UserDTO found = userRepository.findUserDTOByUserNumber(saved.getUserNumber());
+        assertEquals(user.getFirstName(), found.getFirstName());
+        assertEquals(user.getSurName(), found.getSurName());
+        assertEquals(user.getStatus(), found.getStatus());
+    }
+
+    @Test(expected = InvalidUserNumberException.class)
+    public void createUserTestSadFlow() {
+        User user = new User("Mark", "Hansen", -1L, Status.ACTIVE);
+        User saved = userService.saveUser(user);
+        UserDTO found = userRepository.findUserDTOByUserNumber(saved.getUserNumber());
+    }
+
+    @Test
+    public void updateUserTestHappyFlow() {
+        User user = new User("Mark", "Hansen", null, Status.ACTIVE);
+        User first = userService.saveUser(user);
+        first.setStatus(Status.INACTIVE);
+        User second = userService.saveUser(first);
+        assertEquals(user.getFirstName(), second.getFirstName());
+        assertEquals(user.getSurName(), second.getSurName());
+        assertNotEquals(user.getStatus(), second.getStatus());
+    }
+
+    @Test
+    public void createUserHappyFlow() {
+
+        // Mock with mockito to avoid having to call database
+        UriInfo uriInfo = Mockito.mock(UriInfo.class);
+        when(uriInfo.getAbsolutePathBuilder()).thenReturn(new JerseyUriBuilder());
+
+        // Create the "fake user" that we return from the mocked repository
+        UserDTO user = new UserDTO("Mark", "Hansen", 1000000000L, Status.ACTIVE);
+
+        UserRepository userRepo = Mockito.mock(UserRepository.class);
+        when(userRepo.save(any())).thenReturn(user);
+
+        userService = new UserService(userRepo, null, null);
+
+        UserResource resource = new UserResource(userService, null);
+        Response response = resource.createUser(uriInfo, new User("Mark", "Hansen", null, Status.ACTIVE));
+
+        assertEquals(201, response.getStatus());
     }
 
 }
