@@ -33,8 +33,8 @@ import se.dajo.taskBackend.service.exception.InvalidSpaceInTeamException;
 @SpringBootTest
 public class TaskBackendApplicationTests {
 
-    public TaskBackendApplicationTests() {
-    }
+//    public TaskBackendApplicationTests() {
+//    }
 
     @Autowired
     private TeamResource teamResource;
@@ -44,19 +44,12 @@ public class TaskBackendApplicationTests {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
-
-
-    @Test
-    public void contextLoads() {
-    }
     @Autowired
-    IssueService issueService;
+    private IssueService issueService;
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
     @Autowired
-    TaskRepository taskRepository;
-    @Autowired
-    IssueRepository issueRepository;
+    private IssueRepository issueRepository;
 
     /**
      * Testar att description i Issue sparas ner korrekt.
@@ -74,6 +67,16 @@ public class TaskBackendApplicationTests {
 
         Task task = taskService.getTask(taskNumber);
         TestCase.assertEquals(task.getStatus(), TaskStatus.UNSTARTED);
+        //        Resterande kod återställer databasen till förutvarande skick.
+        Iterable<IssueDTO> allIssueDTOs = issueRepository.findAll();
+        allIssueDTOs.forEach( k -> {
+            if (k.getTaskDTO().getTaskNumber().equals(taskNumber)) {
+                issueRepository.delete(k);
+                task.setStatus(DONE);
+                taskService.saveTask(task);
+            }
+        });
+    }
 
 
     /* Testing that a member is added to a team correctly. Checks that the user is referencing to a
@@ -89,10 +92,6 @@ public class TaskBackendApplicationTests {
         user = userRepository.save(user);
 
         teamResource.addTeamUser(team.getTeamName(), user.getUserNumber());
-
-        System.out.println(team.getTeamName());
-        System.out.println(user.getUserNumber());
-        System.out.println(teamId);
 
         user = userRepository.findUserDTOByUserNumber(user.getUserNumber());
 
@@ -163,14 +162,5 @@ public class TaskBackendApplicationTests {
     }
 
 }
-//        Resterande kod återställer databasen till förutvarande skick.
-        Iterable<IssueDTO> allIssueDTOs = issueRepository.findAll();
-        allIssueDTOs.forEach( k -> {
-            if (k.getTaskDTO().getTaskNumber().equals(taskNumber)) {
-                issueRepository.delete(k);
-                task.setStatus(DONE);
-                taskService.saveTask(task);
-            }
-        });
-    }
-}
+
+
