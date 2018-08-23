@@ -92,7 +92,6 @@ public class TaskBackendApplicationTests {
         allIssueDTOs.forEach( k -> {
             if (k.getTaskDTO().getTaskNumber().equals(taskNumber)) {
                 issueRepository.delete(k);
-                task.setStatus(DONE);
                 taskRepository.delete(k.getTaskDTO());
             }
         });
