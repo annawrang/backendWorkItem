@@ -21,7 +21,7 @@ public final class UserDTO {
     @ManyToOne
     private TeamDTO team;
 
-    protected UserDTO() {
+    public UserDTO() {
     }
 
     public UserDTO(Long id, String firstName, String surName, Long userNumber, Status status) {
