@@ -132,7 +132,6 @@ public class TaskBackendApplicationTests {
 
         TestCase.assertTrue(userService.thrownInvalidSpaceInTeamException == true);
 
-        userRepository.deleteAll();
 //        userRepository.delete(user1);
 //        userRepository.delete(user2);
 //        userRepository.delete(user3);
@@ -145,6 +144,7 @@ public class TaskBackendApplicationTests {
 //        userRepository.delete(user10);
 //        userRepository.delete(user11);
 
+        userRepository.deleteAll();
         teamRepository.deleteAll();
     }
 
@@ -156,6 +156,7 @@ public class TaskBackendApplicationTests {
         assertEquals(user.getFirstName(), found.getFirstName());
         assertEquals(user.getSurName(), found.getSurName());
         assertEquals(user.getStatus(), found.getStatus());
+        userRepository.deleteAll();
     }
 
     @Test(expected = InvalidUserNumberException.class)
@@ -174,6 +175,7 @@ public class TaskBackendApplicationTests {
         assertEquals(user.getFirstName(), second.getFirstName());
         assertEquals(user.getSurName(), second.getSurName());
         assertNotEquals(user.getStatus(), second.getStatus());
+        userRepository.deleteAll();
     }
 
     @Test
@@ -195,6 +197,7 @@ public class TaskBackendApplicationTests {
         Response response = resource.createUser(uriInfo, new User("Mark", "Hansen", null, Status.ACTIVE));
 
         assertEquals(201, response.getStatus());
+        userRepository.deleteAll();
     }
 
     //This test will not pass
