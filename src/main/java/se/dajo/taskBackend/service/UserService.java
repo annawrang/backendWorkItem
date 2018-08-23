@@ -30,6 +30,9 @@ public final class UserService {
     private final int maxUsersInTeam = 10;
     private AtomicLong userNumbers;
 
+    // Variable used solely for Test
+    public boolean thrownInvalidSpaceInTeamException = false;
+
     @Autowired
     public UserService(UserRepository userRepository, TeamRepository teamRepository, TaskRepository taskRepository) {
         this.userRepository = userRepository;
@@ -54,6 +57,7 @@ public final class UserService {
     public User updateUser(String teamName, Long userNumber) {
         TeamDTO teamDTO = teamRepository.findTeamDTOByTeamName(teamName);
         if (!validateSpaceInTeam(teamDTO)) {
+            thrownInvalidSpaceInTeamException = true;
             throw new InvalidSpaceInTeamException();
         }
         UserDTO userDTO = userRepository.findUserDTOByUserNumber(userNumber);
