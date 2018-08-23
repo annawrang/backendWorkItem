@@ -68,6 +68,8 @@ public class TaskBackendApplicationTests {
     @Autowired
     TaskRepository taskRepository;
 
+
+
     /**
      * Testar att description i Issue sparas ner korrekt.
      * Jämför det som avses att sparas ner med det som sparades.
@@ -76,8 +78,9 @@ public class TaskBackendApplicationTests {
     public void addIssueTest() {
 
         String testDescription = "testDescription";
-        Long taskNumber = 1000000007L;
+        Long taskNumber = 1000000001L;
 
+        taskService.saveTask(new Task("Testa programmet", TaskStatus.DONE, null));
 
         Issue tempIssue = issueService.saveIssue(new Issue(testDescription), taskNumber);
         TestCase.assertEquals(tempIssue.getDescription(), testDescription);
@@ -90,7 +93,7 @@ public class TaskBackendApplicationTests {
             if (k.getTaskDTO().getTaskNumber().equals(taskNumber)) {
                 issueRepository.delete(k);
                 task.setStatus(DONE);
-                taskService.saveTask(task);
+                taskRepository.delete(k.getTaskDTO());
             }
         });
     }
