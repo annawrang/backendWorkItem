@@ -132,18 +132,6 @@ public class TaskBackendApplicationTests {
 
         TestCase.assertTrue(userService.thrownInvalidSpaceInTeamException == true);
 
-//        userRepository.delete(user1);
-//        userRepository.delete(user2);
-//        userRepository.delete(user3);
-//        userRepository.delete(user4);
-//        userRepository.delete(user5);
-//        userRepository.delete(user6);
-//        userRepository.delete(user7);
-//        userRepository.delete(user8);
-//        userRepository.delete(user9);
-//        userRepository.delete(user10);
-//        userRepository.delete(user11);
-
         userRepository.deleteAll();
         teamRepository.deleteAll();
     }
@@ -200,8 +188,7 @@ public class TaskBackendApplicationTests {
         userRepository.deleteAll();
     }
 
-    //This test will not pass
-    @Test
+    @Test(expected=InvalidTaskNumberException.class)
     public void createTaskTest() {
         String description = "Eat the food";
         TaskStatus taskStatus = TaskStatus.UNSTARTED;
